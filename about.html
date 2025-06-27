@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. PROBEN | About Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="about.css">
+</head>
+<body>
+    <header>
+        <a href="index.html"><button>&lt; Back</button></a>
+        <span>Dr. PROBEN</span>
+    </header>
+    <main>
+        <div class="tool-container">
+            <section class="tool-container-section">
+                <span>About The Tool</span>
+                <p align="justify">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta ipsa repellat tempora, sequi dolore corrupti debitis expedita earum nemo nobis quas deserunt vero qui? Repudiandae laboriosam expedita deserunt qui enim?</p>
+            </section>
+            <section class="tool-container-section">
+                <span>About the Dataset</span>
+                <p align="justify">PROBEN1 is a collection of problems for neural network learning in the realm of pattern classification and function approximation plus a set of rules and conventions for carrying out benchmark tests with these or similar problems. PROBEN1 contains 15 data sets from 12 different domains. All datasets represent realistic problems which could be called diagnosis tasks and all but one consist of real world data.</p>
+            </section>
+        </div>
+        <div class="model-container">
+            <span>Model Training Hyperparameters</span>
+            <div class="model-info">
+                <section class="model-info-section">
+                    <span>ACO<sub>R</sub>-LM:</span>
+                    <ul>
+                        <li><span>No. of Artificial Ants per Colony:</span> 30</li>
+                        <li><span>No. of Colony:</span> 3</li>
+                        <li><span>Evaporation Rate:</span> 0.5</li>
+                        <li><span>Inter-Colony Communication:</span> Every 10 rounds</li>
+                        <li><span>Termination Condition:</span> 15 consecutive iterations without improvement</li>
+                    </ul>
+                </section>
+                <section class="model-info-section">
+                    <span>Feed-forward Neural Network:</span>
+                    <ul>
+                        <li><span>Input Layer:</span> 61 neurons (Diabetes), 67 (Heart), 223 (Cancer)</li>
+                        <li><span>Hidden Layer:</span> 6 neurons</li>
+                        <li><span>Output Layer:</span> 1 neuron</li>
+                        <li><span>Objective Function:</span> Binary Cross-Entropy</li>
+                        <li><span>Activation Function:</span> Sigmoid</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

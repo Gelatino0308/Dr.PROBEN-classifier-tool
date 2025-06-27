@@ -1,0 +1,93 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    font-family: Poppins, 'Times New Roman', Times, serif;
+    background-color: #EFEFEF;
+    color: #1E1E1E;
+}
+
+header {
+    padding: 30px 30px 0 40px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+button {
+    font-size: 24px;
+    border: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+header span {
+    font-weight: bold;
+    font-size: 60px;
+    display: flex;
+    justify-self: center;
+}
+
+.tool-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.tool-container section {
+    width: 40%;
+}
+
+.tool-container-section span {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.tool-container-section p {
+    font-size: 20px;
+    text-indent: 4ch;
+}
+
+.model-container {
+    /* padding: 0 100px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.model-container > span {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.model-info {
+    display: flex;
+    justify-content: space-evenly;
+    /* justify-content: center; */
+    gap: 30px;
+}
+
+.model-info section {
+    width: 40%;
+}
+
+.model-info-section > span {
+    font-size: 25px;
+    font-style: italic;
+}
+
+.model-info-section ul {
+    font-size: 20px;
+}
+
+.model-info-section ul li span {
+    font-weight: bold;
+}
