@@ -97,7 +97,9 @@ a {
 
 .problem-details-container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    padding: 0 4rem;
+    gap: 8%;
 }
 
 .problem-details-container h3 {
@@ -168,4 +170,41 @@ a {
     color: #DE9B1E;
     padding: 5px 10px;
     width: 40%;
+}
+
+.result-section {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.result-section h1{
+    font-weight: bold;
+    font-size: 40px;
+    text-decoration: underline;
+    text-align: center;
+}
+
+.chart-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    align-self: center;
+}
+
+.chart-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#percentText {
+    font-size: 32px;
+    font-weight: bold;
+}
+.chart-text .label {
+    font-size: 16px;
 }

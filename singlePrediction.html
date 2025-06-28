@@ -62,9 +62,19 @@
             </section>
             <section class="result-section">
                 <h3>Class Prediction Results:</h3>
-                <div></div>
+                <h1>NON-DIABETIC</h1>
+                <p align="justify">Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose.</p>
+                <div class="chart-container">
+                    <canvas id="doughnutChart"></canvas>
+                    <div class="chart-text">
+                      <span id="percentText">--%</span>
+                      <span class="label">Probability</span>
+                    </div>
+                </div>
             </section>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="singlePrediction.js"></script>
 </body>
 </html>
