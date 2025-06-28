@@ -31,7 +31,7 @@
         <div class="problem-details-container">
             <section class="form-section">
                 <h3>Problem Attributes:</h3>
-                <form action="">
+                <form id="predictionForm">
                     <div class="form-container">
                         <div class="labels-container">
                             <label for="pregnancies">Number of Pregnancies</label>
@@ -49,8 +49,8 @@
                             <input type="number" id="BP" name="BP" min="0" required placeholder="- mm Hg">
                             <input type="number" id="skin" name="skin" min="0" required placeholder="- mm">
                             <input type="number" id="insulin" name="insulin" min="0" required placeholder=" - µU/mL">
-                            <input type="number" id="BMI" name="BMI" min="0" required placeholder="- kg/m^2">
-                            <input type="number" id="pedigree" name="pedigree" min="0" required placeholder="0.000">
+                            <input type="number" id="BMI" name="BMI" min="0" required placeholder="- kg/m^2" step="any">
+                            <input type="number" id="pedigree" name="pedigree" min="0" required placeholder="0.000" step="any">
                             <input type="number" id="age" name="age" min="0" required placeholder="- Years Old">
                         </div>
                     </div>

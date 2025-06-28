@@ -1,4 +1,4 @@
-const percentage = Math.floor(Math.random() * 101);
+let percentage = 0;
 document.getElementById('percentText').textContent = percentage + '%';
 
 const data = {
@@ -45,4 +45,65 @@ const config = {
     plugins: [shadowPlugin]
 };
 
-new Chart(document.getElementById('doughnutChart'), config);
+const chart = new Chart(document.getElementById('doughnutChart'), config);
+
+// Handle form submission
+document.querySelector('form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Get form data
+    const formData = {
+        pregnancies: document.getElementById('pregnancies').value,
+        plasma: document.getElementById('plasma').value,
+        BP: document.getElementById('BP').value,
+        skin: document.getElementById('skin').value,
+        insulin: document.getElementById('insulin').value,
+        BMI: document.getElementById('BMI').value,
+        pedigree: document.getElementById('pedigree').value,
+        age: document.getElementById('age').value
+    };
+
+    try {
+        // Show loading state
+        document.getElementById('percentText').textContent = 'Loading...';
+        
+        // Send data to API
+        const response = await fetch('http://127.0.0.1:5000/api/predict/diabetes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+        
+        // Update the prediction text
+        document.querySelector('.result-section h1').textContent = 
+            result.prediction === 1 ? 'DIABETIC' : 'NON-DIABETIC';
+        
+        // Update the description based on the prediction
+        const description = document.querySelector('.result-section p');
+        if (result.prediction === 1) {
+            description.textContent = "Diabetic means the person has diabetes, a chronic disease that affects how your body turns food into energy. It occurs when your pancreas doesn't make enough insulin or your cells don't respond to insulin properly.";
+        } else {
+            description.textContent = 'Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose.';
+        }
+
+        // Update chart with the prediction percentage
+        percentage = result.percentage;
+        document.getElementById('percentText').textContent = percentage + '%';
+        
+        // Update chart data
+        chart.data.datasets[0].data = [percentage, 100 - percentage];
+        chart.update();
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('percentText').textContent = 'Error!';
+    }
+});
