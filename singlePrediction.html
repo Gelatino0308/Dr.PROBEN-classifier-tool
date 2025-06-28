@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. PROBEN | Single Prediction Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="singleprediction.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Dr. PROBEN</a>
+            <ul class="links-container">
+                <li><a href="">Single Prediction</a></li>
+                <li><a href="">Batch Prediction</a></li>
+                <li><a href="about.html">About The App</a></li>
+            </ul>
+        </nav>
+        <hr>
+        <div class="problem-btns-container">
+            <button class="theme-diabetes selected-problem">Diabetes</button>
+            <button class="theme-heart">Heart Disease</button>
+            <button class="theme-cancer">Breast Cancer</button>
+        </div>
+    </header>
+    <main>
+        <p class="instruction"><span>Enter the necessary information</span> related to the diagnostic measurements of diabetes in the fields on the left. Once you're done, click <span>"Predict Class"</span> to see the result. This will help you check if the case may be classified as <span>diabetic</span> or <span>non-diabetic</span>.</p>
+        <div class="problem-details-container">
+            <section class="form-section">
+                <h3>Problem Attributes:</h3>
+                <form action="">
+                    <div class="form-container">
+                        <div class="labels-container">
+                            <label for="pregnancies">Number of Pregnancies</label>
+                            <label for="plasma">Plasma Glucose Concentration</label>
+                            <label for="BP">Diastolic Blood Pressure</label>
+                            <label for="skin">Triceps Skin Fold Thickness</label>
+                            <label for="insulin">2-Hour Serum Insulin</label>
+                            <label for="BMI">Body Mass Index</label>
+                            <label for="pedigree">Diabetes Pedigree Function</label>
+                            <label for="age">Age</label>
+                        </div>
+                        <div class="inputs-container">
+                            <input type="number" id="pregnancies" name="pregnancies" min="0" required placeholder="0"> 
+                            <input type="number" id="plasma" name="plasma" min="0" required placeholder="- mg/dL"> 
+                            <input type="number" id="BP" name="BP" min="0" required placeholder="- mm Hg">
+                            <input type="number" id="skin" name="skin" min="0" required placeholder="- mm">
+                            <input type="number" id="insulin" name="insulin" min="0" required placeholder=" - µU/mL">
+                            <input type="number" id="BMI" name="BMI" min="0" required placeholder="- kg/m^2">
+                            <input type="number" id="pedigree" name="pedigree" min="0" required placeholder="0.000">
+                            <input type="number" id="age" name="age" min="0" required placeholder="- Years Old">
+                        </div>
+                    </div>
+                    <div class="form-actions-container">
+                        <input type="reset" value="Clear Inputs">
+                        <input type="submit" value="Predict Class">
+                    </div>
+                </form>
+            </section>
+            <section class="result-section">
+                <h3>Class Prediction Results:</h3>
+                <div></div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

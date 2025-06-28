@@ -15,6 +15,8 @@ body {
 
 .header-text {
     color: #1E1E1E;
+    font-weight: bold;
+    font-size: 96px;
 }
 
 .main-text {
@@ -37,11 +39,6 @@ body {
     font-size: 24px;
     box-shadow: unset;
     font-weight: unset;
-}
-
-span {
-    font-weight: bold;
-    font-size: 96px;
 }
 
 main {

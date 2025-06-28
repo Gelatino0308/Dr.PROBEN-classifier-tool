@@ -23,14 +23,14 @@ main {
 
 button {
     font-size: 24px;
-    border: 0;
+    border: none;
 }
 
 li {
     list-style-type: none;
 }
 
-header span {
+header h1 {
     font-weight: bold;
     font-size: 60px;
     display: flex;
@@ -46,7 +46,7 @@ header span {
     width: 40%;
 }
 
-.tool-container-section span {
+.tool-container-section h2 {
     font-weight: bold;
     font-size: 30px;
 }
@@ -63,25 +63,26 @@ header span {
     align-items: center;
 }
 
-.model-container > span {
+.model-container h2 {
     font-weight: bold;
     font-size: 30px;
 }
 
 .model-info {
     display: flex;
-    justify-content: space-evenly;
     /* justify-content: center; */
-    gap: 30px;
+    /* justify-content: center; */
+    /* gap: 100px; */
 }
 
 .model-info section {
-    width: 40%;
+    width: 50%;
 }
 
-.model-info-section > span {
+.model-info-section h3 {
     font-size: 25px;
     font-style: italic;
+    font-weight: normal;
 }
 
 .model-info-section ul {
