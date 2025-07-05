@@ -13,11 +13,18 @@
     <main>
         <h1 class="header-text">Dr. PROBEN</h1>
         <div>
-            <a href="singlePrediction.html?disease=diabetes"><button class="theme-diabetes main-text">Diabetes</button></a>
-            <a href="singlePrediction.html?disease=heart"><button class="theme-heart main-text">Heart Disease</button></a>
-            <a href="singlePrediction.html?disease=cancer"><button class="theme-cancer main-text">Breast Cancer</button></a>
+            <button class="theme-diabetes main-text" onclick="navigateToDisease('diabetes')">Diabetes</button>
+            <button class="theme-heart main-text" onclick="navigateToDisease('heart')">Heart Disease</button>
+            <button class="theme-cancer main-text" onclick="navigateToDisease('cancer')">Breast Cancer</button>
             <a href="about.html"><button class="style-about">About The App</button></a>
         </div>
     </main>
+
+    <script>
+        function navigateToDisease(disease) {
+            sessionStorage.setItem('selectedDisease', disease);
+            window.location.href = 'singlePrediction.html';
+        }
+    </script>
 </body>
 </html>

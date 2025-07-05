@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             endpoint: '/api/predict/cancer',
             positiveClass: 'MALIGNANT',
             negativeClass: 'BENIGN',
-            positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
+            positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
                 { id: 'clump_thickness', label: 'Clump Thickness (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
@@ -137,21 +137,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const chart = new Chart(document.getElementById('doughnutChart'), config);
 
+    // Function to update instruction text
+    function updateInstruction(diseaseName) {
+        const instruction = document.querySelector('.instruction');
+        instruction.innerHTML = `<span>Enter the required information</span> related to the diagnostic measurements of ${diseaseName.toLowerCase()} in the form below. Once you're done, click the <span>"Predict Class"</span> button to see the result. This will help you check if the case may be classified as <span>${diseaseConfigs[currentDisease].positiveClass.toLowerCase()}</span> or <span>${diseaseConfigs[currentDisease].negativeClass.toLowerCase()}</span>.`;
+    }
+
     // Function to update page content based on selected disease
     function updatePageContent(disease) {
         currentDisease = disease;
         const config = diseaseConfigs[disease];
         
-        // Update page title and instruction
+        // Update page title only
         document.title = `Dr. PROBEN | ${config.name} Prediction`;
+        
+        // Update instruction text
         updateInstruction(config.name);
         
         // Update form
         updateForm(config.attributes);
-        
-        // Update problem section title
-        document.querySelector('.form-section h3').textContent = `${config.name} Attributes:`;
-        document.querySelector('.result-section h3').textContent = `${config.name} Prediction Results:`;
         
         // Reset form and hide results
         form.reset();
@@ -160,12 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update chart colors based on disease theme
         updateChartColors(disease);
-    }
-
-    // Function to update instruction text
-    function updateInstruction(diseaseName) {
-        const instruction = document.querySelector('.instruction');
-        instruction.innerHTML = `<span>Enter the required information</span> related to the diagnostic measurements of ${diseaseName.toLowerCase()} in the form below. Once you're done, click the <span>"Predict Class"</span> button to see the result. This will help you check if the case may be classified as <span>${diseaseConfigs[currentDisease].positiveClass.toLowerCase()}</span> or <span>${diseaseConfigs[currentDisease].negativeClass.toLowerCase()}</span>.`;
+        
+        // Update submit button color based on theme
+        updateSubmitButtonColor(disease);
     }
 
     // Function to update form fields
@@ -209,6 +210,18 @@ document.addEventListener('DOMContentLoaded', () => {
         
         chart.data.datasets[0].backgroundColor = themeColors[disease];
         chart.update('none');
+    }
+
+    // Function to update submit button color based on theme
+    function updateSubmitButtonColor(disease) {
+        const submitButton = document.querySelector('input[type="submit"]');
+        const themeColors = {
+            diabetes: '#DE9B1E',
+            heart: '#811111',
+            cancer: '#044786'
+        };
+        
+        submitButton.style.color = themeColors[disease];
     }
 
     // Handle disease button clicks
@@ -298,16 +311,16 @@ document.addEventListener('DOMContentLoaded', () => {
         percentText.textContent = '--%';
     });
 
-    // Initialize page based on URL parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const diseaseParam = urlParams.get('disease');
-    
-    if (diseaseParam && diseaseConfigs[diseaseParam]) {
-        const targetButton = document.querySelector(`.theme-${diseaseParam}`);
+    const storedDisease = sessionStorage.getItem('selectedDisease');
+
+    if (storedDisease && diseaseConfigs[storedDisease]) {
+        sessionStorage.removeItem('selectedDisease');
+        
+        const targetButton = document.querySelector(`.theme-${storedDisease}`);
         if (targetButton) {
             targetButton.classList.add('selected-problem');
-            document.body.className = `theme-${diseaseParam}`;
-            updatePageContent(diseaseParam);
+            document.body.className = `theme-${storedDisease}`;
+            updatePageContent(storedDisease);
         }
     } else {
         // Default to diabetes
