@@ -27,7 +27,7 @@
         </div>
     </header>
     <main>
-        <p class="instruction"><span>Enter the necessary information</span> related to the diagnostic measurements of diabetes in the fields on the left. Once you're done, click <span>"Predict Class"</span> to see the result. This will help you check if the case may be classified as <span>diabetic</span> or <span>non-diabetic</span>.</p>
+        <p class="instruction"><span>Enter the required information</span> related to the diagnostic measurements of diabetes in the form below. Once you're done, click <span>"Predict Class"</span> to see the result. This will help you check if the case may be classified as <span>diabetic</span> or <span>non-diabetic</span>.</p>
         <div class="problem-details-container">
             <section class="form-section">
                 <h3>Problem Attributes:</h3>
@@ -45,17 +45,17 @@
                         </div>
                         <div class="inputs-container">
                             <input type="number" id="pregnancies" name="pregnancies" min="0" required placeholder="0"> 
-                            <input type="number" id="plasma" name="plasma" min="0" required placeholder="- mg/dL"> 
-                            <input type="number" id="BP" name="BP" min="0" required placeholder="- mm Hg">
-                            <input type="number" id="skin" name="skin" min="0" required placeholder="- mm">
-                            <input type="number" id="insulin" name="insulin" min="0" required placeholder=" - µU/mL">
-                            <input type="number" id="BMI" name="BMI" min="0" required placeholder="- kg/m^2" step="any">
+                            <input type="number" id="plasma" name="plasma" min="0" required placeholder="0 (mg/dL)"> 
+                            <input type="number" id="BP" name="BP" min="0" required placeholder="0 (mm Hg)">
+                            <input type="number" id="skin" name="skin" min="0" required placeholder="0 (mm)">
+                            <input type="number" id="insulin" name="insulin" min="0" required placeholder=" 0 (µU/mL)">
+                            <input type="number" id="BMI" name="BMI" min="0" required placeholder="0.0 (kg/m^2)" step="any">
                             <input type="number" id="pedigree" name="pedigree" min="0" required placeholder="0.000" step="any">
-                            <input type="number" id="age" name="age" min="0" required placeholder="- Years Old">
+                            <input type="number" id="age" name="age" min="0" required placeholder="0">
                         </div>
                     </div>
                     <div class="form-actions-container">
-                        <input type="reset" value="Clear Inputs">
+                        <input type="reset" value="Clear">
                         <input type="submit" value="Predict Class">
                     </div>
                 </form>
@@ -69,7 +69,7 @@
                         <canvas id="doughnutChart"></canvas>
                         <div class="chart-text">
                           <span id="percentText">--%</span>
-                          <span class="label">Probability</span>
+                          <span class="label">Probability Score</span>
                         </div>
                     </div>
                 </div>

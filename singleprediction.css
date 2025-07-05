@@ -122,7 +122,9 @@ p {
     display: flex;
     gap: 16px;
     height: 350px;
-    overflow-y: auto;
+    /* border: 2px solid white;
+    border-radius: 15px;
+    padding: 0 10px; */
 }
 
 .labels-container {

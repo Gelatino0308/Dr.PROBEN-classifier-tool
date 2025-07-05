@@ -46,8 +46,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateScale: false
             },
             plugins: {
-                legend: { display: true },
-                tooltip: { enabled: true },
+                legend: { display: false },
+                tooltip: { 
+                    enabled: true,
+                    callbacks: {
+                        label: function(context) {
+                            const dataIndex = context.dataIndex;
+                            const value = context.parsed;
+                            
+                            if (dataIndex === 0) {
+                                // First segment - probability of condition
+                                return `Diabetic Probability: ${value}%`;
+                            } else {
+                                // Second segment - remaining percentage
+                                return `Non-diabetic Probability: ${value}%`;
+                            }
+                        }
+                    } 
+                },
             },
             layout: {
                 padding: 5
