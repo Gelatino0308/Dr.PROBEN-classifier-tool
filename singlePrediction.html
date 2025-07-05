@@ -14,8 +14,8 @@
         <nav>
             <a href="index.html">Dr. PROBEN</a>
             <ul class="links-container">
-                <li><a href="">Single Prediction</a></li>
-                <li><a href="">Batch Prediction</a></li>
+                <li><a href="singlePrediction.html">Single Prediction</a></li>
+                <li><a href="batchPrediction.html">Batch Prediction</a></li>
                 <li><a href="about.html">About The App</a></li>
             </ul>
         </nav>
@@ -62,13 +62,15 @@
             </section>
             <section class="result-section">
                 <h3>Class Prediction Results:</h3>
-                <h1>NON-DIABETIC</h1>
-                <p align="justify">Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose.</p>
-                <div class="chart-container">
-                    <canvas id="doughnutChart"></canvas>
-                    <div class="chart-text">
-                      <span id="percentText">--%</span>
-                      <span class="label">Probability</span>
+                <div id="result" class="result">
+                    <h1>NON-DIABETIC</h1>
+                    <p>Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose.</p>
+                    <div class="chart-container">
+                        <canvas id="doughnutChart"></canvas>
+                        <div class="chart-text">
+                          <span id="percentText">--%</span>
+                          <span class="label">Probability</span>
+                        </div>
                     </div>
                 </div>
             </section>

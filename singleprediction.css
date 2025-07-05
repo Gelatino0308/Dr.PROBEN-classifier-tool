@@ -38,6 +38,10 @@ a {
     color: white;
 }
 
+p {
+    text-align: justify;
+}
+
 .theme-diabetes {
     background-color: #DE9B1E;
 }
@@ -117,6 +121,8 @@ a {
 .form-container {
     display: flex;
     gap: 16px;
+    height: 350px;
+    overflow-y: auto;
 }
 
 .labels-container {
@@ -179,7 +185,13 @@ a {
     gap: 15px;
 }
 
-.result-section h1{
+.result {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.result h1{
     font-weight: bold;
     font-size: 40px;
     text-decoration: underline;
