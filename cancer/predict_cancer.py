@@ -3,8 +3,11 @@ import pandas as pd
 import pickle
 import os
 
-# FNN class for single hidden layer
 class FNN:
+    """
+    Feedforward Neural Network (FNN) with a single hidden layer and 1 output neuron.
+    Architecture: Input -> Hidden -> Output(1)
+    """
     def __init__(self, input_dim, hidden_dim, output_dim):
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
@@ -31,69 +34,114 @@ class FNN:
         return (self.forward(X) > 0.5).astype(int)
 
 def load_model(model_path='cancer_model.pkl'):
+    """Load the trained cancer classification model."""
     model_path = os.path.join(os.path.dirname(__file__), model_path)
     with open(model_path, 'rb') as f:
         model_data = pickle.load(f)
+    
     model = FNN(model_data['input_dim'], model_data['hidden_dim'], model_data['output_dim'])
     model.set_weights(model_data['weights'])
     return model, model_data['scaler']
 
 def predict_cancer(data, model=None, scaler=None):
+    """
+    Predict cancer classification for given data.
+    
+    Parameters:
+    data: pandas DataFrame with columns:
+        - clump_thickness (1-10)
+        - uniformity_cell_size (1-10)
+        - uniformity_cell_shape (1-10)
+        - marginal_adhesion (1-10)
+        - single_epithelial_cell_size (1-10)
+        - bare_nuclei (1-10)
+        - bland_chromatin (1-10)
+        - normal_nucleoli (1-10)
+        - mitoses (1-10)
+    
+    Returns:
+    predictions: array of predictions (0 = benign, 1 = malignant)
+    probabilities: array of probabilities (probability of malignancy)
+    """
     if model is None or scaler is None:
         model, scaler = load_model()
+    
     if isinstance(data, pd.DataFrame):
-        if 'diagnosis' in data.columns:
-            data = data.drop('diagnosis', axis=1)
-        if 'id' in data.columns:
-            data = data.drop('id', axis=1)
+        # Remove class column if present
+        if 'class' in data.columns:
+            data = data.drop('class', axis=1)
         X = data.values
     else:
         X = data
+    
+    # Standardize the input data
     X_scaled = scaler.transform(X)
+    
+    # Get probabilities and predictions
     probabilities = model.forward(X_scaled)
     predictions = (probabilities > 0.5).astype(int)
+    
     return predictions, probabilities
 
 if __name__ == "__main__":
+    # Example usage
     model, scaler = load_model()
-    # Example: Realistic sample for cancer dataset (replace values as needed)
-    sample = {
-        'radius_mean': 20.6,
-        'texture_mean': 29.3,
-        'perimeter_mean': 140.1,
-        'area_mean': 1265.7,
-        'smoothness_mean': 0.127,
-        'compactness_mean': 0.284,
-        'concavity_mean': 0.343,
-        'concave points_mean': 0.155,
-        'symmetry_mean': 0.246,
-        'fractal_dimension_mean': 0.073,
-        'radius_se': 0.763,
-        'texture_se': 2.125,
-        'perimeter_se': 5.312,
-        'area_se': 94.44,
-        'smoothness_se': 0.011,
-        'compactness_se': 0.036,
-        'concavity_se': 0.058,
-        'concave points_se': 0.018,
-        'symmetry_se': 0.044,
-        'fractal_dimension_se': 0.007,
-        'radius_worst': 26.23,
-        'texture_worst': 38.25,
-        'perimeter_worst': 177.4,
-        'area_worst': 2051.0,
-        'smoothness_worst': 0.187,
-        'compactness_worst': 0.657,
-        'concavity_worst': 0.712,
-        'concave points_worst': 0.239,
-        'symmetry_worst': 0.458,
-        'fractal_dimension_worst': 0.114
+    
+    # Example: Sample data for breast cancer prediction
+    # These are typical values for a benign case
+    sample_benign = {
+        'clump_thickness': 5,
+        'uniformity_cell_size': 1,
+        'uniformity_cell_shape': 1,
+        'marginal_adhesion': 1,
+        'single_epithelial_cell_size': 2,
+        'bare_nuclei': 1,
+        'bland_chromatin': 3,
+        'normal_nucleoli': 1,
+        'mitoses': 1
     }
-    sample_df = pd.DataFrame([sample])
-    pred, prob = predict_cancer(sample_df, model, scaler)
+    
+    # Example: Sample data for a malignant case
+    sample_malignant = {
+        'clump_thickness': 8,
+        'uniformity_cell_size': 7,
+        'uniformity_cell_shape': 5,
+        'marginal_adhesion': 10,
+        'single_epithelial_cell_size': 7,
+        'bare_nuclei': 9,
+        'bland_chromatin': 5,
+        'normal_nucleoli': 5,
+        'mitoses': 4
+    }
+    
+    print("Testing Cancer Classification Model:")
+    print("=" * 50)
+    
+    # Test benign sample
+    sample_df_benign = pd.DataFrame([sample_benign])
+    pred, prob = predict_cancer(sample_df_benign, model, scaler)
+    
+    print(f"Benign Sample Test:")
+    print(f"Input: {sample_benign}")
+    # Fix: Handle both scalar and array cases like in predict_diabetes.py
     if np.isscalar(pred):
         print(f"Prediction: {'Malignant' if pred == 1 else 'Benign'}")
         print(f"Probability of malignancy: {prob:.4f}")
     else:
         print(f"Prediction: {'Malignant' if pred[0] == 1 else 'Benign'}")
-        print(f"Probability of malignancy: {prob[0]:.4f}") 
+        print(f"Probability of malignancy: {prob[0]:.4f}")
+    print()
+    
+    # Test malignant sample
+    sample_df_malignant = pd.DataFrame([sample_malignant])
+    pred, prob = predict_cancer(sample_df_malignant, model, scaler)
+    
+    print(f"Malignant Sample Test:")
+    print(f"Input: {sample_malignant}")
+    # Fix: Handle both scalar and array cases like in predict_diabetes.py
+    if np.isscalar(pred):
+        print(f"Prediction: {'Malignant' if pred == 1 else 'Benign'}")
+        print(f"Probability of malignancy: {prob:.4f}")
+    else:
+        print(f"Prediction: {'Malignant' if pred[0] == 1 else 'Benign'}")
+        print(f"Probability of malignancy: {prob[0]:.4f}")
