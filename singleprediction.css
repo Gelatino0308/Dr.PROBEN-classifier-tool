@@ -83,7 +83,7 @@ p {
 
 .problem-btns-container button.selected-problem {
     font-weight: bold;
-    box-shadow: none !important;
+    box-shadow: none;
 }
 
 .instruction {

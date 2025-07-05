@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let percentage = 0;
     let currentDisease = 'diabetes'; // Default disease
 
+    // State management object to hold data for each tab
+    const diseaseStates = {
+        diabetes: { formData: {}, resultData: null },
+        heart: { formData: {}, resultData: null },
+        cancer: { formData: {}, resultData: null }
+    };
+
     // Disease configurations
     const diseaseConfigs = {
         diabetes: {
@@ -57,15 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
-                { id: 'clump_thickness', label: 'Clump Thickness (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'marginal_adhesion', label: 'Marginal Adhesion (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'bare_nuclei', label: 'Bare Nuclei (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'bland_chromatin', label: 'Bland Chromatin (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'normal_nucleoli', label: 'Normal Nucleoli (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'mitoses', label: 'Mitoses (1-10)', placeholder: '1-10', min: '1', max: '10', type: 'number' }
+                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'number' },
+                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'number' },
+                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'number' },
+                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'number' },
+                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'number' },
+                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'number' },
+                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'number' },
+                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'number' },
+                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'number' }
             ]
         }
     };
@@ -143,8 +150,54 @@ document.addEventListener('DOMContentLoaded', () => {
         instruction.innerHTML = `<span>Enter the required information</span> related to the diagnostic measurements of ${diseaseName.toLowerCase()} in the form below. Once you're done, click the <span>"Predict Class"</span> button to see the result. This will help you check if the case may be classified as <span>${diseaseConfigs[currentDisease].positiveClass.toLowerCase()}</span> or <span>${diseaseConfigs[currentDisease].negativeClass.toLowerCase()}</span>.`;
     }
 
+    // Function to save the state of the current tab
+    function saveCurrentState() {
+        if (!currentDisease) return;
+        const currentState = diseaseStates[currentDisease];
+        
+        // Save form data
+        const currentForm = document.getElementById('predictionForm');
+        const formData = new FormData(currentForm);
+        for (let [key, value] of formData.entries()) {
+            currentState.formData[key] = value;
+        }
+    }
+
+    // Function to restore the state of a tab
+    function restoreState(disease) {
+        const state = diseaseStates[disease];
+        
+        // Restore form data
+        for (const [key, value] of Object.entries(state.formData)) {
+            const input = form.elements[key];
+            if (input) {
+                input.value = value;
+            }
+        }
+
+        // Restore prediction result
+        if (state.resultData) {
+            const config = diseaseConfigs[disease];
+            document.querySelector('.result-section h1').textContent = state.resultData.prediction === 1 ? config.positiveClass : config.negativeClass;
+            document.querySelector('.result-section p').textContent = state.resultData.prediction === 1 ? config.positiveDesc : config.negativeDesc;
+            percentText.textContent = state.resultData.percentage + '%';
+            chart.data.datasets[0].data = [state.resultData.percentage, 100 - state.resultData.percentage];
+            chart.update('none');
+            displayResult.style.display = 'flex';
+        } else {
+            // If no result, reset the view
+            displayResult.style.display = 'none';
+            percentText.textContent = '--%';
+            chart.data.datasets[0].data = [0, 100];
+            chart.update('none');
+        }
+    }
+
     // Function to update page content based on selected disease
     function updatePageContent(disease) {
+        // Save state of the previous tab before switching
+        saveCurrentState();
+
         currentDisease = disease;
         const config = diseaseConfigs[disease];
         
@@ -154,13 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update instruction text
         updateInstruction(config.name);
         
-        // Update form
+        // Update form (rebuilds inputs)
         updateForm(config.attributes);
         
-        // Reset form and hide results
-        form.reset();
-        displayResult.style.display = 'none';
-        percentText.textContent = '--%';
+        // Restore the state for the new tab (form values and results)
+        restoreState(disease);
         
         // Update chart colors based on disease theme
         updateChartColors(disease);
@@ -279,6 +330,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
+
+            // Save the result to the state object
+            diseaseStates[currentDisease].resultData = result;
             
             // Update the prediction text
             document.querySelector('.result-section h1').textContent = 
@@ -307,14 +361,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle hiding of result details after reset
     form.addEventListener('reset', () => {
+        // Clear the state for the current disease on reset
+        diseaseStates[currentDisease].formData = {};
+        diseaseStates[currentDisease].resultData = null;
+        
         displayResult.style.display = 'none';
         percentText.textContent = '--%';
+        chart.data.datasets[0].data = [0, 100];
+        chart.update('none');
     });
-
+    
     const storedDisease = sessionStorage.getItem('selectedDisease');
 
     if (storedDisease && diseaseConfigs[storedDisease]) {
         sessionStorage.removeItem('selectedDisease');
+
+        // Reset button selection
+        document.querySelectorAll('.problem-btns-container button').forEach(btn => {
+            btn.classList.remove('selected-problem');
+        });
         
         const targetButton = document.querySelector(`.theme-${storedDisease}`);
         if (targetButton) {
