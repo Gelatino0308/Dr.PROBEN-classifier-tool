@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    const form = document.getElementById('predictionForm');
+    const displayResult = document.getElementById('result');
+    let percentText = document.getElementById('percentText');
     let percentage = 0;
-    document.getElementById('percentText').textContent = percentage + '%';
 
     const data = {
         datasets: [{
@@ -56,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chart = new Chart(document.getElementById('doughnutChart'), config);
 
     // Handle form submission
-    document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Get form data
@@ -73,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Show loading state
-            document.getElementById('percentText').textContent = 'Loading...';
+            percentText.textContent = 'Loading...';
             
             // Send data to API
             const response = await fetch('http://127.0.0.1:5000/api/predict/diabetes', {
@@ -104,9 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update chart with the prediction percentage
             percentage = result.percentage;
-            document.getElementById('percentText').textContent = percentage + '%';
-
-            const displayResult = document.getElementById('result');
+            percentText.textContent = percentage + '%';
+            
+            // Make result details appear after first submit
             displayResult.style.display = 'flex';
             
             // Update chart data
@@ -115,7 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch (error) {
             console.error('Error:', error);
-            document.getElementById('percentText').textContent = 'Error!';
+            percentText.textContent = 'Error!';
         }
+    });
+
+    // Handle hiding of result details after reset
+    form.addEventListener('reset', () => {
+        displayResult.style.display = 'none';
     });
 });
