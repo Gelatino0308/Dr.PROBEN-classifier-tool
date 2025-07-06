@@ -79,11 +79,31 @@ p {
     width: 28%;
     padding: 5px;
     box-shadow: 1px 1px 8px black;
+    /* transition: all 0.3s ease; */
+    cursor: pointer;
 }
 
 .problem-btns-container button.selected-problem {
     font-weight: bold;
     box-shadow: none;
+}
+
+/* Add hover styles for non-selected buttons */
+.problem-btns-container button.theme-diabetes:not(.selected-problem):hover {
+    background-color: #A97411; /* Darker shade of diabetes theme */
+}
+
+.problem-btns-container button.theme-heart:not(.selected-problem):hover {
+    background-color: #5E0000; /* Darker shade of heart theme */
+}
+
+.problem-btns-container button.theme-cancer:not(.selected-problem):hover {
+    background-color: #073056; /* Darker shade of cancer theme */
+}
+
+/* Ensure selected buttons don't have hover effects */
+.problem-btns-container button.selected-problem:hover {
+    background-color: inherit; /* Keep original background */
 }
 
 .instruction {

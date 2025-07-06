@@ -24,6 +24,7 @@ main {
 button {
     font-size: 24px;
     border: none;
+    cursor: pointer;
 }
 
 li {

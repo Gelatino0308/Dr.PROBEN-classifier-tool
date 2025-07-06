@@ -269,6 +269,37 @@
     border-color: #073056;
 }
 
+/* Theme-specific button colors for action buttons (except predict button) */
+.theme-diabetes #downloadBtn {
+    color: #DE9B1E;
+    border-color: #DE9B1E;
+}
+
+.theme-diabetes #downloadBtn:hover {
+    background-color: #A97411;
+    color: white;
+}
+
+.theme-heart #downloadBtn {
+    color: #811111;
+    border-color: #811111;
+}
+
+.theme-heart #downloadBtn:hover {
+    background-color: #5E0000;
+    color: white;
+}
+
+.theme-cancer #downloadBtn {
+    color: #044786;
+    border-color: #044786;
+}
+
+.theme-cancer #downloadBtn:hover {
+    background-color: #073056;
+    color: white;
+}
+
 /* Ensure predict button maintains action-btn styling */
 #predictBtn.action-btn {
     font-size: 20px;
