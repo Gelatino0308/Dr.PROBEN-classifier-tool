@@ -119,9 +119,9 @@ p {
 
 .form-container {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     height: 340px;
-    padding: 5px;
+    padding: 5px 0;
     /* Make form container scrollable when content exceeds height */
     overflow-y: auto;
     overflow-x: hidden;
@@ -154,7 +154,7 @@ p {
     align-items: flex-end;
     justify-content: flex-start;
     font-size: 20px;
-    gap: 12px;
+    gap: 12.3px;
     width: 60%;
     /* Fixed positioning approach */
     /* padding-top: 0px; */
@@ -179,13 +179,18 @@ p {
     font-size: 18px;
     padding: 1px 10px;
     text-align: center;
-    width: 90%;
+    /* width: 90%; */
     /* Fixed height to match label text size */
     height: 24px;
     line-height: 24px;
     box-sizing: border-box;
     /* Prevent input from growing */
     flex-shrink: 0;
+}
+
+.inputs-container .input-wrapper {
+    justify-content: center;
+    align-items: center;
 }
 
 .form-actions-container {
@@ -278,4 +283,223 @@ p {
 #percentText {
     font-size: 32px;
     font-weight: bold;
+}
+
+/* Add these styles to your existing CSS */
+
+/* Radio button styling */
+.radio-group {
+    display: flex;
+    gap: 12px; /* Increased gap for better spacing */
+    width: 90%;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 24px; /* Match number input height */
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.radio-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #044786; /* Default to cancer theme */
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.radio-option label {
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+    line-height: 1;
+    margin: 0;
+}
+
+/* Dropdown styling - Match number input height */
+.dropdown-input {
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    padding: 0 10px; /* Reduced padding to match number inputs */
+    text-align: center;
+    width: 90%;
+    height: 24px; /* Match number input height exactly */
+    line-height: 24px;
+    box-sizing: border-box;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+}
+
+.dropdown-input:focus {
+    outline: 2px solid #044786;
+}
+
+/* Input wrapper adjustments */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 90%;
+    justify-content: flex-start;
+    min-height: 24px; /* Match the height of number inputs */
+}
+
+/* Slider styling (enhanced) - Make narrower to accommodate labels */
+.slider-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 69%; /* Reduced from 70% to accommodate labels better */
+    height: 6px;
+    border-radius: 3px;
+    background: #ddd;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+.slider-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    border: 2px solid #044786;
+}
+
+.slider-input::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    border: 2px solid #044786;
+}
+
+.slider-value {
+    background: white;
+    color: #044786;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    width: 2rem;
+    text-align: center;
+    border: 1px solid #044786;
+    height: 16px; /* Match consistent height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Theme-specific styling */
+.theme-diabetes .radio-option input[type="radio"] {
+    accent-color: #DE9B1E;
+}
+
+.theme-diabetes .dropdown-input:focus {
+    outline-color: #DE9B1E;
+}
+
+.theme-diabetes .slider-input::-webkit-slider-thumb {
+    border-color: #DE9B1E;
+}
+
+.theme-diabetes .slider-value {
+    color: #DE9B1E;
+    border-color: #DE9B1E;
+}
+
+.theme-heart .radio-option input[type="radio"] {
+    accent-color: #811111;
+}
+
+.theme-heart .dropdown-input:focus {
+    outline-color: #811111;
+}
+
+.theme-heart .slider-input::-webkit-slider-thumb {
+    border-color: #811111;
+}
+
+.theme-heart .slider-value {
+    color: #811111;
+    border-color: #811111;
+}
+
+.theme-cancer .radio-option input[type="radio"] {
+    accent-color: #044786;
+}
+
+.theme-cancer .dropdown-input:focus {
+    outline-color: #044786;
+}
+
+.theme-cancer .slider-input::-webkit-slider-thumb {
+    border-color: #044786;
+}
+
+.theme-cancer .slider-value {
+    color: #044786;
+    border-color: #044786;
+}
+
+/* Firefox slider styling */
+.theme-diabetes .slider-input::-moz-range-thumb {
+    border-color: #DE9B1E;
+}
+
+.theme-heart .slider-input::-moz-range-thumb {
+    border-color: #811111;
+}
+
+.theme-cancer .slider-input::-moz-range-thumb {
+    border-color: #044786;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .radio-group {
+        flex-direction: column;
+        gap: 8px;
+        height: auto;
+        align-items: flex-start;
+    }
+    
+    .slider-input {
+        width: 50%;
+    }
+    
+    .slider-value {
+        font-size: 12px;
+        padding: 3px 6px;
+    }
+}
+
+/* Additional styling for better visual consistency */
+.input-wrapper select,
+.input-wrapper input[type="range"],
+.input-wrapper .radio-group {
+    align-self: center;
+}
+
+/* Ensure regular inputs still work properly */
+.inputs-container input:not(.slider-input):not([type="radio"]) {
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    padding: 1px 10px;
+    text-align: center;
+    width: 90%;
+    height: 24px;
+    line-height: 24px;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }

@@ -38,22 +38,83 @@ document.addEventListener('DOMContentLoaded', () => {
             endpoint: '/api/predict/heart',
             positiveClass: 'POSITIVE',
             negativeClass: 'NEGATIVE',
-            positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
+            positiveDesc: "Positive means the presennce of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
             negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
             attributes: [
                 { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number' },
-                { id: 'sex', label: 'Sex', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
-                { id: 'cp', label: 'Chest Pain Type', placeholder: '0-3', min: '0', max: '3', type: 'number' },
+                { 
+                    id: 'sex', 
+                    label: 'Sex', 
+                    type: 'radio', 
+                    options: [
+                        { value: '1', label: 'Male' },
+                        { value: '0', label: 'Female' }
+                    ]
+                },
+                { 
+                    id: 'cp', 
+                    label: 'Chest Pain Type', 
+                    type: 'dropdown', 
+                    options: [
+                        { value: '0', label: 'Asymptomatic' },
+                        { value: '1', label: 'Atypical Angina' },
+                        { value: '2', label: 'Non-anginal Pain' },
+                        { value: '3', label: 'Typical Angina' }
+                    ]
+                },
                 { id: 'trestbps', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number' },
                 { id: 'chol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', type: 'number' },
-                { id: 'fbs', label: 'FBS > 120mg/dL', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
-                { id: 'restecg', label: 'Resting ECG Results', placeholder: '0-2', min: '0', max: '2', type: 'number' },
+                { 
+                    id: 'fbs', 
+                    label: 'FBS > 120mg/dL', 
+                    type: 'radio', 
+                    options: [
+                        { value: '1', label: 'True' },
+                        { value: '0', label: 'False' }
+                    ]
+                },
+                { 
+                    id: 'restecg', 
+                    label: 'Resting ECG Results', 
+                    type: 'dropdown', 
+                    options: [
+                        { value: '0', label: 'Normal' },
+                        { value: '1', label: 'ST-T Wave Abnormality' },
+                        { value: '2', label: 'Left Ventricular Hypertrophy' }
+                    ]
+                },
                 { id: 'thalach', label: 'Maximum Heart Rate', placeholder: '0', min: '0', type: 'number' },
-                { id: 'exang', label: 'Exercise Induced Angina', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
+                { 
+                    id: 'exang', 
+                    label: 'Exercise Induced Angina', 
+                    type: 'radio', 
+                    options: [
+                        { value: '1', label: 'Yes' },
+                        { value: '0', label: 'No' }
+                    ]
+                },
                 { id: 'oldpeak', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any' },
-                { id: 'slope', label: 'Slope of Peak Exercise ST', placeholder: '0-2', min: '0', max: '2', type: 'number' },
-                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'number' },
-                { id: 'thal', label: 'Thalassemia', placeholder: '1-3', min: '1', max: '3', type: 'number' }
+                { 
+                    id: 'slope', 
+                    label: 'Slope of Peak Exercise ST', 
+                    type: 'dropdown', 
+                    options: [
+                        { value: '0', label: 'Downsloping' },
+                        { value: '1', label: 'Flat' },
+                        { value: '2', label: 'Upsloping' }
+                    ]
+                },
+                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-4', min: '0', max: '4', type: 'slider', default: '0' },
+                { 
+                    id: 'thal', 
+                    label: 'Thalassemia', 
+                    type: 'dropdown', 
+                    options: [
+                        { value: '1', label: 'Normal' },
+                        { value: '2', label: 'Fixed Defect' },
+                        { value: '3', label: 'Reversible Defect' }
+                    ]
+                }
             ]
         },
         cancer: {
@@ -64,15 +125,15 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
-                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'number' },
-                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'number' }
+                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
+                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
+                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
+                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
+                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
+                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
+                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
+                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
+                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' }
             ]
         }
     };
@@ -171,7 +232,19 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const [key, value] of Object.entries(state.formData)) {
             const input = form.elements[key];
             if (input) {
-                input.value = value;
+                if (input.type === 'radio') {
+                    // Handle radio buttons
+                    const radioInput = form.querySelector(`input[name="${key}"][value="${value}"]`);
+                    if (radioInput) radioInput.checked = true;
+                } else if (input.type === 'range') {
+                    // Handle sliders
+                    input.value = value;
+                    const valueDisplay = document.getElementById(`${key}_value`);
+                    if (valueDisplay) valueDisplay.textContent = value;
+                } else {
+                    // Handle regular inputs and dropdowns
+                    input.value = value;
+                }
             }
         }
 
@@ -237,17 +310,101 @@ document.addEventListener('DOMContentLoaded', () => {
             label.textContent = attr.label;
             labelsContainer.appendChild(label);
             
-            // Create input
-            const input = document.createElement('input');
-            input.type = attr.type;
-            input.id = attr.id;
-            input.name = attr.id;
-            input.placeholder = attr.placeholder;
-            input.min = attr.min;
-            if (attr.max) input.max = attr.max;
-            if (attr.step) input.step = attr.step;
-            input.required = true;
-            inputsContainer.appendChild(input);
+            // Create input container
+            const inputWrapper = document.createElement('div');
+            inputWrapper.className = 'input-wrapper';
+            
+            if (attr.type === 'slider') {
+                // Create slider input
+                const input = document.createElement('input');
+                input.type = 'range';
+                input.id = attr.id;
+                input.name = attr.id;
+                input.min = attr.min;
+                input.max = attr.max;
+                input.value = attr.default || attr.min;
+                input.required = true;
+                input.className = 'slider-input';
+                
+                // Create value display
+                const valueDisplay = document.createElement('span');
+                valueDisplay.id = `${attr.id}_value`;
+                valueDisplay.className = 'slider-value';
+                valueDisplay.textContent = attr.default || attr.min;
+                
+                // Add event listener to update display
+                input.addEventListener('input', function() {
+                    valueDisplay.textContent = this.value;
+                });
+                
+                inputWrapper.appendChild(input);
+                inputWrapper.appendChild(valueDisplay);
+            } else if (attr.type === 'radio') {
+                // Create radio button group
+                const radioGroup = document.createElement('div');
+                radioGroup.className = 'radio-group';
+                
+                attr.options.forEach(option => {
+                    const radioWrapper = document.createElement('div');
+                    radioWrapper.className = 'radio-option';
+                    
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.id = `${attr.id}_${option.value}`;
+                    radioInput.name = attr.id;
+                    radioInput.value = option.value;
+                    radioInput.required = true;
+                    
+                    const radioLabel = document.createElement('label');
+                    radioLabel.setAttribute('for', `${attr.id}_${option.value}`);
+                    radioLabel.textContent = option.label;
+                    
+                    radioWrapper.appendChild(radioInput);
+                    radioWrapper.appendChild(radioLabel);
+                    radioGroup.appendChild(radioWrapper);
+                });
+                
+                inputWrapper.appendChild(radioGroup);
+            } else if (attr.type === 'dropdown') {
+                // Create dropdown/select
+                const select = document.createElement('select');
+                select.id = attr.id;
+                select.name = attr.id;
+                select.required = true;
+                select.className = 'dropdown-input';
+                
+                // Add default option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select an option';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                
+                // Add options
+                attr.options.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.label;
+                    select.appendChild(optionElement);
+                });
+                
+                inputWrapper.appendChild(select);
+            } else {
+                // Create regular input
+                const input = document.createElement('input');
+                input.type = attr.type;
+                input.id = attr.id;
+                input.name = attr.id;
+                input.placeholder = attr.placeholder;
+                input.min = attr.min;
+                if (attr.max) input.max = attr.max;
+                if (attr.step) input.step = attr.step;
+                input.required = true;
+                inputWrapper.appendChild(input);
+            }
+            
+            inputsContainer.appendChild(inputWrapper);
         });
     }
 
@@ -309,7 +466,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Get form data dynamically
         const formData = {};
         config.attributes.forEach(attr => {
-            formData[attr.id] = document.getElementById(attr.id).value;
+            const element = document.getElementById(attr.id);
+            if (attr.type === 'radio') {
+                const checkedRadio = form.querySelector(`input[name="${attr.id}"]:checked`);
+                formData[attr.id] = checkedRadio ? checkedRadio.value : '';
+            } else {
+                formData[attr.id] = element ? element.value : '';
+            }
         });
 
         try {
@@ -364,6 +527,40 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear the state for the current disease on reset
         diseaseStates[currentDisease].formData = {};
         diseaseStates[currentDisease].resultData = null;
+        
+        // Reset form elements to defaults
+        if (currentDisease === 'cancer') {
+            const config = diseaseConfigs.cancer;
+            config.attributes.forEach(attr => {
+                if (attr.type === 'slider') {
+                    const input = document.getElementById(attr.id);
+                    const valueDisplay = document.getElementById(`${attr.id}_value`);
+                    if (input && valueDisplay) {
+                        input.value = attr.default || attr.min;
+                        valueDisplay.textContent = attr.default || attr.min;
+                    }
+                }
+            });
+        } else if (currentDisease === 'heart') {
+            // Reset heart disease specific inputs
+            const config = diseaseConfigs.heart;
+            config.attributes.forEach(attr => {
+                if (attr.type === 'radio') {
+                    const radioInputs = form.querySelectorAll(`input[name="${attr.id}"]`);
+                    radioInputs.forEach(radio => radio.checked = false);
+                } else if (attr.type === 'dropdown') {
+                    const select = document.getElementById(attr.id);
+                    if (select) select.selectedIndex = 0;
+                } else if (attr.type === 'slider') {
+                    const input = document.getElementById(attr.id);
+                    const valueDisplay = document.getElementById(`${attr.id}_value`);
+                    if (input && valueDisplay) {
+                        input.value = attr.default || attr.min;
+                        valueDisplay.textContent = attr.default || attr.min;
+                    }
+                }
+            });
+        }
         
         displayResult.style.display = 'none';
         percentText.textContent = '--%';
