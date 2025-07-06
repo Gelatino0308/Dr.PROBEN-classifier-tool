@@ -36,24 +36,24 @@ document.addEventListener('DOMContentLoaded', () => {
         heart: {
             name: 'Heart Disease',
             endpoint: '/api/predict/heart',
-            positiveClass: 'HEART DISEASE',
-            negativeClass: 'NO HEART DISEASE',
-            positiveDesc: "Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
-            negativeDesc: 'No heart disease means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
+            positiveClass: 'POSITIVE',
+            negativeClass: 'NEGATIVE',
+            positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
+            negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
             attributes: [
                 { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number' },
-                { id: 'sex', label: 'Sex (1=Male, 0=Female)', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
-                { id: 'cp', label: 'Chest Pain Type (0-3)', placeholder: '0-3', min: '0', max: '3', type: 'number' },
+                { id: 'sex', label: 'Sex', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
+                { id: 'cp', label: 'Chest Pain Type', placeholder: '0-3', min: '0', max: '3', type: 'number' },
                 { id: 'trestbps', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number' },
                 { id: 'chol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', type: 'number' },
-                { id: 'fbs', label: 'Fasting Blood Sugar > 120mg/dL (1=Yes, 0=No)', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
-                { id: 'restecg', label: 'Resting ECG Results (0-2)', placeholder: '0-2', min: '0', max: '2', type: 'number' },
-                { id: 'thalach', label: 'Maximum Heart Rate Achieved', placeholder: '0', min: '0', type: 'number' },
-                { id: 'exang', label: 'Exercise Induced Angina (1=Yes, 0=No)', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
-                { id: 'oldpeak', label: 'ST Depression', placeholder: '0.0', min: '0', type: 'number', step: 'any' },
-                { id: 'slope', label: 'Slope of Peak Exercise ST (0-2)', placeholder: '0-2', min: '0', max: '2', type: 'number' },
-                { id: 'ca', label: 'Number of Major Vessels (0-3)', placeholder: '0-3', min: '0', max: '3', type: 'number' },
-                { id: 'thal', label: 'Thalassemia (1-3)', placeholder: '1-3', min: '1', max: '3', type: 'number' }
+                { id: 'fbs', label: 'FBS > 120mg/dL', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
+                { id: 'restecg', label: 'Resting ECG Results', placeholder: '0-2', min: '0', max: '2', type: 'number' },
+                { id: 'thalach', label: 'Maximum Heart Rate', placeholder: '0', min: '0', type: 'number' },
+                { id: 'exang', label: 'Exercise Induced Angina', placeholder: '0 or 1', min: '0', max: '1', type: 'number' },
+                { id: 'oldpeak', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any' },
+                { id: 'slope', label: 'Slope of Peak Exercise ST', placeholder: '0-2', min: '0', max: '2', type: 'number' },
+                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'number' },
+                { id: 'thal', label: 'Thalassemia', placeholder: '1-3', min: '1', max: '3', type: 'number' }
             ]
         },
         cancer: {

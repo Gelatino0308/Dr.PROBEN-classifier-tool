@@ -2,6 +2,7 @@ Test Accuracy: 0.8293
 Precision: 0.8182
 Recall: 0.8571
 F1-score: 0.8372
+Number of Iterations until Convergence: 64
 Confusion Matrix (for test set):
   True Negatives (no heart disease predicted correctly): 80
   False Positives (no heart disease predicted as heart disease): 20
