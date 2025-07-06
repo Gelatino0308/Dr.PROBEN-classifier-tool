@@ -3,6 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let uploadedData = null;
     let predictedData = null;
 
+    // State management object to hold data for each disease tab
+    const diseaseStates = {
+        diabetes: { uploadedData: null, predictedData: null },
+        heart: { uploadedData: null, predictedData: null },
+        cancer: { uploadedData: null, predictedData: null }
+    };
+
     // Disease configurations matching single prediction
     const diseaseConfigs = {
         diabetes: {
@@ -73,13 +80,74 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize page
     function initializePage() {
         // Set initial theme class on body
-    document.body.className = 'theme-diabetes'; // Apply initial theme
+        // document.body.className = 'theme-diabetes'; // Apply initial theme
+
+        // Check if there's a stored disease selection from navigation
+        const storedDisease = sessionStorage.getItem('selectedDisease');
+        if (storedDisease && diseaseConfigs[storedDisease]) {
+            currentDisease = storedDisease;
+            
+            // Update button selection
+            document.querySelectorAll('.problem-btns-container button').forEach(btn => {
+                btn.classList.remove('selected-problem');
+            });
+            
+            const targetButton = document.querySelector(`.theme-${storedDisease}`);
+            if (targetButton) {
+                targetButton.classList.add('selected-problem');
+                document.body.className = `theme-${storedDisease}`;
+            }
+            
+            // Clear the stored disease
+            sessionStorage.removeItem('selectedDisease');
+        }
+
         updatePageContent(currentDisease);
         setupEventListeners();
     }
 
+    // Save current state before switching
+    function saveCurrentState() {
+        if (!currentDisease) return;
+        
+        const currentState = diseaseStates[currentDisease];
+        currentState.uploadedData = uploadedData;
+        currentState.predictedData = predictedData;
+    }
+
+    // Restore state for selected disease
+    function restoreState(disease) {
+        const state = diseaseStates[disease];
+        
+        // Restore data
+        uploadedData = state.uploadedData;
+        predictedData = state.predictedData;
+        
+        // Restore UI based on data state
+        if (uploadedData) {
+            displayData(uploadedData, !!predictedData);
+            
+            if (predictedData) {
+                // Show download button, hide predict button
+                predictBtn.style.display = 'none';
+                downloadBtn.style.display = 'block';
+            } else {
+                // Show predict button, hide download button
+                predictBtn.style.display = 'block';
+                downloadBtn.style.display = 'none';
+            }
+        } else {
+            // No data, reset UI
+            resetUI();
+        }
+    }
+
     // Update page content based on selected disease
 function updatePageContent(disease) {
+
+    // Save current state before switching
+    saveCurrentState();
+
     currentDisease = disease;
     const config = diseaseConfigs[disease];
     
@@ -91,19 +159,25 @@ function updatePageContent(disease) {
     
     // Update table headers
     updateTableHeaders(config.attributes);
+
+    // Restore state for the new disease
+    restoreState(disease);
+
+    // Apply theme class to body
+    document.body.className = `theme-${disease}`;
     
-    // Reset data
-    uploadedData = null;
-    predictedData = null;
+    // // Reset data
+    // uploadedData = null;
+    // predictedData = null;
     
-    // Reset UI
-    resetUI();
+    // // Reset UI
+    // resetUI();
     
-    // Apply theme class to body if not already applied
-    if (!document.body.className.includes('theme-')) {
-        const themeClass = `theme-${disease}`;
-        document.body.className = themeClass;
-    }
+    // // Apply theme class to body if not already applied
+    // if (!document.body.className.includes('theme-')) {
+    //     const themeClass = `theme-${disease}`;
+    //     document.body.className = themeClass;
+    // }
 }
 
     // Update instruction text
@@ -189,9 +263,11 @@ function handleFileUpload(event) {
 
     console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
 
-    // Reset uploadedData at the start of each new file upload attempt
+    // Reset current data (but preserve other diseases' states)
     uploadedData = null;
     predictedData = null;
+    diseaseStates[currentDisease].uploadedData = null;
+    diseaseStates[currentDisease].predictedData = null;
     
     // Reset UI state
     predictBtn.style.display = 'none';
@@ -215,6 +291,9 @@ function handleFileUpload(event) {
                 if (!uploadedData) {
                     // If validation passed without needing to clean data
                     uploadedData = parsedData;
+
+                    // Save to state immediately
+                    diseaseStates[currentDisease].uploadedData = uploadedData;
                     
                     // Display data immediately
                     displayData(parsedData);
@@ -231,9 +310,11 @@ function handleFileUpload(event) {
                 }
                 // If uploadedData is already set, it means the cleaning was handled in showValidationErrorsWithOption
             } else {
-                // Validation failed or user cancelled - make sure we reset everything
+                // Validation failed or user cancelled
                 uploadedData = null;
                 predictedData = null;
+                diseaseStates[currentDisease].uploadedData = null;
+                diseaseStates[currentDisease].predictedData = null;
                 
                 // Show empty table again
                 const config = diseaseConfigs[currentDisease];
@@ -242,11 +323,12 @@ function handleFileUpload(event) {
             
         } catch (error) {
             console.error('CSV parsing error:', error);
-            console.error('Error stack:', error.stack);
             
             // Reset data on error
             uploadedData = null;
             predictedData = null;
+            diseaseStates[currentDisease].uploadedData = null;
+            diseaseStates[currentDisease].predictedData = null;
             
             Swal.fire({
                 icon: 'error',
@@ -268,18 +350,18 @@ function handleFileUpload(event) {
         }
     };
     
-    reader.onerror = function() {
-        // Reset data on file reading error
-        uploadedData = null;
-        predictedData = null;
+    // reader.onerror = function() {
+    //     // Reset data on file reading error
+    //     uploadedData = null;
+    //     predictedData = null;
         
-        Swal.fire({
-            icon: 'error',
-            title: 'File Reading Error',
-            text: 'Unable to read the selected file. Please try again.',
-            confirmButtonColor: getThemeColor()
-        });
-    };
+    //     Swal.fire({
+    //         icon: 'error',
+    //         title: 'File Reading Error',
+    //         text: 'Unable to read the selected file. Please try again.',
+    //         confirmButtonColor: getThemeColor()
+    //     });
+    // };
     
     reader.readAsText(file);
 }
@@ -533,6 +615,9 @@ async function showValidationErrorsWithOption(validationErrors, invalidRowIndexe
         
         // Update the global uploadedData with cleaned data
         uploadedData = cleanedData;
+
+        // Save to state immediately
+        diseaseStates[currentDisease].uploadedData = uploadedData;
         
         // Display the cleaned data immediately
         displayData(cleanedData);
@@ -556,9 +641,11 @@ async function showValidationErrorsWithOption(validationErrors, invalidRowIndexe
         
         return true;
     } else {
-        // User cancelled - explicitly reset uploadedData
+        // User cancelled
         uploadedData = null;
         predictedData = null;
+        diseaseStates[currentDisease].uploadedData = null;
+        diseaseStates[currentDisease].predictedData = null;
         return false;
     }
 }
@@ -741,6 +828,9 @@ function showValidAttributeValues() {
             predictedData = result.predictions.map(pred => 
                 pred === 1 ? config.positiveClass : config.negativeClass
             );
+
+            // Save to state
+            diseaseStates[currentDisease].predictedData = predictedData;
 
             // Update display
             displayData(uploadedData, true);

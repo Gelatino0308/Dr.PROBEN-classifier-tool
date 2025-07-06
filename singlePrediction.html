@@ -14,8 +14,8 @@
         <nav>
             <a href="index.html">Dr. PROBEN</a>
             <ul class="links-container">
-                <li><a href="singlePrediction.html">Single Prediction</a></li>
-                <li><a href="batchPrediction.html">Batch Prediction</a></li>
+                <li><a href="javascript:void(0)" onclick="navigateToPage('singlePrediction.html')">Single Prediction</a></li>
+                <li><a href="javascript:void(0)" onclick="navigateToPage('batchPrediction.html')">Batch Prediction</a></li>
                 <li><a href="about.html">About The App</a></li>
             </ul>
         </nav>
@@ -64,5 +64,28 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="singlePrediction.js"></script>
+
+    <script>
+        function navigateToPage(page) {
+            // Get current disease from the selected button
+            const selectedButton = document.querySelector('.problem-btns-container .selected-problem');
+            if (selectedButton) {
+                let currentDisease = 'diabetes'; // default
+                if (selectedButton.classList.contains('theme-diabetes')) {
+                    currentDisease = 'diabetes';
+                } else if (selectedButton.classList.contains('theme-heart')) {
+                    currentDisease = 'heart';
+                } else if (selectedButton.classList.contains('theme-cancer')) {
+                    currentDisease = 'cancer';
+                }
+                
+                // Store the current disease selection
+                sessionStorage.setItem('selectedDisease', currentDisease);
+            }
+            
+            // Navigate to the page
+            window.location.href = page;
+        }
+    </script>
 </body>
 </html>
