@@ -590,4 +590,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Default to diabetes
         updatePageContent('diabetes');
     }
+
+    // Function to set active navigation link
+    function setActiveNavLink() {
+        const currentPage = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.links-container a');
+        
+        // Remove active class from all links
+        navLinks.forEach(link => link.classList.remove('active'));
+        
+        // Set active based on current page
+        if (currentPage === 'singlePrediction.html' || currentPage === '' || currentPage === 'index.html') {
+            document.getElementById('single-prediction-link')?.classList.add('active');
+        } else if (currentPage === 'batchPrediction.html') {
+            document.getElementById('batch-prediction-link')?.classList.add('active');
+        } else if (currentPage === 'about.html') {
+            document.getElementById('about-link')?.classList.add('active');
+        }
+    }
+    
+    // Call the function to set active link
+    setActiveNavLink();
 });

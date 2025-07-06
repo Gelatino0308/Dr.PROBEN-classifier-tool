@@ -16,9 +16,9 @@
         <nav>
             <a href="index.html">Dr. PROBEN</a>
             <ul class="links-container">
-                <li><a href="javascript:void(0)" onclick="navigateToPage('singlePrediction.html')">Single Prediction</a></li>
-                <li><a href="javascript:void(0)" onclick="navigateToPage('batchPrediction.html')">Batch Prediction</a></li>
-                <li><a href="about.html">About The App</a></li>
+                <li><a href="javascript:void(0)" onclick="navigateToPage('singlePrediction.html')" id="single-prediction-link">Single Prediction</a></li>
+                <li><a href="javascript:void(0)" onclick="navigateToPage('batchPrediction.html')" id="batch-prediction-link">Batch Prediction</a></li>
+                <li><a href="about.html" id="about-link">About The App</a></li>
             </ul>
         </nav>
         <hr>
@@ -39,6 +39,7 @@
                 <button id="checkValuesBtn" class="control-btn">Check Valid Attribute Values</button>
             </div>
             <div class="action-buttons">
+                <button id="predictBtn" class="action-btn" style="display: none;">Predict Class</button>
                 <button id="downloadBtn" class="action-btn" style="display: none;">Download Predicted Data</button>
             </div>
         </div>
@@ -54,10 +55,6 @@
                     <!-- Data will be dynamically populated -->
                 </tbody>
             </table>
-        </div>
-
-        <div class="predict-section">
-            <button id="predictBtn" class="predict-btn" style="display: none;">Predict Class</button>
         </div>
 
         <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" style="display: none;">

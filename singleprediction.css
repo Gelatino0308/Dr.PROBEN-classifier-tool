@@ -503,3 +503,42 @@ p {
     box-sizing: border-box;
     flex-shrink: 0;
 }
+
+/* Navigation link styles */
+.links-container a {
+    font-size: 24px;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    padding-bottom: 3px;
+}
+
+/* Underline animation on hover */
+.links-container a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: white;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.links-container a:hover::after {
+    width: 100%;
+}
+
+/* Active/current page styling */
+.links-container a.active {
+    font-weight: bold;
+    /* text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); */
+}
+
+/* .links-container a.active::after {
+    width: 100%;
+    background-color: white;
+} */
+

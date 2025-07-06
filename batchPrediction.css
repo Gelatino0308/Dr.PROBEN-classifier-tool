@@ -48,17 +48,7 @@
 }
 
 .theme-diabetes .control-btn:hover {
-    background-color: #DE9B1E;
-    color: white;
-}
-
-.theme-diabetes .action-btn {
-    color: #DE9B1E;
-    border-color: #DE9B1E;
-}
-
-.theme-diabetes .action-btn:hover {
-    background-color: #DE9B1E;
+    background-color: #A97411;
     color: white;
 }
 
@@ -68,17 +58,7 @@
 }
 
 .theme-heart .control-btn:hover {
-    background-color: #811111;
-    color: white;
-}
-
-.theme-heart .action-btn {
-    color: #811111;
-    border-color: #811111;
-}
-
-.theme-heart .action-btn:hover {
-    background-color: #811111;
+    background-color: #5E0000;
     color: white;
 }
 
@@ -88,17 +68,7 @@
 }
 
 .theme-cancer .control-btn:hover {
-    background-color: #044786;
-    color: white;
-}
-
-.theme-cancer .action-btn {
-    color: #044786;
-    border-color: #044786;
-}
-
-.theme-cancer .action-btn:hover {
-    background-color: #044786;
+    background-color: #073056;
     color: white;
 }
 
@@ -169,56 +139,6 @@
     color: #044786;
 }
 
-/* Predict button */
-.predict-section {
-    display: flex;
-    justify-content: center;
-    margin: 30px 0;
-}
-
-.predict-btn {
-    background-color: white;
-    border: 3px solid;
-    border-radius: 30px;
-    padding: 15px 40px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Poppins', sans-serif;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.theme-diabetes .predict-btn {
-    color: #DE9B1E;
-    border-color: #DE9B1E;
-}
-
-.theme-diabetes .predict-btn:hover {
-    background-color: #DE9B1E;
-    color: white;
-}
-
-.theme-heart .predict-btn {
-    color: #811111;
-    border-color: #811111;
-}
-
-.theme-heart .predict-btn:hover {
-    background-color: #811111;
-    color: white;
-}
-
-.theme-cancer .predict-btn {
-    color: #044786;
-    border-color: #044786;
-}
-
-.theme-cancer .predict-btn:hover {
-    background-color: #044786;
-    color: white;
-}
-
 /* Custom scrollbar for table */
 .table-container::-webkit-scrollbar {
     width: 8px;
@@ -264,14 +184,95 @@
     .control-buttons,
     .action-buttons {
         justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .control-btn,
+    .action-btn {
+        min-width: 140px;
     }
     
     .table-container {
         margin: 10px;
     }
     
-    .predict-btn {
+    /* .predict-btn {
         padding: 12px 30px;
         font-size: 18px;
-    }
+    } */
+}
+
+/* Navigation link styles */
+.links-container a {
+    font-size: 24px;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    padding-bottom: 3px;
+}
+
+/* Underline animation on hover */
+.links-container a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: white;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.links-container a:hover::after {
+    width: 100%;
+}
+
+/* Active/current page styling */
+.links-container a.active {
+    font-weight: bold;
+    /* text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); */
+}
+
+/* Add theme-specific styling for predict button */
+.theme-diabetes #predictBtn {
+    background-color: #DE9B1E;
+    color: white;
+    border: 2px solid white;
+}
+
+.theme-diabetes #predictBtn:hover {
+    background-color: #A97411;
+    border-color: #A97411;
+}
+
+.theme-heart #predictBtn {
+    background-color: #811111;
+    color: white;
+    border: 2px solid white;
+}
+
+.theme-heart #predictBtn:hover {
+    background-color: #5E0000;
+    border-color: #5E0000;
+}
+
+.theme-cancer #predictBtn {
+    background-color: #044786;
+    color: white;
+    border: 2px solid white;
+}
+
+.theme-cancer #predictBtn:hover {
+    background-color: #073056;
+    border-color: #073056;
+}
+
+/* Ensure predict button maintains action-btn styling */
+#predictBtn.action-btn {
+    font-size: 20px;
+    padding: 3px 30px;
+    color: white;
+    border: 4px solid white;
 }
