@@ -79,7 +79,7 @@
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     background-color: rgba(255, 255, 255, 0.1);
-    max-height: 400px;
+    max-height: 350px;
     overflow-x: auto;
     overflow-y: auto;
 }
@@ -93,7 +93,7 @@
 }
 
 #dataTable th {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: lightgray;
     color: #333;
     padding: 12px 15px;
     text-align: center;

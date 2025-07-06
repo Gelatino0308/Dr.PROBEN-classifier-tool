@@ -27,18 +27,37 @@ body {
     background-color: #DE9B1E;
 }
 
+.theme-diabetes:hover {
+    background-color: #A97411;
+    cursor: pointer;
+}
+
 .theme-heart {
     background-color: #811111;
+}
+
+.theme-heart:hover {
+    background-color: #5E0000;
+    cursor: pointer;
 }
 
 .theme-cancer {
     background-color: #044786;
 }
 
+.theme-cancer:hover {
+    background-color: #073056;
+    cursor: pointer;
+}
+
 .style-about {
     font-size: 24px;
     box-shadow: unset;
-    font-weight: unset;
+}
+
+.style-about:hover {
+    cursor: pointer;
+    width: unset;
 }
 
 main {
