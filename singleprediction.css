@@ -224,11 +224,11 @@ p {
 }
 
 .form-actions-container input[type="submit"]:hover {
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
 .form-actions-container input[type="reset"]:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .result-section {
@@ -305,15 +305,15 @@ p {
 }
 
 .radio-option input[type="radio"] {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     accent-color: #044786; /* Default to cancer theme */
     margin: 0;
     flex-shrink: 0;
 }
 
 .radio-option label {
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
     color: white;
     line-height: 1;
@@ -324,7 +324,7 @@ p {
 .dropdown-input {
     border: none;
     border-radius: 20px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 0 10px; /* Reduced padding to match number inputs */
     text-align: center;
     width: 90%;
@@ -357,7 +357,7 @@ p {
     width: 69%; /* Reduced from 70% to accommodate labels better */
     height: 6px;
     border-radius: 3px;
-    background: #ddd;
+    background: white;
     outline: none;
     padding: 0;
     margin: 0;
@@ -369,9 +369,9 @@ p {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: white;
+    /* background: white; */
     cursor: pointer;
-    border: 2px solid #044786;
+    /* border: 2px solid #044786; */
 }
 
 .slider-input::-moz-range-thumb {
@@ -426,7 +426,7 @@ p {
 }
 
 .theme-heart .slider-input::-webkit-slider-thumb {
-    border-color: #811111;
+    background: #811111;
 }
 
 .theme-heart .slider-value {
@@ -443,7 +443,7 @@ p {
 }
 
 .theme-cancer .slider-input::-webkit-slider-thumb {
-    border-color: #044786;
+    background: #044786;
 }
 
 .theme-cancer .slider-value {

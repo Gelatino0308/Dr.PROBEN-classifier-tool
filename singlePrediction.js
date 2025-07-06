@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             endpoint: '/api/predict/heart',
             positiveClass: 'POSITIVE',
             negativeClass: 'NEGATIVE',
-            positiveDesc: "Positive means the presennce of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
+            positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
             negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
             attributes: [
                 { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number' },
@@ -528,40 +528,42 @@ document.addEventListener('DOMContentLoaded', () => {
         diseaseStates[currentDisease].formData = {};
         diseaseStates[currentDisease].resultData = null;
         
-        // Reset form elements to defaults
-        if (currentDisease === 'cancer') {
-            const config = diseaseConfigs.cancer;
-            config.attributes.forEach(attr => {
-                if (attr.type === 'slider') {
-                    const input = document.getElementById(attr.id);
-                    const valueDisplay = document.getElementById(`${attr.id}_value`);
-                    if (input && valueDisplay) {
-                        input.value = attr.default || attr.min;
-                        valueDisplay.textContent = attr.default || attr.min;
-                    }
-                }
-            });
-        } else if (currentDisease === 'heart') {
-            // Reset heart disease specific inputs
-            const config = diseaseConfigs.heart;
+        // Reset form elements to defaults for all diseases
+        const config = diseaseConfigs[currentDisease];
+        
+        // Use setTimeout to ensure form reset happens first
+        setTimeout(() => {
             config.attributes.forEach(attr => {
                 if (attr.type === 'radio') {
+                    // Uncheck all radio buttons
                     const radioInputs = form.querySelectorAll(`input[name="${attr.id}"]`);
                     radioInputs.forEach(radio => radio.checked = false);
                 } else if (attr.type === 'dropdown') {
+                    // Reset dropdown to default state
                     const select = document.getElementById(attr.id);
-                    if (select) select.selectedIndex = 0;
+                    if (select) {
+                        select.selectedIndex = 0; // Select the "Select an option" placeholder
+                    }
                 } else if (attr.type === 'slider') {
+                    // Reset slider to default value
                     const input = document.getElementById(attr.id);
                     const valueDisplay = document.getElementById(`${attr.id}_value`);
                     if (input && valueDisplay) {
-                        input.value = attr.default || attr.min;
-                        valueDisplay.textContent = attr.default || attr.min;
+                        const defaultValue = attr.default || attr.min;
+                        input.value = defaultValue;
+                        valueDisplay.textContent = defaultValue;
+                    }
+                } else if (attr.type === 'number') {
+                    // Reset number inputs to empty
+                    const input = document.getElementById(attr.id);
+                    if (input) {
+                        input.value = '';
                     }
                 }
             });
-        }
+        }, 0);
         
+        // Reset result display
         displayResult.style.display = 'none';
         percentText.textContent = '--%';
         chart.data.datasets[0].data = [0, 100];
