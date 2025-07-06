@@ -72,31 +72,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize page
     function initializePage() {
+        // Set initial theme class on body
+    document.body.className = 'theme-diabetes'; // Apply initial theme
         updatePageContent(currentDisease);
         setupEventListeners();
     }
 
     // Update page content based on selected disease
-    function updatePageContent(disease) {
-        currentDisease = disease;
-        const config = diseaseConfigs[disease];
-        
-        // Update page title
-        document.title = `Dr. PROBEN | ${config.name} Batch Prediction`;
-        
-        // Update instruction text
-        updateInstruction(config.name);
-        
-        // Update table headers
-        updateTableHeaders(config.attributes);
-        
-        // Reset data
-        uploadedData = null;
-        predictedData = null;
-        
-        // Reset UI
-        resetUI();
+function updatePageContent(disease) {
+    currentDisease = disease;
+    const config = diseaseConfigs[disease];
+    
+    // Update page title
+    document.title = `Dr. PROBEN | ${config.name} Batch Prediction`;
+    
+    // Update instruction text
+    updateInstruction(config.name);
+    
+    // Update table headers
+    updateTableHeaders(config.attributes);
+    
+    // Reset data
+    uploadedData = null;
+    predictedData = null;
+    
+    // Reset UI
+    resetUI();
+    
+    // Apply theme class to body if not already applied
+    if (!document.body.className.includes('theme-')) {
+        const themeClass = `theme-${disease}`;
+        document.body.className = themeClass;
     }
+}
 
     // Update instruction text
     function updateInstruction(diseaseName) {
@@ -642,35 +650,54 @@ function displayData(data, showPrediction = false) {
     }
 }
 
-    // Show valid attribute values modal
-    function showValidAttributeValues() {
-        const config = diseaseConfigs[currentDisease];
-        let content = `<div style="text-align: left; max-height: 400px; overflow-y: auto;">`;
-        content += `<h3 style="margin-bottom: 15px; color: ${getThemeColor()};">Valid Attribute Values for ${config.name}</h3>`;
+    // Show valid attribute values modal - Enhanced version
+function showValidAttributeValues() {
+    const config = diseaseConfigs[currentDisease];
+    let content = `<div style="text-align: left; max-height: 400px; overflow-y: auto;">`;
+    content += `<h3 style="margin-bottom: 15px; color: ${getThemeColor()};">Valid Attribute Values for ${config.name}</h3>`;
+    
+    config.attributes.forEach(attr => {
+        content += `<div style="margin-bottom: 10px;">`;
+        content += `<strong>${attr.label}:</strong> `;
         
-        config.attributes.forEach(attr => {
-            content += `<div style="margin-bottom: 10px;">`;
-            content += `<strong>${attr.label}:</strong> `;
+        if (attr.type === 'number') {
+            content += `Number (${attr.min !== undefined ? `Min: ${attr.min}` : 'No minimum'}${attr.max !== undefined ? `, Max: ${attr.max}` : ', No maximum'})`;
+        } else if (attr.type === 'categorical') {
+            // Check if values form a sequential range
+            const isSequential = attr.values.every((val, idx) => 
+                idx === 0 || val === attr.values[idx - 1] + 1
+            );
             
-            if (attr.type === 'number') {
-                content += `Number (${attr.min !== undefined ? `Min: ${attr.min}` : 'No minimum'}${attr.max !== undefined ? `, Max: ${attr.max}` : ', No maximum'})`;
-            } else if (attr.type === 'categorical') {
+            // Check if values and labels are the same (redundant)
+            const isRedundant = attr.values.every((val, idx) => 
+                val.toString() === attr.labels[idx]
+            );
+            
+            if (isSequential && isRedundant) {
+                // Show as range for sequential values
+                content += `${attr.values[0]} to ${attr.values[attr.values.length - 1]} (scale)`;
+            } else if (isRedundant) {
+                // Just show the values without redundant labels
+                content += `${attr.values.join(', ')}`;
+            } else {
+                // Show values with meaningful labels
                 content += `${attr.values.map((val, idx) => `${val} (${attr.labels[idx]})`).join(', ')}`;
             }
-            
-            content += `</div>`;
-        });
+        }
         
         content += `</div>`;
-        
-        Swal.fire({
-            title: 'Valid Attribute Values',
-            html: content,
-            width: '600px',
-            confirmButtonColor: getThemeColor(),
-            confirmButtonText: 'Close'
-        });
-    }
+    });
+    
+    content += `</div>`;
+    
+    Swal.fire({
+        title: 'Valid Attribute Values',
+        html: content,
+        width: '600px',
+        confirmButtonColor: getThemeColor(),
+        confirmButtonText: 'Close'
+    });
+}
 
     // Handle prediction
     async function handlePrediction() {
