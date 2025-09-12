@@ -287,21 +287,11 @@ p {
     pointer-events: none;
 }
 
-.chart-text span:first-child {
-    font-size: 48px;
-    font-weight: bold;
-    display: block;
-}
-
-.chart-text .label {
-    font-size: 16px;
-    font-weight: normal;
-    display: block;
+#chartLabel {
     margin-top: 5px;
 }
 
 #percentText {
-    font-size: 32px;
     font-weight: bold;
 }
 

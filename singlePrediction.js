@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('predictionForm');
     const displayResult = document.getElementById('result');
     let percentText = document.getElementById('percentText');
+    let chartLabel =  document.getElementById('chartLabel');
     let percentage = 0;
     let dominantClassPercentage = 0
     let currentDisease = 'diabetes'; // Default disease
@@ -479,6 +480,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Show loading state
             percentText.textContent = 'Loading...';
+            percentText.style.fontSize = '24px';
+            chartLabel.style.display = 'none';
             
             // Send data to API
             const response = await fetch(`http://127.0.0.1:5000${config.endpoint}`, {
@@ -516,12 +519,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update chart with the prediction percentage
             percentText.textContent = dominantClassPercentage + '%';
-            percentage = result.percentage;
+            percentText.style.fontSize = '32px';
+            chartLabel.style.display = 'block';
+            
             
             // Make result details appear after first submit
             displayResult.style.display = 'flex';
             
             // Update chart data
+            percentage = result.percentage;
             chart.data.datasets[0].data = [percentage, 100 - percentage];
             chart.update('active');
             
