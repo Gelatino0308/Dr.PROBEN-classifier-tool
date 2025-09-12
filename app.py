@@ -151,7 +151,7 @@ def predict_cancer_endpoint():
         
         result = {
             'prediction': int(prediction[0]),
-            'probability': float(probability[0]),
+            # 'probability': float(probability[0]),
             'percentage': round(float(probability[0] * 100))
         }
         
@@ -161,7 +161,7 @@ def predict_cancer_endpoint():
         print("Error:", e)
         return jsonify({"error": str(e)}), 500
 
-# Batch prediction endpoints (new)
+# Batch prediction endpoints 
 @app.route('/api/predict/diabetes/batch', methods=['POST'])
 def predict_diabetes_batch_endpoint():
     try:

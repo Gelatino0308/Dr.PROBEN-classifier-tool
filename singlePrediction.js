@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayResult = document.getElementById('result');
     let percentText = document.getElementById('percentText');
     let percentage = 0;
+    let dominantClassPercentage = 0
     let currentDisease = 'diabetes'; // Default disease
 
     // State management object to hold data for each tab
@@ -253,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const config = diseaseConfigs[disease];
             document.querySelector('.result-section h1').textContent = state.resultData.prediction === 1 ? config.positiveClass : config.negativeClass;
             document.querySelector('.result-section p').textContent = state.resultData.prediction === 1 ? config.positiveDesc : config.negativeDesc;
-            percentText.textContent = state.resultData.percentage + '%';
+            percentText.textContent = dominantClassPercentage + '%';
             chart.data.datasets[0].data = [state.resultData.percentage, 100 - state.resultData.percentage];
             chart.update('none');
             displayResult.style.display = 'flex';
@@ -503,11 +504,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Update the description based on the prediction
             const description = document.querySelector('.result-section p');
-            description.textContent = result.prediction === 1 ? config.positiveDesc : config.negativeDesc;
+            
+            if (result.prediction === 1) {
+                description.textContent = config.positiveDesc;
+                dominantClassPercentage = result.percentage;
+            }
+            else {
+                description.textContent = config.negativeDesc;
+                dominantClassPercentage = 100 - result.percentage;
+            }
 
             // Update chart with the prediction percentage
+            percentText.textContent = dominantClassPercentage + '%';
             percentage = result.percentage;
-            percentText.textContent = percentage + '%';
             
             // Make result details appear after first submit
             displayResult.style.display = 'flex';
