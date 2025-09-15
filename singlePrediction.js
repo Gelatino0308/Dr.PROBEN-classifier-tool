@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let percentText = document.getElementById('percentText');
     let chartLabel =  document.getElementById('chartLabel');
     let percentage = 0;
-    let dominantClassPercentage = 0
     let currentDisease = 'diabetes'; // Default disease
 
     // State management object to hold data for each tab
@@ -141,15 +140,15 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
-                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
-                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
-                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
-                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
-                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
-                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
-                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
-                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' },
-                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5' }
+                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' },
+                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' },
+                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' },
+                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' },
+                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' },
+                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' },
+                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' },
+                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' },
+                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', info:'' }
             ]
         }
     };
@@ -267,9 +266,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restore prediction result
         if (state.resultData) {
             const config = diseaseConfigs[disease];
-            document.querySelector('.result-section h1').textContent = state.resultData.prediction === 1 ? config.positiveClass : config.negativeClass;
-            document.querySelector('.result-section p').textContent = state.resultData.prediction === 1 ? config.positiveDesc : config.negativeDesc;
-            percentText.textContent = dominantClassPercentage + '%';
+            
+            if (state.resultData.prediction === 1) {
+                document.querySelector('.result-section h1').textContent = config.positiveClass;
+                document.querySelector('.result-section p').textContent = config.positiveDesc;
+                percentText.textContent = state.resultData.percentage + '%';
+            }
+            else {
+                document.querySelector('.result-section h1').textContent = config.negativeClass;
+                document.querySelector('.result-section p').textContent = config.negativeDesc;
+                percentText.textContent = (100 - state.resultData.percentage) + '%';
+            }
+
             chart.data.datasets[0].data = [state.resultData.percentage, 100 - state.resultData.percentage];
             chart.update('none');
             displayResult.style.display = 'flex';
@@ -322,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
         attributes.forEach(attr => {
             // Create label
             const label = document.createElement('label');
-            label.setAttribute('for', attr.id);
             label.textContent = attr.label;
             labelsContainer.appendChild(label);
             
@@ -341,6 +348,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.value = attr.default || attr.min;
                 input.required = true;
                 input.className = 'slider-input';
+
+                label.setAttribute('for', attr.id);
                 
                 // Create value display
                 const valueDisplay = document.createElement('span');
@@ -388,6 +397,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 select.name = attr.id;
                 select.required = true;
                 select.className = 'dropdown-input';
+
+                label.setAttribute('for', attr.id);
                 
                 // Add default option
                 const defaultOption = document.createElement('option');
@@ -414,6 +425,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.name = attr.id;
                 input.placeholder = attr.placeholder;
                 input.min = attr.min;
+
+                label.setAttribute('for', attr.id);
+                
                 if (attr.max) input.max = attr.max;
                 if (attr.step) input.step = attr.step;
                 input.required = true;
@@ -530,18 +544,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Update the description based on the prediction
             const description = document.querySelector('.result-section p');
+
+            percentage = result.percentage;
             
+            // Update chart with the prediction percentage
             if (result.prediction === 1) {
                 description.textContent = config.positiveDesc;
-                dominantClassPercentage = result.percentage;
+                percentText.textContent = percentage + '%';
             }
             else {
                 description.textContent = config.negativeDesc;
-                dominantClassPercentage = 100 - result.percentage;
+                percentText.textContent = (100 - percentage) + '%';
             }
 
-            // Update chart with the prediction percentage
-            percentText.textContent = dominantClassPercentage + '%';
             percentText.style.fontSize = '32px';
             chartLabel.style.display = 'block';
             
