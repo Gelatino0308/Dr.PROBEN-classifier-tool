@@ -223,7 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to update instruction text
     function updateInstruction(diseaseName) {
         const instruction = document.querySelector('.instruction');
-        instruction.innerHTML = `<span>Enter the required information</span> related to the diagnostic measurements of ${diseaseName.toLowerCase()} in the form below. Once you're done, click the <span>"Predict Class"</span> button to see the result. This will help you check if the case may be classified as <span>${diseaseConfigs[currentDisease].positiveClass.toLowerCase()}</span> or <span>${diseaseConfigs[currentDisease].negativeClass.toLowerCase()}</span>.`;
+        instruction.innerHTML = `<span>Enter the required information</span> related to the diagnostic measurements of 
+            ${diseaseName.toLowerCase()} in the form below. Once you're done, click the <span>"Predict Class"</span> button 
+            to see the result. This will help you check if the case may be classified 
+            as <span>${diseaseConfigs[currentDisease].positiveClass.toLowerCase()}</span> or 
+            <span>${diseaseConfigs[currentDisease].negativeClass.toLowerCase()}</span>.`;
     }
 
     // Function to save the state of the current tab
@@ -447,6 +451,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Function to create/update custom legend
+    function updateCustomLegend(disease) {
+        const config = diseaseConfigs[disease];
+        const legendContainer = document.getElementById('chartLegend');
+        
+        if (!legendContainer) {
+            // Create legend container if it doesn't exist
+            const newLegendContainer = document.createElement('div');
+            newLegendContainer.id = 'chartLegend';
+            newLegendContainer.className = 'chart-legend';
+            
+            // Insert after the chart container
+            const chartContainer = document.querySelector('.chart-container');
+            chartContainer.parentNode.insertBefore(newLegendContainer, chartContainer.nextSibling);
+        }
+        
+        const legend = document.getElementById('chartLegend');
+        legend.innerHTML = `
+            <div class="legend-item">
+                <span class="legend-color legend-positive"></span>
+                <span class="legend-label">${config.positiveClass}</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color legend-negative"></span>
+                <span class="legend-label">${config.negativeClass}</span>
+            </div>
+        `;
+    }
+
+    // Function to update legend colors based on theme
+    function updateLegendColors(disease) {
+        const themeColors = {
+            diabetes: ['#ffffff', '#8c5700'],
+            heart: ['#ffffff', '#5a0c0c'],
+            cancer: ['#ffffff', '#032f5c']
+        };
+        
+        const colors = themeColors[disease];
+        const legendPositive = document.querySelector('.legend-positive');
+        const legendNegative = document.querySelector('.legend-negative');
+        
+        if (legendPositive && legendNegative) {
+            legendPositive.style.backgroundColor = colors[0];
+            // legendPositive.style.border = `2px solid ${colors[1]}`;
+            legendNegative.style.backgroundColor = colors[1];
+        }
+    }
+
     // Function to update chart colors based on disease theme
     function updateChartColors(disease) {
         const themeColors = {
@@ -457,6 +509,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         chart.data.datasets[0].backgroundColor = themeColors[disease];
         chart.update('none');
+
+        updateCustomLegend(disease);
+        updateLegendColors(disease);
     }
 
     // Function to update submit button color based on theme
