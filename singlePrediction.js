@@ -454,6 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to create/update custom legend
     function updateCustomLegend(disease) {
         const config = diseaseConfigs[disease];
+        const state = diseaseStates[disease];
         const legendContainer = document.getElementById('chartLegend');
         
         if (!legendContainer) {
@@ -468,16 +469,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const legend = document.getElementById('chartLegend');
-        legend.innerHTML = `
-            <div class="legend-item">
-                <span class="legend-color legend-positive"></span>
-                <span class="legend-label">${config.positiveClass}</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-color legend-negative"></span>
-                <span class="legend-label">${config.negativeClass}</span>
-            </div>
-        `;
+        
+        // Check if result data exists and has percentage
+        if (state.resultData && state.resultData.percentage) {
+            legend.innerHTML = `
+                <div class="legend-item">
+                    <span class="legend-color legend-positive"></span>
+                    <span class="legend-label">${config.positiveClass}: ${state.resultData.percentage}%</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color legend-negative"></span>
+                    <span class="legend-label">${config.negativeClass}: ${100 - state.resultData.percentage}%</span>
+                </div>
+            `;
+        }
     }
 
     // Function to update legend colors based on theme
@@ -494,7 +499,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (legendPositive && legendNegative) {
             legendPositive.style.backgroundColor = colors[0];
-            // legendPositive.style.border = `2px solid ${colors[1]}`;
             legendNegative.style.backgroundColor = colors[1];
         }
     }
@@ -620,9 +624,10 @@ document.addEventListener('DOMContentLoaded', () => {
             displayResult.style.display = 'flex';
             
             // Update chart data
-            percentage = result.percentage;
             chart.data.datasets[0].data = [percentage, 100 - percentage];
             chart.update('active');
+            updateCustomLegend(currentDisease);
+            updateLegendColors(currentDisease);
             
         } catch (error) {
             console.error('Error:', error);
