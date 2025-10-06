@@ -7,7 +7,7 @@
 body {
     height: 100vh;
     font-family: Poppins, 'Times New Roman', Times, serif;
-    background-color: #DE9B1E;
+    background-color: #00BF63;
     color: white;
 }
 
@@ -43,15 +43,15 @@ p {
 }
 
 .theme-diabetes {
-    background-color: #DE9B1E;
+    background-color: #00BF63;
 }
 
 .theme-heart {
-    background-color: #811111;
+    background-color: #DF6565;
 }
 
 .theme-cancer {
-    background-color: #044786;
+    background-color: #0097B2;
 }
 
 .links-container {
@@ -90,11 +90,11 @@ p {
 
 /* Add hover styles for non-selected buttons */
 .problem-btns-container button.theme-diabetes:not(.selected-problem):hover {
-    background-color: #A97411; /* Darker shade of diabetes theme */
+    background-color: #008042; /* Darker shade of diabetes theme */
 }
 
 .problem-btns-container button.theme-heart:not(.selected-problem):hover {
-    background-color: #5E0000; /* Darker shade of heart theme */
+    background-color: #651515; /* Darker shade of heart theme */
 }
 
 .problem-btns-container button.theme-cancer:not(.selected-problem):hover {
@@ -236,7 +236,6 @@ p {
     border-radius: 30px;
     font-size: 24px;
     font-weight: bold;
-    color: #DE9B1E;
     padding: 5px 10px;
     width: 40%;
     background-color: white;
@@ -317,7 +316,7 @@ p {
 .radio-option input[type="radio"] {
     width: 18px;
     height: 18px;
-    accent-color: #044786; /* Default to cancer theme */
+    accent-color: #073056; /* Default to cancer theme */
     margin: 0;
     flex-shrink: 0;
 }
@@ -347,7 +346,7 @@ p {
 }
 
 .dropdown-input:focus {
-    outline: 2px solid #044786;
+    outline: 2px solid #073056;
 }
 
 /* Input wrapper adjustments */
@@ -381,7 +380,7 @@ p {
     border-radius: 50%;
     /* background: white; */
     cursor: pointer;
-    /* border: 2px solid #044786; */
+    /* border: 2px solid #073056; */
 }
 
 .slider-input::-moz-range-thumb {
@@ -390,19 +389,19 @@ p {
     border-radius: 50%;
     background: white;
     cursor: pointer;
-    border: 2px solid #044786;
+    border: 2px solid #073056;
 }
 
 .slider-value {
     background: white;
-    color: #044786;
+    color: #073056;
     padding: 12px;
     border-radius: 10px;
     font-weight: bold;
     font-size: 1rem;
     width: 2rem;
     text-align: center;
-    border: 1px solid #044786;
+    border: 1px solid #073056;
     height: 16px; /* Match consistent height */
     display: flex;
     align-items: center;
@@ -411,67 +410,67 @@ p {
 
 /* Theme-specific styling */
 .theme-diabetes .radio-option input[type="radio"] {
-    accent-color: #DE9B1E;
+    accent-color: #008042;
 }
 
 .theme-diabetes .dropdown-input:focus {
-    outline-color: #DE9B1E;
+    outline-color: #008042;
 }
 
 .theme-diabetes .slider-input::-webkit-slider-thumb {
-    border-color: #DE9B1E;
+    border-color: #008042;
 }
 
 .theme-diabetes .slider-value {
-    color: #DE9B1E;
-    border-color: #DE9B1E;
+    color: #008042;
+    border-color: #008042;
 }
 
 .theme-heart .radio-option input[type="radio"] {
-    accent-color: #811111;
+    accent-color: #651515;
 }
 
 .theme-heart .dropdown-input:focus {
-    outline-color: #811111;
+    outline-color: #651515;
 }
 
 .theme-heart .slider-input::-webkit-slider-thumb {
-    background: #811111;
+    background: #651515;
 }
 
 .theme-heart .slider-value {
-    color: #811111;
-    border-color: #811111;
+    color: #651515;
+    border-color: #651515;
 }
 
 .theme-cancer .radio-option input[type="radio"] {
-    accent-color: #044786;
+    accent-color: #073056;
 }
 
 .theme-cancer .dropdown-input:focus {
-    outline-color: #044786;
+    outline-color: #073056;
 }
 
 .theme-cancer .slider-input::-webkit-slider-thumb {
-    background: #044786;
+    background: #073056;
 }
 
 .theme-cancer .slider-value {
-    color: #044786;
-    border-color: #044786;
+    color: #073056;
+    border-color: #073056;
 }
 
 /* Firefox slider styling */
 .theme-diabetes .slider-input::-moz-range-thumb {
-    border-color: #DE9B1E;
+    border-color: #008042;
 }
 
 .theme-heart .slider-input::-moz-range-thumb {
-    border-color: #811111;
+    border-color: #651515;
 }
 
 .theme-cancer .slider-input::-moz-range-thumb {
-    border-color: #044786;
+    border-color: #073056;
 }
 
 /* Responsive adjustments for smaller screens */

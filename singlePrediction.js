@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = {
         datasets: [{
             data: [percentage, 100 - percentage],
-            backgroundColor: ['#ffffff', '#8c5700'],
+            backgroundColor: ['#ffffff', '#008042'],
             borderWidth: 0,
             cutout: '65%',
         }]
@@ -488,9 +488,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to update legend colors based on theme
     function updateLegendColors(disease) {
         const themeColors = {
-            diabetes: ['#ffffff', '#8c5700'],
-            heart: ['#ffffff', '#5a0c0c'],
-            cancer: ['#ffffff', '#032f5c']
+            diabetes: ['#ffffff', '#008042'],
+            heart: ['#ffffff', '#651515'],
+            cancer: ['#ffffff', '#073056']
         };
         
         const colors = themeColors[disease];
@@ -506,9 +506,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to update chart colors based on disease theme
     function updateChartColors(disease) {
         const themeColors = {
-            diabetes: ['#ffffff', '#8c5700'],
-            heart: ['#ffffff', '#5a0c0c'],
-            cancer: ['#ffffff', '#032f5c']
+            diabetes: ['#ffffff', '#008042'],
+            heart: ['#ffffff', '#651515'],
+            cancer: ['#ffffff', '#073056']
         };
         
         chart.data.datasets[0].backgroundColor = themeColors[disease];
@@ -522,9 +522,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSubmitButtonColor(disease) {
         const submitButton = document.querySelector('input[type="submit"]');
         const themeColors = {
-            diabetes: '#DE9B1E',
-            heart: '#811111',
-            cancer: '#044786'
+            diabetes: '#008042',
+            heart: '#651515',
+            cancer: '#073056'
         };
         
         submitButton.style.color = themeColors[disease];

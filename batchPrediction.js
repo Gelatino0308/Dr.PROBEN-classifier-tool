@@ -590,7 +590,7 @@ async function showValidationErrorsWithOption(validationErrors, invalidRowIndexe
     }
     errorMessage += '</ul>';
     
-    errorMessage += '<p style="color: #1976d2; font-weight: bold;">Do you want to proceed by removing the invalid records?</p>';
+    errorMessage += '<p style="font-weight: bold;">Do you want to proceed by removing the invalid records?</p>';
     errorMessage += '</div>';
     
     // Show confirmation dialog
@@ -906,9 +906,9 @@ function handleDownload() {
     // Get theme color for UI elements
     function getThemeColor() {
         const colors = {
-            diabetes: '#DE9B1E',
-            heart: '#811111',
-            cancer: '#044786'
+            diabetes: '#00BF63',
+            heart: '#DF6565',
+            cancer: '#0097B2'
         };
         return colors[currentDisease];
     }

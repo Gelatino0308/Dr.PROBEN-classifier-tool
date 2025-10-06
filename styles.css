@@ -9,14 +9,26 @@ body {
     font-family: Poppins, 'Times New Roman', Times, serif;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     background-color: #EFEFEF;
 }
 
 .header-text {
-    color: #1E1E1E;
     font-weight: bold;
-    font-size: 96px;
+    font-size: 80px;
+    background-image: linear-gradient(
+        to right,
+        #00BF63,
+        #7ED957 35%,
+        #0CC0DF 65%,
+        #0097B2 
+    );
+    background-clip: text;
+    -webkit-background-clip: text; 
+    color: transparent;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 1));
+    margin-top: -80px;
+    /* margin-bottom: 10px; */
 }
 
 .main-text {
@@ -24,25 +36,25 @@ body {
 }
 
 .theme-diabetes {
-    background-color: #DE9B1E;
+    background-color: #00BF63;
 }
 
 .theme-diabetes:hover {
-    background-color: #A97411;
+    background-color: #008042;
     cursor: pointer;
 }
 
 .theme-heart {
-    background-color: #811111;
+    background-color: #DF6565;
 }
 
 .theme-heart:hover {
-    background-color: #5E0000;
+    background-color: #651515;
     cursor: pointer;
 }
 
 .theme-cancer {
-    background-color: #044786;
+    background-color: #0097B2;
 }
 
 .theme-cancer:hover {
@@ -75,11 +87,11 @@ div {
 }
 
 button {
-    height: 64px;
-    width: 350px;
+    height: 3rem;
+    width: 300px;
     border-radius: 47px;
     font-weight: 550;
-    font-size: 32px;
+    font-size: 28px;
     border: 0;
     box-shadow: 3px 6px 6px gray;
 }
