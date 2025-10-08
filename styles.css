@@ -94,4 +94,128 @@ button {
     font-size: 28px;
     border: 0;
     box-shadow: 3px 6px 6px gray;
+    transition: all 0.3s ease;
+}
+
+/* Mobile responsiveness - Media Queries */
+
+/* Large tablets and small desktops */
+@media (max-width: 1024px) {
+    .header-text {
+        font-size: 60px;
+        margin-top: -60px;
+    }
+    
+    button {
+        width: 280px;
+        font-size: 26px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+    
+    .header-text {
+        font-size: 50px;
+        margin-top: -40px;
+        text-align: center;
+    }
+    
+    main {
+        gap: 30px;
+        width: 100%;
+    }
+    
+    div img {
+        height: 280px;
+        width: 280px;
+    }
+    
+    button {
+        width: 260px;
+        font-size: 24px;
+        height: 2.8rem;
+    }
+    
+    .style-about {
+        font-size: 22px;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .header-text {
+        font-size: 36px;
+        margin-top: -20px;
+        text-align: center;
+        line-height: 1.1;
+    }
+    
+    main {
+        gap: 25px;
+        width: 100%;
+        padding: 10px 0;
+    }
+    
+    div {
+        gap: 15px;
+    }
+    
+    div img {
+        height: 200px;
+        width: 200px;
+    }
+    
+    button {
+        width: 100%;
+        max-width: 280px;
+        min-width: 200px;
+        font-size: 20px;
+        height: 2.5rem;
+        margin: 0 10px;
+    }
+    
+    .style-about {
+        font-size: 18px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 320px) {
+    .header-text {
+        font-size: 28px;
+        margin-top: -15px;
+    }
+    
+    div img {
+        height: 160px;
+        width: 160px;
+    }
+    
+    button {
+        font-size: 18px;
+        height: 2.3rem;
+        min-width: 180px;
+    }
+    
+    .style-about {
+        font-size: 16px;
+    }
+    
+    main {
+        gap: 20px;
+    }
+    
+    div {
+        gap: 12px;
+    }
 }

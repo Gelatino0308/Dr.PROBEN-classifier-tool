@@ -202,6 +202,304 @@
     } */
 }
 
+/* Mobile responsiveness - Comprehensive media queries */
+
+/* Large tablets and small desktops */
+@media (max-width: 1024px) {
+    .batch-controls {
+        margin: 15px 0;
+        padding: 0 15px;
+    }
+    
+    .control-btn,
+    .action-btn {
+        padding: 8px 15px;
+        font-size: 15px;
+    }
+    
+    .table-container {
+        margin: 15px;
+        max-height: 300px;
+    }
+    
+    #dataTable {
+        min-width: 600px;
+    }
+    
+    #dataTable th,
+    #dataTable td {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    nav {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+        text-align: left;
+        padding: 0 10px;
+    }
+    
+    nav > a {
+        font-size: 28px;
+        order: 1;
+    }
+    
+    /* Show hamburger menu on tablets and mobile */
+    .hamburger-menu {
+        display: flex;
+        order: 3;
+    }
+    
+    .links-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: inherit;
+        flex-direction: column;
+        gap: 0;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        order: 2;
+        width: 100%;
+    }
+    
+    .links-container.show {
+        display: flex;
+    }
+    
+    .links-container li {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .links-container li:last-child {
+        border-bottom: none;
+    }
+    
+    .links-container a {
+        font-size: 20px;
+        display: block;
+        padding: 10px 0;
+        width: 100%;
+    }
+    
+    .problem-btns-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 20px;
+    }
+    
+    .problem-btns-container button {
+        width: 100%;
+        font-size: 20px;
+        padding: 10px;
+    }
+    
+    .instruction {
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+    
+    .batch-controls {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+        margin: 15px 0;
+        padding: 0 15px;
+    }
+    
+    .control-buttons,
+    .action-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .control-btn,
+    .action-btn {
+        min-width: 120px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+    
+    .table-container {
+        margin: 10px;
+        max-height: 250px;
+    }
+    
+    #dataTable {
+        min-width: 500px;
+    }
+    
+    #dataTable th,
+    #dataTable td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    
+    #predictBtn.action-btn {
+        font-size: 16px;
+        padding: 8px 20px;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+    header {
+        padding: 10px;
+    }
+    
+    nav {
+        padding: 0 10px;
+    }
+    
+    nav > a {
+        font-size: 24px;
+    }
+    
+    .links-container {
+        padding: 15px;
+    }
+    
+    .links-container a {
+        font-size: 18px;
+        padding: 8px 0;
+    }
+    
+    .problem-btns-container {
+        padding: 0 15px;
+        gap: 12px;
+    }
+    
+    .problem-btns-container button {
+        font-size: 18px;
+        padding: 8px;
+    }
+    
+    .instruction {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+    
+    .batch-controls {
+        margin: 10px 0;
+        padding: 0 10px;
+        gap: 12px;
+    }
+    
+    .control-buttons,
+    .action-buttons {
+        gap: 8px;
+    }
+    
+    .control-btn,
+    .action-btn {
+        min-width: 100px;
+        padding: 6px 12px;
+        font-size: 13px;
+        border-radius: 20px;
+    }
+    
+    .table-container {
+        margin: 8px;
+        max-height: 200px;
+        border-radius: 10px;
+    }
+    
+    #dataTable {
+        min-width: 400px;
+    }
+    
+    #dataTable th,
+    #dataTable td {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+    
+    #predictBtn.action-btn {
+        font-size: 14px;
+        padding: 6px 15px;
+        border-width: 2px;
+    }
+    
+    .empty-table-message {
+        padding: 20px;
+        font-size: 14px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 320px) {
+    nav > a {
+        font-size: 20px;
+    }
+    
+    .links-container a {
+        font-size: 16px;
+    }
+    
+    .problem-btns-container button {
+        font-size: 16px;
+        padding: 6px;
+    }
+    
+    .instruction {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    .batch-controls {
+        padding: 0 5px;
+    }
+    
+    .control-btn,
+    .action-btn {
+        min-width: 90px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    .table-container {
+        margin: 5px;
+        max-height: 180px;
+    }
+    
+    #dataTable {
+        min-width: 350px;
+    }
+    
+    #dataTable th,
+    #dataTable td {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+    
+    #predictBtn.action-btn {
+        font-size: 12px;
+        padding: 5px 12px;
+    }
+    
+    .empty-table-message {
+        padding: 15px;
+        font-size: 12px;
+    }
+}
+
 /* Navigation link styles */
 .links-container a {
     font-size: 24px;

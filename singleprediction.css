@@ -18,7 +18,42 @@ header {
 nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 0 20px;
+    position: relative;
+}
+
+/* Hamburger menu styles */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    gap: 4px;
+    z-index: 1001;
+}
+
+.hamburger-bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+/* Hamburger animation when active */
+.hamburger-menu.active .hamburger-bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active .hamburger-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-bar:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
 }
 
 nav > a {
@@ -489,6 +524,392 @@ p {
     .slider-value {
         font-size: 12px;
         padding: 3px 6px;
+    }
+}
+
+/* Mobile responsiveness - Comprehensive media queries */
+
+/* Large tablets and small desktops */
+@media (max-width: 1024px) {
+    .problem-details-container {
+        padding: 0 2rem;
+        gap: 4%;
+    }
+    
+    .form-section {
+        width: 45%;
+    }
+    
+    .result-section {
+        width: 50%;
+    }
+    
+    .chart-container {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    nav {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+        text-align: left;
+        padding: 0 10px;
+    }
+    
+    nav > a {
+        font-size: 28px;
+        order: 1;
+    }
+    
+    /* Show hamburger menu on tablets and mobile */
+    .hamburger-menu {
+        display: flex;
+        order: 3;
+    }
+    
+    .links-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: inherit;
+        flex-direction: column;
+        gap: 0;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        order: 2;
+        width: 100%;
+    }
+    
+    .links-container.show {
+        display: flex;
+    }
+    
+    .links-container li {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .links-container li:last-child {
+        border-bottom: none;
+    }
+    
+    .links-container a {
+        font-size: 20px;
+        display: block;
+        padding: 10px 0;
+        width: 100%;
+    }
+    
+    .problem-btns-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 20px;
+    }
+    
+    .problem-btns-container button {
+        width: 100%;
+        font-size: 20px;
+        padding: 10px;
+    }
+    
+    .instruction {
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+    
+    .problem-details-container {
+        flex-direction: column;
+        padding: 0 1rem;
+        gap: 30px;
+    }
+    
+    .form-section {
+        width: 100%;
+        order: 2;
+    }
+    
+    .result-section {
+        width: 100%;
+        order: 1;
+    }
+    
+    .form-container {
+        height: auto;
+        max-height: 400px;
+    }
+    
+    .labels-container {
+        font-size: 18px;
+        align-items: flex-start;
+        width: 65%;
+    }
+    
+    .inputs-container {
+        width: 35%;
+        align-items: flex-start;
+    }
+    
+    .chart-container {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .result h1 {
+        font-size: 32px;
+    }
+    
+    #chartDetails {
+        gap: 1rem;
+        margin-left: 0;
+    }
+    
+    .chart-legend {
+        min-width: auto;
+        flex-direction: row;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 8px;
+        height: auto;
+        align-items: flex-start;
+    }
+    
+    .slider-input {
+        width: 50%;
+    }
+    
+    .slider-value {
+        font-size: 12px;
+        padding: 3px 6px;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+    header {
+        padding: 10px;
+    }
+    
+    nav {
+        padding: 0 10px;
+    }
+    
+    nav > a {
+        font-size: 24px;
+    }
+    
+    .links-container {
+        padding: 15px;
+    }
+    
+    .links-container a {
+        font-size: 18px;
+        padding: 8px 0;
+    }
+    
+    .problem-btns-container {
+        padding: 0 15px;
+        gap: 12px;
+    }
+    
+    .problem-btns-container button {
+        font-size: 18px;
+        padding: 8px;
+    }
+    
+    .instruction {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+    
+    .problem-details-container {
+        padding: 0 0.5rem;
+        gap: 25px;
+    }
+    
+    .problem-details-container h3 {
+        font-size: 20px;
+        text-align: center;
+    }
+    
+    .form-container {
+        gap: 8px;
+        max-height: 350px;
+    }
+    
+    .labels-container {
+        font-size: 16px;
+        gap: 10px;
+        width: 70%;
+    }
+    
+    .inputs-container {
+        gap: 15px;
+        width: 30%;
+    }
+    
+    .inputs-container input {
+        font-size: 16px;
+        height: 22px;
+        line-height: 22px;
+        padding: 1px 8px;
+        width: 100%;
+    }
+    
+    .form-actions-container {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .form-actions-container input[type="reset"],
+    .form-actions-container input[type="submit"] {
+        width: 100%;
+        font-size: 20px;
+        padding: 8px;
+    }
+    
+    .chart-container {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .result h1 {
+        font-size: 28px;
+    }
+    
+    #chartDetails {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-left: 0;
+        align-items: center;
+    }
+    
+    .chart-legend {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        font-size: 12px;
+    }
+    
+    .radio-option {
+        gap: 4px;
+    }
+    
+    .radio-option label {
+        font-size: 14px;
+    }
+    
+    .dropdown-input {
+        font-size: 14px;
+        height: 22px;
+        line-height: 22px;
+    }
+    
+    .slider-input {
+        width: 45%;
+    }
+    
+    .slider-value {
+        font-size: 11px;
+        padding: 2px 4px;
+        width: 1.5rem;
+        height: 14px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 320px) {
+    nav > a {
+        font-size: 20px;
+    }
+    
+    .links-container a {
+        font-size: 16px;
+    }
+    
+    .problem-btns-container button {
+        font-size: 16px;
+        padding: 6px;
+    }
+    
+    .instruction {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    .problem-details-container h3 {
+        font-size: 18px;
+    }
+    
+    .labels-container {
+        font-size: 14px;
+        width: 75%;
+    }
+    
+    .inputs-container {
+        width: 25%;
+    }
+    
+    .inputs-container input {
+        font-size: 14px;
+        height: 20px;
+        line-height: 20px;
+        padding: 1px 6px;
+    }
+    
+    .form-actions-container input[type="reset"],
+    .form-actions-container input[type="submit"] {
+        font-size: 18px;
+        padding: 6px;
+    }
+    
+    .chart-container {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .result h1 {
+        font-size: 24px;
+    }
+    
+    .chart-legend {
+        font-size: 11px;
+    }
+    
+    .radio-option label {
+        font-size: 12px;
+    }
+    
+    .dropdown-input {
+        font-size: 12px;
+        height: 20px;
+        line-height: 20px;
+    }
+    
+    .slider-value {
+        font-size: 10px;
+        padding: 1px 3px;
+        width: 1.3rem;
+        height: 12px;
     }
 }
 

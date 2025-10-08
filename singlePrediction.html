@@ -15,7 +15,12 @@
     <header>
         <nav>
             <a href="index.html">Dr. PROBEN</a>
-            <ul class="links-container">
+            <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle navigation menu">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+            <ul class="links-container" id="navLinks">
                 <li><a href="javascript:void(0)" onclick="navigateToPage('singlePrediction.html')" id="single-prediction-link">Single Prediction</a></li>
                 <li><a href="javascript:void(0)" onclick="navigateToPage('batchPrediction.html')" id="batch-prediction-link">Batch Prediction</a></li>
                 <li><a href="about.html" id="about-link">About The App</a></li>
@@ -92,6 +97,34 @@
             // Navigate to the page
             window.location.href = page;
         }
+        
+        // Hamburger menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const navLinks = document.getElementById('navLinks');
+            
+            hamburgerMenu.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+                hamburgerMenu.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            const navLinkItems = navLinks.querySelectorAll('a');
+            navLinkItems.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('show');
+                    hamburgerMenu.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!hamburgerMenu.contains(event.target) && !navLinks.contains(event.target)) {
+                    navLinks.classList.remove('show');
+                    hamburgerMenu.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
