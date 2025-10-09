@@ -480,17 +480,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const legend = document.getElementById('chartLegend');
         
         // Check if result data exists and has percentage
-        if (state.resultData && state.resultData.percentage) {
+        if (state.resultData && typeof state.resultData.percentage !== 'undefined') {
+            const percentage = state.resultData.percentage;
             legend.innerHTML = `
                 <div class="legend-item">
                     <span class="legend-color legend-positive"></span>
-                    <span class="legend-label">${config.positiveClass}: ${state.resultData.percentage}%</span>
+                    <span class="legend-label">${config.positiveClass}: ${percentage}%</span>
                 </div>
                 <div class="legend-item">
                     <span class="legend-color legend-negative"></span>
-                    <span class="legend-label">${config.negativeClass}: ${100 - state.resultData.percentage}%</span>
+                    <span class="legend-label">${config.negativeClass}: ${100 - percentage}%</span>
                 </div>
             `;
+            // Update colors after creating the elements
+            updateLegendColors(disease);
+        } else {
+            // Clear legend if no result data
+            legend.innerHTML = '';
         }
     }
 
@@ -635,8 +641,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update chart data
             chart.data.datasets[0].data = [percentage, 100 - percentage];
             chart.update('active');
+            
+            // Update legend with current disease data
             updateCustomLegend(currentDisease);
-            updateLegendColors(currentDisease);
             
         } catch (error) {
             console.error('Error:', error);
