@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <main>
@@ -39,57 +41,44 @@
         function openLandingModal(disease) {
             pendingDisease = disease;
 
-            const modal = document.getElementById('landing-modal');
-            const title = document.getElementById('modal-title');
-            const desc = document.getElementById('modal-description');
-            const continueBtn = document.getElementById('modal-continue');
-            const dontShowCheckbox = document.getElementById('modal-dont-show');
-            const headerImg = document.getElementById('modal-icon');
-
-            const diseaseNames = {
-                diabetes: 'Diabetes',
-                heart: 'Heart Disease',
-                cancer: 'Breast Cancer'
-            };
-            const themeClassMap = {
-                diabetes: 'theme-diabetes',
-                heart: 'theme-heart',
-                cancer: 'theme-cancer'
-            };
-
-            title.textContent = 'Disclaimer!';
-            desc.innerHTML = `
-                <p>This tool serves as guide for the decision-making of medical professionals such as doctors and specialists. This is <strong>NOT A DIAGNOSIS</strong>. Do not treat it as such.</p>
-                <p>Dr. PROBEN’s outputs should not be considered, interpreted, or used as a substitute for professional medical advice or diagnosis by a qualified healthcare provider.</p>
-            `;
-
-            const localIcon = 'assets/Vector.svg';
-            if (headerImg) {
-                headerImg.onload = () => {
-                    const headerFallback = document.querySelector('.modal-icon-fallback');
-                    if (headerFallback) headerFallback.style.display = 'none';
-                    headerImg.style.display = 'inline-block';
-                };
-                headerImg.onerror = () => {
-                    headerImg.style.display = 'none';
-                };
-                headerImg.src = localIcon;
-            }
-
-            continueBtn.className = 'btn-link';
-
-            if (dontShowCheckbox) dontShowCheckbox.checked = false;
-
-            modal.classList.remove('hidden');
-            modal.setAttribute('aria-hidden', 'false');
-
-            continueBtn.focus();
-        }
-
-        function closeLandingModal() {
-            const modal = document.getElementById('landing-modal');
-            modal.classList.add('hidden');
-            modal.setAttribute('aria-hidden', 'true');
+            Swal.fire({
+                html: `
+                    <div class="modal-card figma-modal">
+                        <div class="modal-warning">
+                            <img src="assets/vector.svg" alt="Warning" class="modal-icon-img" width="24" height="24">
+                            <h2 class="modal-title">Disclaimer!</h2>
+                        </div>
+                        <div class="modal-divider"></div>
+                        <div class="modal-message">
+                            <div class="modal-description">
+                                <p>This tool serves as guide for the decision-making of medical professionals such as doctors and specialists. This is <strong>NOT A DIAGNOSIS</strong>. Do not treat it as such.</p>
+                                <p>Dr. PROBEN's outputs should not be considered, interpreted, or used as a substitute for professional medical advice or diagnosis by a qualified healthcare provider.</p>
+                            </div>
+                        </div>
+                        <div class="modal-consent">
+                            <input type="checkbox" id="modal-dont-show">
+                            <label for="modal-dont-show">Don't show again</label>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn-link" onclick="Swal.close(); proceedFromLandingModal();">Yes, I understand.</button>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCloseButton: false,
+                allowOutsideClick: true,
+                allowEscapeKey: true,
+                customClass: {
+                    popup: 'swal-custom-popup',
+                    htmlContainer: 'swal-html-container'
+                },
+                buttonsStyling: false,
+                didOpen: () => {
+                    // Focus on the custom button
+                    const customBtn = document.querySelector('.modal-actions .btn-link');
+                    if (customBtn) customBtn.focus();
+                }
+            });
         }
 
         function proceedFromLandingModal() {
@@ -101,50 +90,6 @@
             sessionStorage.setItem('selectedDisease', pendingDisease);
             window.location.href = 'singlePrediction.html';
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('landing-modal');
-            const continueBtn = document.getElementById('modal-continue');
-
-            continueBtn.addEventListener('click', proceedFromLandingModal);
-
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeLandingModal();
-                }
-            });
-
-            document.addEventListener('keydown', (e) => {
-                const isOpen = !modal.classList.contains('hidden');
-                if (isOpen && (e.key === 'Escape' || e.key === 'Esc')) {
-                    e.preventDefault();
-                    closeLandingModal();
-                }
-            });
-        });
     </script>
-
-    <div id="landing-modal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
-        <div class="modal-card figma-modal" role="document">
-            <div class="modal-warning">
-                <img id="modal-icon" class="modal-icon-img" alt="Warning" style="display:none" width="21" height="20" aria-hidden="true">
-                <svg class="modal-icon-fallback" width="21" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <h2 id="modal-title" class="modal-title">Disclaimer!</h2>
-            </div>
-            <div class="modal-divider"></div>
-            <div class="modal-message">
-                <div id="modal-description" class="modal-description">You are about to proceed.</div>
-            </div>
-            <div class="modal-consent">
-                <input type="checkbox" id="modal-dont-show">
-                <label for="modal-dont-show">Don't show again</label>
-            </div>
-            <div class="modal-actions">
-                <button id="modal-continue" class="btn-link" aria-label="Acknowledge disclaimer and continue">Yes, I understand.</button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

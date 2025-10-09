@@ -145,9 +145,7 @@ button {
 
 .modal-actions {
     display: flex;
-    gap: 12px;
     justify-content: center;
-    margin-top: 8px;
 }
 
 .modal-consent {
@@ -156,6 +154,7 @@ button {
     align-items: center;
     gap: 8px;
     margin-top: 4px;
+    font-size: 16px;
 }
 
 .btn-secondary {
@@ -225,6 +224,24 @@ button {
     cursor: pointer;
     opacity: 0.8;
 }
+
+
+/* SweetAlert2 Custom Styling for Disclaimer Modal*/
+.swal-custom-popup {
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    width: auto !important;
+    max-width: 800px !important;
+}
+
+.swal-html-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+}
+
+
 
 @media (max-width: 768px) {
     .modal-card {
