@@ -140,23 +140,23 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
-                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Refers to the degree to which cells are clustered together. Higher thickness values may indicate abnormal cell growth or potential malignancy.' },
-                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Measures the consistency in cell sizes within the sample. Significant variation in size may suggest the presence of abnormal or cancerous cells.' },
-                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Evaluates the uniformity of cell shapes. Normal cells generally maintain consistent shapes, while irregular shapes may be indicative of malignancy.' },
-                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Describes the extent to which cells adhere to one another. Poor adhesion may signify abnormal or invasive cellular behavior.' },
-                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Represents the average size of individual epithelial cells. Enlarged epithelial cells are often associated with abnormal cellular activity.' },
-                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Indicates the presence of nuclei without surrounding cytoplasm. A higher count of bare nuclei is commonly observed in malignant samples.' },
-                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Refers to the texture and appearance of the chromatin within the nucleus. Coarse or uneven chromatin patterns may suggest abnormal or cancerous growth.' },
-                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Pertains to the visibility and prominence of nucleoli within the nucleus. Prominent or multiple nucleoli are often linked to increased cellular activity, typical of cancerous cells.' },
-                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '5', 
+                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Measures the frequency of cell division. An elevated mitotic rate reflects rapid cellular proliferation, which may indicate malignant behavior.' }
             ]
         }
@@ -250,6 +250,16 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let [key, value] of formData.entries()) {
             currentState.formData[key] = value;
         }
+
+        // For cancer sliders, also save the modified state
+        if (currentDisease === 'cancer') {
+            const sliders = currentForm.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => {
+                const modifiedState = slider.getAttribute('data-modified');
+                // Store the modified state along with the value
+                currentState.formData[`${slider.name}_modified`] = modifiedState;
+            });
+        }
     }
 
     // Function to restore the state of a tab
@@ -258,6 +268,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Restore form data
         for (const [key, value] of Object.entries(state.formData)) {
+            // Skip the _modified entries as they'll be handled separately
+            if (key.endsWith('_modified')) continue;
+
             const input = form.elements[key];
             if (input) {
                 if (input.type === 'radio') {
@@ -265,10 +278,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     const radioInput = form.querySelector(`input[name="${key}"][value="${value}"]`);
                     if (radioInput) radioInput.checked = true;
                 } else if (input.type === 'range') {
-                    // Handle sliders
-                    input.value = value;
+                    // Handle sliders - for cancer, check if there's saved data
+                    const savedValue = value;
                     const valueDisplay = document.getElementById(`${key}_value`);
-                    if (valueDisplay) valueDisplay.textContent = value;
+                    
+                    if (disease === 'cancer') {
+                        const modifiedState = state.formData[`${key}_modified`];
+                        
+                        // If there's saved data and it was modified, use the saved value
+                        if (modifiedState === 'true' && savedValue && savedValue !== '0') {
+                            input.value = savedValue;
+                            if (valueDisplay) {
+                                valueDisplay.textContent = savedValue;
+                                valueDisplay.classList.remove('slider-unmodified');
+                            }
+                            input.setAttribute('data-modified', 'true');
+                        } else {
+                            // Otherwise, keep it at the unmodified state (display shows 0, but value is min)
+                            input.value = input.min;
+                            if (valueDisplay) {
+                                valueDisplay.textContent = '0';
+                                valueDisplay.classList.add('slider-unmodified');
+                            }
+                            input.setAttribute('data-modified', 'false');
+                        }
+                    } else {
+                        // For non-cancer sliders, just restore the value normally
+                        input.value = savedValue;
+                        if (valueDisplay) {
+                            valueDisplay.textContent = savedValue;
+                        }
+                    }
                 } else {
                     // Handle regular inputs and dropdowns
                     input.value = value;
@@ -358,9 +398,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.name = attr.id;
                 input.min = attr.min;
                 input.max = attr.max;
-                input.value = attr.default || attr.min;
                 input.required = true;
                 input.className = 'slider-input';
+
+                // Add data attribute to track if slider has been modified
+                if (currentDisease === 'cancer') {
+                    input.value = attr.min; // Temporarily set to valid value
+                    input.setAttribute('data-modified', 'false');
+                    input.setAttribute('data-default', '0'); // Store the intended default
+                } else {
+                    input.value = attr.default !== undefined ? attr.default : attr.min;
+                }
 
                 label.setAttribute('for', attr.id);
                 
@@ -368,11 +416,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 const valueDisplay = document.createElement('span');
                 valueDisplay.id = `${attr.id}_value`;
                 valueDisplay.className = 'slider-value';
-                valueDisplay.textContent = attr.default || attr.min;
+                
+                // Set display text to the intended default
+                if (currentDisease === 'cancer') {
+                    valueDisplay.textContent = attr.default;
+                    valueDisplay.classList.add('slider-unmodified');
+                } else {
+                    valueDisplay.textContent = attr.default !== undefined ? attr.default : attr.min;
+                }
                 
                 // Add event listener to update display
                 input.addEventListener('input', function() {
                     valueDisplay.textContent = this.value;
+
+                    // Mark slider as modified for cancer sliders
+                    if (currentDisease === 'cancer') {
+                        this.setAttribute('data-modified', 'true');
+                        valueDisplay.classList.remove('slider-unmodified');
+                    }
                 });
                 
                 inputWrapper.appendChild(input);
@@ -545,6 +606,40 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.style.color = themeColors[disease];
     }
 
+    // Function to show validation modal using SweetAlert2
+    function showValidationModal(unmodifiedFields) {
+        const fieldsList = unmodifiedFields.map(field => `• ${field}`).join('<br>');
+        
+        Swal.fire({
+            icon: 'warning',
+            title: 'Invalid Form Values',
+            html: `
+                <p style="margin-bottom: 16px;">Each field only accepts input between <strong>1-10</strong>, so please adjust all slider values accordingly before submitting. To know why, click the (i) button.</p>
+                <p style="margin-bottom: 12px; font-weight: 500; color: #555;">The following fields still have invalid values (0):</p>
+                <div style="
+                    background: #f8f9fa; 
+                    border-left: 4px solid #e74c3c; 
+                    padding: 16px; 
+                    border-radius: 4px; 
+                    text-align: left; 
+                    margin-top: 12px;
+                    max-height: 200px;
+                    overflow-y: auto;
+                ">
+                    <div style="color: #e74c3c; font-weight: 500; line-height: 1.8;">
+                        ${fieldsList}
+                    </div>
+                </div>
+            `,
+            confirmButtonText: 'Got it!',
+            confirmButtonColor: '#073056',
+            customClass: {
+                popup: 'validation-modal-popup',
+                confirmButton: 'validation-modal-button'
+            }
+        });
+    }
+
     // Handle disease button clicks
     document.querySelectorAll('.problem-btns-container button').forEach(button => {
         button.addEventListener('click', function() {
@@ -575,6 +670,29 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         
         const config = diseaseConfigs[currentDisease];
+
+        // Special validation for cancer sliders
+        if (currentDisease === 'cancer') {
+            const sliders = form.querySelectorAll('input[type="range"]');
+            const unmodifiedSliders = [];
+            
+            sliders.forEach(slider => {
+                const isModified = slider.getAttribute('data-modified') === 'true';
+                const valueDisplay = document.getElementById(`${slider.id}_value`);
+                const displayValue = valueDisplay ? valueDisplay.textContent : slider.value;
+                
+                // Check if slider is unmodified OR display shows '0'
+                if (!isModified || displayValue === '0') {
+                    const label = document.querySelector(`label[for="${slider.id}"]`);
+                    unmodifiedSliders.push(label ? label.textContent : slider.id);
+                }
+            });
+            
+            if (unmodifiedSliders.length > 0) {
+                showValidationModal(unmodifiedSliders);
+                return;
+            }
+        }
         
         // Get form data dynamically
         const formData = {};
@@ -678,9 +796,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     const input = document.getElementById(attr.id);
                     const valueDisplay = document.getElementById(`${attr.id}_value`);
                     if (input && valueDisplay) {
-                        const defaultValue = attr.default || attr.min;
-                        input.value = defaultValue;
-                        valueDisplay.textContent = defaultValue;
+                        input.value = attr.min;
+                        valueDisplay.textContent = attr.default;
+
+                        // Reset modified state for cancer sliders
+                        if (currentDisease === 'cancer' && attr.default === '0') {
+                            input.setAttribute('data-modified', 'false');
+                            valueDisplay.classList.add('slider-unmodified');
+                        }
                     }
                 } else if (attr.type === 'number') {
                     // Reset number inputs to empty

@@ -1038,3 +1038,9 @@ p {
         gap: 6px;
     }
 }
+
+/* Visual indicator for unmodified sliders */
+.slider-unmodified {
+    color: #e74c3c !important;
+    font-weight: bold;
+}
