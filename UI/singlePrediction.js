@@ -162,6 +162,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Disease information content for modals
+    const diseaseInfoContent = {
+        diabetes: {
+            title: 'Diabetes',
+            content: `
+                <p>This data is available from a general practitioner through a standard medical check-up, blood tests (like an Oral Glucose Tolerance Test), and your patient history.</p>
+                <p>This predictor uses your actual, raw test results (ex. glucose level in mg/dL), not a graded scale.</p>
+                <p class="citation">Smith, J.W., et al. (1988). Pima Indians Diabetes Database. UCI Machine Learning Repository</p>
+            `,
+            buttonColor: '#00BF63'
+        },
+        heart: {
+            title: 'Heart',
+            content: `
+                <p>The information needed here must come from a comprehensive cardiac exam by a cardiologist, which includes blood tests, a physical exam, and a cardiac stress test.</p>
+                <p>The model uses a mix of direct measurements (like blood pressure) and categories defined by your doctor (like chest pain type). Use the exact values from your medical report.</p>
+                <p class="citation">Janosi, A., et al. (1988). Heart Disease Data Set. UCI Machine Learning Repository.</p>
+            `,
+            buttonColor: '#DF6565'
+        },
+        cancer: {
+            title: 'Cancer',
+            content: `
+                <p>These values are highly specialized and can only be found in a pathology report after a fine-needle aspiration (FNA) biopsy. You must get this report from your oncologist or pathologist.</p>
+                <p>The 1 to 10 scale for these features was originally developed by Dr. William H. Wolberg, a physician and one of the researchers. He introduced the system by personally assigning each feature an integer value ranging from 1 to 10.</p>
+                <p>According to his system, a value of 1 represented a state closest to benign (non-cancerous), while a value of 10 represented the most anaplastic (a severe form of malignant) state.</p>
+                <p class="citation">Wolberg, W.H., & Mangasarian, O.L. (1990). Wisconsin Breast Cancer Database. UCI Machine Learning Repository.</p>
+            `,
+            buttonColor: '#0097B2'
+        }
+    };
+
     // Initialize chart data
     const data = {
         datasets: [{
@@ -237,6 +269,36 @@ document.addEventListener('DOMContentLoaded', () => {
             to see the result. This will help you check if the case may be classified 
             as <span>${diseaseConfigs[currentDisease].positiveClass.toLowerCase()}</span> or 
             <span>${diseaseConfigs[currentDisease].negativeClass.toLowerCase()}</span>.`;
+    }
+
+    // Function to show disease info modal
+    function showDiseaseInfoModal(disease) {
+        const info = diseaseInfoContent[disease];
+        
+        Swal.fire({
+            html: `
+                <div class="info-modal-content">
+                    <h2>${info.title}</h2>
+                    <div>${info.content}</div>
+                </div>
+            `,
+            confirmButtonText: 'I understand',
+            confirmButtonColor: info.buttonColor,
+            customClass: {
+                popup: 'info-modal',
+                confirmButton: 'info-modal-button'
+            },
+            showCloseButton: false,
+            focusConfirm: false
+        });
+    }
+
+    // Add event listener for info icon
+    const infoIcon = document.getElementById('infoIcon');
+    if (infoIcon) {
+        infoIcon.addEventListener('click', function() {
+            showDiseaseInfoModal(currentDisease);
+        });
     }
 
     // Function to save the state of the current tab

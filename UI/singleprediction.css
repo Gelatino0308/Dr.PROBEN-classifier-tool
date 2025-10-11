@@ -1044,3 +1044,75 @@ p {
     color: #e74c3c !important;
     font-weight: bold;
 }
+
+
+.problem-info-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-inline: 10px;
+}
+
+.info-icon {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    transition: opacity 0.2s ease;
+}
+
+.info-icon:hover {
+    opacity: 0.7;
+}
+
+.info-icon:active {
+    opacity: 0.5;
+}
+
+/* SweetAlert2 custom styles for info modal */
+.swal2-popup.info-modal {
+    border-radius: 12px;
+    width: 450px;
+}
+
+.swal2-popup.info-modal .swal2-html-container {
+    padding: 0;
+    margin: 0;
+}
+
+.info-modal-content {
+    text-align: center;
+    
+    padding-top: 30px;
+    padding-inline: 30px;
+}
+
+.info-modal-content h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.info-modal-content div {
+    max-height: 70vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-inline: 10px;
+}
+
+.info-modal-content p {
+    font-size: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.info-modal-content .citation {
+    font-size: 20px;
+    font-style: italic;
+    color: #6C6C6C;
+}
+
+.info-modal-button {
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0px 2px 6px black;
+}
