@@ -1,0 +1,607 @@
+/* Batch Prediction Specific Styles */
+.batch-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.control-btn {
+    background-color: white;
+    border: 2px solid transparent;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.action-btn {
+    background-color: white;
+    border: 2px solid transparent;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Theme-specific button colors */
+.theme-diabetes .control-btn {
+    color: #00BF63;
+    border-color: #00BF63;
+}
+
+.theme-diabetes .control-btn:hover {
+    background-color: #008042;
+    color: white;
+}
+
+.theme-heart .control-btn {
+    color: #DF6565;
+    border-color: #DF6565;
+}
+
+.theme-heart .control-btn:hover {
+    background-color: #651515;
+    color: white;
+}
+
+.theme-cancer .control-btn {
+    color: #0097B2;
+    border-color: #0097B2;
+}
+
+.theme-cancer .control-btn:hover {
+    background-color: #073056;
+    color: white;
+}
+
+/* Table Styles */
+.table-container {
+    margin: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    max-height: 350px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+#dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Poppins', sans-serif;
+    background-color: white;
+    min-width: 800px; /* Ensure minimum width for horizontal scrolling */
+}
+
+#dataTable th {
+    background-color: lightgray;
+    color: #333;
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#dataTable td {
+    padding: 10px 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    color: #333;
+    font-size: 14px;
+}
+
+#dataTable tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+#dataTable tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Prediction column styling */
+.prediction-column {
+    font-weight: bold;
+    color: #0097B2;
+}
+
+.theme-diabetes .prediction-column {
+    color: #00BF63;
+}
+
+.theme-heart .prediction-column {
+    color: #DF6565;
+}
+
+.theme-cancer .prediction-column {
+    color: #0097B2;
+}
+
+/* Custom scrollbar for table */
+.table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Empty table message */
+.empty-table-message {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .batch-controls {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .control-buttons,
+    .action-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .control-btn,
+    .action-btn {
+        min-width: 140px;
+    }
+    
+    .table-container {
+        margin: 10px;
+    }
+    
+    /* .predict-btn {
+        padding: 12px 30px;
+        font-size: 18px;
+    } */
+}
+
+/* Mobile responsiveness - Comprehensive media queries */
+
+/* Large tablets and small desktops */
+@media (max-width: 1024px) {
+    .batch-controls {
+        margin: 15px 0;
+        padding: 0 15px;
+    }
+    
+    .control-btn,
+    .action-btn {
+        padding: 8px 15px;
+        font-size: 15px;
+    }
+    
+    .table-container {
+        margin: 15px;
+        max-height: 300px;
+    }
+    
+    #dataTable {
+        min-width: 600px;
+    }
+    
+    #dataTable th,
+    #dataTable td {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    nav {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+        text-align: left;
+        padding: 0 10px;
+    }
+    
+    nav > a {
+        font-size: 28px;
+        order: 1;
+    }
+    
+    /* Show hamburger menu on tablets and mobile */
+    .hamburger-menu {
+        display: flex;
+        order: 3;
+    }
+    
+    .links-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: inherit;
+        flex-direction: column;
+        gap: 0;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        order: 2;
+        width: 100%;
+    }
+    
+    .links-container.show {
+        display: flex;
+    }
+    
+    .links-container li {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .links-container li:last-child {
+        border-bottom: none;
+    }
+    
+    .links-container a {
+        font-size: 20px;
+        display: block;
+        padding: 10px 0;
+        width: 100%;
+    }
+    
+    .problem-btns-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 20px;
+    }
+    
+    .problem-btns-container button {
+        width: 100%;
+        font-size: 20px;
+        padding: 10px;
+    }
+    
+    .instruction {
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+    
+    .batch-controls {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+        margin: 15px 0;
+        padding: 0 15px;
+    }
+    
+    .control-buttons,
+    .action-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .control-btn,
+    .action-btn {
+        min-width: 120px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+    
+    .table-container {
+        margin: 10px;
+        max-height: 250px;
+    }
+    
+    #dataTable {
+        min-width: 500px;
+    }
+    
+    #dataTable th,
+    #dataTable td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    
+    #predictBtn.action-btn {
+        font-size: 16px;
+        padding: 8px 20px;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+    header {
+        padding: 10px;
+    }
+    
+    nav {
+        padding: 0 10px;
+    }
+    
+    nav > a {
+        font-size: 24px;
+    }
+    
+    .links-container {
+        padding: 15px;
+    }
+    
+    .links-container a {
+        font-size: 18px;
+        padding: 8px 0;
+    }
+    
+    .problem-btns-container {
+        padding: 0 15px;
+        gap: 12px;
+    }
+    
+    .problem-btns-container button {
+        font-size: 18px;
+        padding: 8px;
+    }
+    
+    .instruction {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+    
+    .batch-controls {
+        margin: 10px 0;
+        padding: 0 10px;
+        gap: 12px;
+    }
+    
+    .control-buttons,
+    .action-buttons {
+        gap: 8px;
+    }
+    
+    .control-btn,
+    .action-btn {
+        min-width: 100px;
+        padding: 6px 12px;
+        font-size: 13px;
+        border-radius: 20px;
+    }
+    
+    .table-container {
+        margin: 8px;
+        max-height: 200px;
+        border-radius: 10px;
+    }
+    
+    #dataTable {
+        min-width: 400px;
+    }
+    
+    #dataTable th,
+    #dataTable td {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+    
+    #predictBtn.action-btn {
+        font-size: 14px;
+        padding: 6px 15px;
+        border-width: 2px;
+    }
+    
+    .empty-table-message {
+        padding: 20px;
+        font-size: 14px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 320px) {
+    nav > a {
+        font-size: 20px;
+    }
+    
+    .links-container a {
+        font-size: 16px;
+    }
+    
+    .problem-btns-container button {
+        font-size: 16px;
+        padding: 6px;
+    }
+    
+    .instruction {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    .batch-controls {
+        padding: 0 5px;
+    }
+    
+    .control-btn,
+    .action-btn {
+        min-width: 90px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    .table-container {
+        margin: 5px;
+        max-height: 180px;
+    }
+    
+    #dataTable {
+        min-width: 350px;
+    }
+    
+    #dataTable th,
+    #dataTable td {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+    
+    #predictBtn.action-btn {
+        font-size: 12px;
+        padding: 5px 12px;
+    }
+    
+    .empty-table-message {
+        padding: 15px;
+        font-size: 12px;
+    }
+}
+
+/* Navigation link styles */
+.links-container a {
+    font-size: 24px;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    padding-bottom: 3px;
+}
+
+/* Underline animation on hover */
+.links-container a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: white;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.links-container a:hover::after {
+    width: 100%;
+}
+
+/* Active/current page styling */
+.links-container a.active {
+    font-weight: bold;
+    /* text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); */
+}
+
+/* Add theme-specific styling for predict button */
+.theme-diabetes #predictBtn {
+    background-color: #00BF63;
+    color: white;
+    border: 2px solid white;
+}
+
+.theme-diabetes #predictBtn:hover {
+    background-color: #008042;
+    border-color: #008042;
+}
+
+.theme-heart #predictBtn {
+    background-color: #DF6565;
+    color: white;
+    border: 2px solid white;
+}
+
+.theme-heart #predictBtn:hover {
+    background-color: #651515;
+    border-color: #651515;
+}
+
+.theme-cancer #predictBtn {
+    background-color: #0097B2;
+    color: white;
+    border: 2px solid white;
+}
+
+.theme-cancer #predictBtn:hover {
+    background-color: #073056;
+    border-color: #073056;
+}
+
+/* Theme-specific button colors for action buttons (except predict button) */
+.theme-diabetes #downloadBtn {
+    color: #00BF63;
+    border-color: #00BF63;
+}
+
+.theme-diabetes #downloadBtn:hover {
+    background-color: #008042;
+    color: white;
+}
+
+.theme-heart #downloadBtn {
+    color: #DF6565;
+    border-color: #DF6565;
+}
+
+.theme-heart #downloadBtn:hover {
+    background-color: #651515;
+    color: white;
+}
+
+.theme-cancer #downloadBtn {
+    color: #0097B2;
+    border-color: #0097B2;
+}
+
+.theme-cancer #downloadBtn:hover {
+    background-color: #073056;
+    color: white;
+}
+
+/* Ensure predict button maintains action-btn styling */
+#predictBtn.action-btn {
+    font-size: 20px;
+    padding: 3px 30px;
+    color: white;
+    border: 4px solid white;
+}
