@@ -2,6 +2,7 @@ import os
 import numpy as np
 from joblib import dump
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.model_selection import train_test_split 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODELS_DIR = os.path.join(BASE_DIR, "models")
@@ -85,19 +86,14 @@ def train_and_save(dataset_path, n_inputs, n_outputs, name, label_names):
 
     X, y = load_proben1_dat(dataset_path, n_inputs, n_outputs)
 
-    # 50/25/25 split
-    n_total = len(X)
-    n_train = int(0.5 * n_total)
-    n_val   = int(0.25 * n_total)
-
-    indices = np.arange(len(X))
-    np.random.shuffle(indices)
-    X, y = X[indices], y[indices]
-
-    X_train, y_train = X[:n_train], y[:n_train]
-    X_val,   y_val   = X[n_train:n_train+n_val], y[n_train:n_train+n_val]
-    X_test,  y_test  = X[n_train+n_val:], y[n_train+n_val:]
-
+    # stratified split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, 
+        test_size=0.2,      # Specifies a 20% test set (and thus 80% training)
+        stratify=y,         # This is the key: ensures class distribution is the same in train/test
+        random_state=42     # Ensures the split is the same every time you run the code (for reproducibility)
+    )
+    
     # --- Class distribution per split ---
     def _dist(y_split):
         counts = np.bincount(y_split, minlength=len(label_names))
@@ -105,7 +101,6 @@ def train_and_save(dataset_path, n_inputs, n_outputs, name, label_names):
         return [(int(c), (c/total*100.0) if total>0 else 0.0) for c in counts]
 
     train_dist = _dist(y_train)
-    val_dist   = _dist(y_val)
     test_dist  = _dist(y_test)
 
     print("🔎 Class distribution (count | % within split):")
@@ -115,7 +110,6 @@ def train_and_save(dataset_path, n_inputs, n_outputs, name, label_names):
         cells = [f"{c} | {pct:.1f}%" for c, pct in dist]
         print(f"  {name:<5}: " + " | ".join(cells))
     _row("Train", train_dist)
-    _row("Val",   val_dist)
     _row("Test",  test_dist)
 
     model = MyGaussianNB()
@@ -136,7 +130,7 @@ def train_and_save(dataset_path, n_inputs, n_outputs, name, label_names):
     for true, pred in zip(y_test, y_pred_test):
         cm[int(true), int(pred)] += 1
 
-    print(f"Dataset size: {n_total} (Train={n_train}, Val={n_val}, Test={len(X_test)})")
+    print(f"Dataset size: {len(X)} (Train={len(X_train)}, Test={len(X_test)})")
     print(f"Training accuracy: {train_acc:.4f}")
     print(f"Test accuracy    : {test_acc:.4f}")
     print(f"Training CEP (%) : {train_cep:.2f}")
@@ -158,6 +152,6 @@ def train_and_save(dataset_path, n_inputs, n_outputs, name, label_names):
 
 
 if __name__ == "__main__":
-    train_and_save("cancer1.dat",   n_inputs=9,  n_outputs=2, name="Cancer",   label_names=["Benin", "Malignant"])
+    train_and_save("cancer1.dat",   n_inputs=9,  n_outputs=2, name="Cancer",   label_names=["Benign", "Malignant"])
     train_and_save("heart1.dat",    n_inputs=35, n_outputs=2, name="Heart",    label_names=["Negative", "Positive"])
     train_and_save("diabetes1.dat", n_inputs=8,  n_outputs=2, name="Diabetes", label_names=["Non-Diabetic", "Diabetic"])
