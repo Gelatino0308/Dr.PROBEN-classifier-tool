@@ -17,8 +17,8 @@ header {
 
 main {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    justify-content: space-around;
+    padding-inline: 40px;
 }
 
 button {
@@ -40,15 +40,12 @@ header h1 {
 
 .tool-container {
     display: flex;
-    justify-content: space-evenly;
-}
-
-.tool-container section {
-    width: 40%;
+    flex-direction: column;
+    max-width: 45%;
+    gap: 20px;
 }
 
 .tool-container-section h2 {
-    font-weight: bold;
     font-size: 30px;
 }
 
@@ -57,27 +54,14 @@ header h1 {
     text-indent: 4ch;
 }
 
-.model-container {
-    /* padding: 0 100px; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.model-container h2 {
-    font-weight: bold;
-    font-size: 30px;
-}
-
 .model-info {
     display: flex;
-    /* justify-content: center; */
-    /* justify-content: center; */
-    /* gap: 100px; */
+    flex-direction: column;
 }
 
-.model-info section {
-    width: 50%;
+.model-info h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
 }
 
 .model-info-section h3 {
@@ -88,10 +72,19 @@ header h1 {
 
 .model-info-section ul {
     font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .model-info-section ul li span {
     font-weight: bold;
+}
+
+.model-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 /* Mobile responsiveness - Media Queries */

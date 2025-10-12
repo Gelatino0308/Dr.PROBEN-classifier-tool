@@ -18,34 +18,33 @@
         <div class="tool-container">
             <section class="tool-container-section">
                 <h2>About The Tool</h2>
-                <p align="justify">Dr. PROBEN is a medical problem classifier web app based on a Feed-forward Neural Network model integrated with the Multiple Hybrid Ant Colony Optimization for Continuous Domain (ACOR) and Levenberg-Marquardt (LM) algorithm. The application was designed to guide healthcare professionals in diagnosing medical conditions such as Diabetes, Heart Disease, and Breast Cancer.</p>
+                <p align="justify">Dr. PROBEN is a medical problem classifier web app based on a Feed-forward Neural Network model integrated with the Multiple Ant Colony Optimization for Continuous Domain (ACO<sub>R</sub>) and Levenberg-Marquardt (LM) algorithm. The application was designed to guide healthcare professionals in diagnosing medical conditions such as Diabetes, Heart Disease, and Breast Cancer.</p>
             </section>
             <section class="tool-container-section">
                 <h2>About the Dataset</h2>
                 <p align="justify">PROBEN1 is a collection of problems for neural network learning in the realm of pattern classification and function approximation plus a set of rules and conventions for carrying out benchmark tests with these or similar problems. PROBEN1 contains 15 data sets from 12 different domains. All datasets represent realistic problems which could be called diagnosis tasks and all but one consist of real world data.</p>
             </section>
         </div>
-        <div class="model-container">
+        <div class="model-info">
             <h2>Model Training Hyperparameters</h2>
-            <div class="model-info">
+            <div class="model-container">
                 <section class="model-info-section">
-                    <h3>ACO<sub>R</sub>-LM:</h3>
+                    <h3>Multiple ACO<sub>R</sub>-LM</h3>
                     <ul>
-                        <li><span>No. of Artificial Ants per Colony:</span> 30</li>
+                        <li><span>No. of Artificial Ants per Colony:</span> 2</li>
                         <li><span>No. of Colony:</span> 3</li>
-                        <li><span>Evaporation Rate:</span> 0.5</li>
                         <li><span>Inter-Colony Communication:</span> Every 10 rounds</li>
                         <li><span>Termination Condition:</span> 15 consecutive iterations without improvement</li>
                     </ul>
                 </section>
                 <section class="model-info-section">
-                    <h3>Feed-forward Neural Network:</h3>
+                    <h3>Feed-forward Neural Network</h3>
                     <ul>
-                        <li><span>Input Layer:</span> 61 neurons (Diabetes), 67 (Heart), 223 (Cancer)</li>
+                        <li><span>Input Layer:</span> 67 (Cancer), 61 neurons (Diabetes), 223 (Heart)</li>
                         <li><span>Hidden Layer:</span> 6 neurons</li>
                         <li><span>Output Layer:</span> 1 neuron</li>
                         <li><span>Objective Function:</span> Binary Cross-Entropy</li>
-                        <li><span>Activation Function:</span> Sigmoid</li>
+                        <li><span>Activation Function:</span> ReLU (Hidden Layer), Sigmoid (Output Layer)</li>
                     </ul>
                 </section>
             </div>
