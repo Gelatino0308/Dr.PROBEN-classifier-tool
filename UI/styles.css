@@ -18,14 +18,14 @@ body {
     background-image: linear-gradient(
         to right,
         #00BF63,
-        #7ED957 35%,
-        #0CC0DF 65%,
+        #de4c4c 55%,
+        #de4c4c 60%,
         #0097B2 
     );
     background-clip: text;
     -webkit-background-clip: text; 
     color: transparent;
-    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 1));
+    filter: drop-shadow(6px 4px 0px rgba(0, 0, 0, 1));
     margin-top: -80px;
 }
 

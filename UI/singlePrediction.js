@@ -676,8 +676,14 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: 'warning',
             title: 'Invalid Form Values',
             html: `
-                <p style="margin-bottom: 16px;">Each field only accepts input between <strong>1-10</strong>, so please adjust all slider values accordingly before submitting. To know why, click the (i) button.</p>
-                <p style="margin-bottom: 12px; font-weight: 500; color: #555;">The following fields still have invalid values (0):</p>
+                <p style="margin-bottom: 10px; line-height: 2;">Each field only accepts input between <strong>1-10</strong>, 
+                    so please adjust all slider values accordingly before submitting. To know why, click the 
+                    <svg style="height: 25px;" class="info-icon" id="infoIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg> 
+                    button above the form.
+                </p>
+                <p style="margin-bottom: 10px; font-weight: 500; color: #555;">The following fields still have invalid values (0):</p>
                 <div style="
                     background: #f8f9fa; 
                     border-left: 4px solid #e74c3c; 
@@ -685,7 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     border-radius: 4px; 
                     text-align: left; 
                     margin-top: 12px;
-                    max-height: 200px;
+                    max-height: 180px;
                     overflow-y: auto;
                 ">
                     <div style="color: #e74c3c; font-weight: 500; line-height: 1.8;">

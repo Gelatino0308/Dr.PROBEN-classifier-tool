@@ -9,8 +9,10 @@ app = Flask(__name__)
 CORS(app)
 
 # Add disease directories to path
+old_models_path = os.path.join(os.path.dirname(__file__), '..', 'old-models')
 for disease_dir in ['diabetes', 'heart', 'cancer']:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), disease_dir))
+    disease_path = os.path.join(old_models_path, disease_dir)
+    sys.path.insert(0, disease_path)
 
 # Import prediction functions
 from predict_diabetes import load_model as load_diabetes_model, predict_diabetes
