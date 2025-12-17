@@ -34,8 +34,8 @@ class LevenbergMarquardt:
     """
     
     def __init__(self, 
-                 initial_mu: float = 0.001,
-                 max_iterations: int = 50,
+                 initial_mu: float = 0.1,
+                 max_iterations: int = 10,
                  convergence_threshold: float = 1e-6,
                  mu_increase_factor: float = 10.0,
                  mu_decrease_factor: float = 0.1,

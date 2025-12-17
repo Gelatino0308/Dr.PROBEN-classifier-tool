@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Define paths to new models
-MODELS_BASE_PATH = os.path.join(os.path.dirname(__file__), '..', 'old-models', 'ACOR-with-reportgen')
+MODELS_BASE_PATH = os.path.join(os.path.dirname(__file__), '..', 'tool-models', 'ACOR_Final-Def')
 
 class ACORNeuralNetwork:
     """Wrapper class to reconstruct ACOR neural network from saved weights."""
@@ -27,6 +27,10 @@ class ACORNeuralNetwork:
     def _sigmoid(self, x):
         """Sigmoid activation function."""
         return 1 / (1 + np.exp(-np.clip(x, -500, 500)))
+    
+    def _relu(self, x):
+        """ReLU activation function."""
+        return np.maximum(0, x)
     
     def _forward_pass(self, X):
         """Perform forward pass through the network."""
@@ -62,11 +66,11 @@ class ACORNeuralNetwork:
         W2 = self.weights[w1_size + b1_size:w1_size + b1_size + w2_size].reshape(hidden_size, output_size)
         b2 = self.weights[w1_size + b1_size + w2_size:w1_size + b1_size + w2_size + b2_size]
         
-        # Hidden layer
+        # Hidden layer with ReLU (matching FNN architecture)
         z1 = np.dot(activations, W1) + b1
-        a1 = self._sigmoid(z1)
+        a1 = self._relu(z1)  # Changed from sigmoid to ReLU
         
-        # Output layer
+        # Output layer with Sigmoid
         z2 = np.dot(a1, W2) + b2
         a2 = self._sigmoid(z2)
         
@@ -101,7 +105,7 @@ class ACORNeuralNetwork:
 
 def load_disease_model(disease_name):
     """Load the ACOR model for the specified disease."""
-    model_path = os.path.join(MODELS_BASE_PATH, disease_name, f'{disease_name}_acor_lm_model.pkl')
+    model_path = os.path.join(MODELS_BASE_PATH, disease_name, f'acor_lm_{disease_name}_model.pkl')
     try:
         with open(model_path, 'rb') as f:
             loaded_data = pickle.load(f)
@@ -179,10 +183,20 @@ def prepare_heart_input(raw_values):
     expanded = expand_heart_features(raw_values)
     return expanded.reshape(1, -1)
 
-# Helper function for cancer: raw to unscaled
+# Helper function for cancer: normalize raw 1-10 values to 0-1 range
 def prepare_cancer_input(raw_values):
-    """Convert raw cancer values to array without scaling (model scaler will handle it)"""
-    return np.array(raw_values, dtype=float).reshape(1, -1)
+    """
+    Convert raw cancer values (1-10 scale) to normalized array (0-1 scale).
+    
+    The Wisconsin Breast Cancer dataset uses 1-10 scale for features,
+    but PROBEN1's cancer1.dat normalizes these to 0-1 range.
+    We must apply the same normalization before the model's scaler is applied.
+    
+    Formula: normalized = (value - 1) / (10 - 1) = (value - 1) / 9
+    """
+    # Normalize from 1-10 scale to 0-1 scale (matching PROBEN1 preprocessing)
+    normalized = [(v - 1) / 9.0 for v in raw_values]
+    return np.array(normalized, dtype=float).reshape(1, -1)
 
 # Single prediction endpoints
 @app.route('/api/predict/diabetes', methods=['POST'])
@@ -450,10 +464,10 @@ def predict_cancer_batch_endpoint():
         data = request.json
         batch_data = data['data']
         
-        # Prepare batch input (no preprocessing scaling)
-        raw_batch = []
+        # Prepare batch input - normalize 1-10 values to 0-1 range
+        normalized_batch = []
         for row in batch_data:
-            raw_batch.append([
+            raw_values = [
                 float(row['clump_thickness']),
                 float(row['uniformity_cell_size']),
                 float(row['uniformity_cell_shape']),
@@ -463,10 +477,13 @@ def predict_cancer_batch_endpoint():
                 float(row['bland_chromatin']),
                 float(row['normal_nucleoli']),
                 float(row['mitoses'])
-            ])
+            ]
+            # Normalize from 1-10 to 0-1 (matching PROBEN1 preprocessing)
+            normalized = [(v - 1) / 9.0 for v in raw_values]
+            normalized_batch.append(normalized)
         
-        # Convert to numpy array (model scaler will handle scaling)
-        X = np.array(raw_batch, dtype=float)
+        # Convert to numpy array (model scaler will handle StandardScaler transform)
+        X = np.array(normalized_batch, dtype=float)
         
         # Make predictions
         predictions = model.predict(X).tolist()
