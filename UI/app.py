@@ -171,10 +171,24 @@ for disease in ['diabetes', 'heart', 'cancer']:
     else:
         print(f"✓ {disease} model loaded successfully")
 
-# Helper function for diabetes: raw to unscaled
+# Helper function for diabetes: use preprocessor to normalize raw values to 0-1 range
 def prepare_diabetes_input(raw_values):
-    """Convert raw diabetes values to array without scaling (model scaler will handle it)"""
-    return np.array(raw_values, dtype=float).reshape(1, -1)
+    """
+    Convert raw diabetes values to normalized array (0-1 scale).
+    Uses DiabetesPreprocessor.preprocess_single() for consistency with batch processing.
+    
+    Raw value ranges (from Pima Indians dataset):
+    - Pregnancies: 0-17
+    - Glucose: 0-199
+    - BloodPressure: 0-122
+    - SkinThickness: 0-99
+    - Insulin: 0-846
+    - BMI: 0-67.1
+    - DiabetesPedigreeFunction: 0.078-2.42
+    - Age: 21-81
+    """
+    preprocessor = preprocessors['diabetes']
+    return preprocessor.preprocess_single(raw_values).reshape(1, -1)
 
 # Helper function for heart: expand 13 to 35
 def prepare_heart_input(raw_values):
@@ -183,20 +197,14 @@ def prepare_heart_input(raw_values):
     expanded = expand_heart_features(raw_values)
     return expanded.reshape(1, -1)
 
-# Helper function for cancer: normalize raw 1-10 values to 0-1 range
+# Helper function for cancer: use preprocessor to normalize 1-10 values to 0-1 range
 def prepare_cancer_input(raw_values):
     """
     Convert raw cancer values (1-10 scale) to normalized array (0-1 scale).
-    
-    The Wisconsin Breast Cancer dataset uses 1-10 scale for features,
-    but PROBEN1's cancer1.dat normalizes these to 0-1 range.
-    We must apply the same normalization before the model's scaler is applied.
-    
-    Formula: normalized = (value - 1) / (10 - 1) = (value - 1) / 9
+    Uses CancerPreprocessor.preprocess_single() for consistency with batch processing.
     """
-    # Normalize from 1-10 scale to 0-1 scale (matching PROBEN1 preprocessing)
-    normalized = [(v - 1) / 9.0 for v in raw_values]
-    return np.array(normalized, dtype=float).reshape(1, -1)
+    preprocessor = preprocessors['cancer']
+    return preprocessor.preprocess_single(raw_values).reshape(1, -1)
 
 # Single prediction endpoints
 @app.route('/api/predict/diabetes', methods=['POST'])
@@ -350,6 +358,7 @@ def predict_cancer_endpoint():
 def predict_diabetes_batch_endpoint():
     try:
         model = models['diabetes']
+        preprocessor = preprocessors['diabetes']  # ADD THIS LINE
         
         if model is None:
             return jsonify({"error": "Diabetes model not loaded properly"}), 500
@@ -357,7 +366,7 @@ def predict_diabetes_batch_endpoint():
         data = request.json
         batch_data = data['data']
         
-        # Prepare batch input (no preprocessing scaling)
+        # Prepare raw batch input
         raw_batch = []
         for row in batch_data:
             raw_batch.append([
@@ -371,8 +380,11 @@ def predict_diabetes_batch_endpoint():
                 float(row['age'])
             ])
         
-        # Convert to numpy array (model scaler will handle scaling)
-        X = np.array(raw_batch, dtype=float)
+        # Convert to numpy array
+        raw_array = np.array(raw_batch, dtype=float)
+        
+        # Use preprocessor to normalize (handles raw -> 0-1 scaling)
+        X, _, msgs = preprocessor.preprocess_batch_matrix(raw_array)
         
         # Make predictions
         predictions = model.predict(X).tolist()
@@ -386,7 +398,7 @@ def predict_diabetes_batch_endpoint():
         result = {
             'predictions': [int(p) for p in predictions],
             'probabilities': probabilities,
-            'messages': ['Batch prediction completed successfully']
+            'messages': msgs + ['Batch prediction completed successfully']
         }
         
         return jsonify(result)
@@ -457,6 +469,7 @@ def predict_heart_batch_endpoint():
 def predict_cancer_batch_endpoint():
     try:
         model = models['cancer']
+        preprocessor = preprocessors['cancer']
         
         if model is None:
             return jsonify({"error": "Cancer model not loaded properly"}), 500
@@ -464,8 +477,8 @@ def predict_cancer_batch_endpoint():
         data = request.json
         batch_data = data['data']
         
-        # Prepare batch input - normalize 1-10 values to 0-1 range
-        normalized_batch = []
+        # Prepare raw batch input
+        raw_batch = []
         for row in batch_data:
             raw_values = [
                 float(row['clump_thickness']),
@@ -478,12 +491,13 @@ def predict_cancer_batch_endpoint():
                 float(row['normal_nucleoli']),
                 float(row['mitoses'])
             ]
-            # Normalize from 1-10 to 0-1 (matching PROBEN1 preprocessing)
-            normalized = [(v - 1) / 9.0 for v in raw_values]
-            normalized_batch.append(normalized)
+            raw_batch.append(raw_values)
         
-        # Convert to numpy array (model scaler will handle StandardScaler transform)
-        X = np.array(normalized_batch, dtype=float)
+        # Convert to numpy array
+        raw_array = np.array(raw_batch, dtype=float)
+        
+        # Use preprocessor to normalize (handles 1-10 -> 0-1 scaling)
+        X, _, msgs = preprocessor.preprocess_batch_matrix(raw_array)
         
         # Make predictions
         predictions = model.predict(X).tolist()
@@ -496,7 +510,7 @@ def predict_cancer_batch_endpoint():
         result = {
             'predictions': [int(p) for p in predictions],
             'probabilities': probabilities,
-            'messages': ['Batch prediction completed successfully']
+            'messages': msgs + ['Batch prediction completed successfully']
         }
         
         return jsonify(result)

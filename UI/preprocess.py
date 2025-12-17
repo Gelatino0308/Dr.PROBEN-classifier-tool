@@ -25,29 +25,33 @@ except Exception:
 
 
 def expand_heart_features(vals: List[float]) -> np.ndarray:
-    age, sex, cp, rest_bp, chol, fbs, ecg, max_hr, angina, oldpeak, slope, vessels, thal = vals
-    features: List[float] = []
-
-    # Mirrors the existing project logic for expansion (35 features)
-    features.append(age); features.append(0)
-    features.append(sex); features.append(0)
-    features.extend([1 if int(cp) == i else 0 for i in range(4)]); features.append(0)
-    features.append(rest_bp); features.append(0)
-    features.append(chol); features.append(0)
-    features.append(fbs); features.append(0)
-    features.extend([1 if int(ecg) == i else 0 for i in range(3)]); features.append(0)
-    features.append(max_hr); features.append(0)
-    features.append(angina); features.append(0)
-    features.append(oldpeak); features.append(0)
-    features.extend([1 if int(slope) == i else 0 for i in range(3)]); features.append(0)
-    features.append(vessels); features.append(0)
-    thal_map = {3: 0, 6: 1, 7: 2}
-    thal_idx = thal_map.get(int(thal), -1)
-    features.extend([1 if thal_idx == i else 0 for i in range(3)]); features.append(0)
-
-    if len(features) != 35:
-        raise ValueError(f"Expanded heart features length mismatch: expected 35, got {len(features)}")
-
+    """
+    Expand 13 raw heart features to 35 features WITH normalization.
+    
+    Uses heart_raw2cod.encode_row() internally to ensure consistent encoding
+    with the PROBEN1 heart/raw2cod preprocessing.
+    
+    Args:
+        vals: List of 13 raw heart feature values
+              [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
+    
+    Returns:
+        numpy array of 35 normalized/encoded features
+    """
+    if heart_raw2cod is None:
+        raise RuntimeError("heart_raw2cod module not available; cannot expand heart features.")
+    
+    # Convert numeric values to string fields (as expected by encode_row)
+    # Add a dummy label at the end (will be stripped from output)
+    fields = [str(v) for v in vals] + ["0"]  # 13 features + dummy label
+    
+    # Use heart_raw2cod to encode (classifier=True gives 35 features + 2 label columns)
+    encoded_str = heart_raw2cod.encode_row(fields, classifier=True)
+    
+    # Parse the encoded string - first 35 values are features, last 2 are label
+    tokens = encoded_str.split()
+    features = [float(t) for t in tokens[:35]]
+    
     return np.array(features, dtype=float)
 
 
@@ -297,6 +301,7 @@ class HeartPreprocessor(BasePreprocessor):
         )
 
     def preprocess_single(self, vals: List[float]) -> np.ndarray:
+        """Expand 13 raw features to 35 normalized features using heart_raw2cod encoding."""
         return expand_heart_features(vals)
 
     def preprocess_batch_matrix(self, arr: np.ndarray) -> Tuple[np.ndarray, Optional[np.ndarray], List[str]]:
@@ -346,10 +351,12 @@ class HeartPreprocessor(BasePreprocessor):
                 f"Feature column mismatch after alignment attempts. Heart accepts 13 raw or 35 expanded features; got {cols}."
             )
 
-        # Expand if 13 raw, else use as-is
+        # Expand if 13 raw features, using heart_raw2cod for proper normalization
         if cols == 13:
             X = np.array([expand_heart_features(row.tolist()) for row in X], dtype=float)
-        # No additional scaling for heart here; assumes values prepared as in project
+            msgs.append("[INFO] Expanded 13 raw heart features to 35 using heart_raw2cod normalization.")
+        else:
+            msgs.append("[INFO] Using 35 pre-expanded heart features as-is.")
 
         return X, y_true, msgs
 
