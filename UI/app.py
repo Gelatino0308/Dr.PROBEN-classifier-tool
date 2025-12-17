@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Define paths to new models
-MODELS_BASE_PATH = os.path.join(os.path.dirname(__file__), '..', 'tool-models', 'ACOR-with-reportgen')
+MODELS_BASE_PATH = os.path.join(os.path.dirname(__file__), '..', 'old-models', 'ACOR-with-reportgen')
 
 class ACORNeuralNetwork:
     """Wrapper class to reconstruct ACOR neural network from saved weights."""
