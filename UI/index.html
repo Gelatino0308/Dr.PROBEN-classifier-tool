@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. PROBEN | Landing Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <main>
+        <div>
+            <img src="assets/Logo.png" alt="Dr.PROBEN logo" height="350" width="350">
+            <h1 class="header-text">Dr. PROBEN</h1>
+        </div>
+        <div>
+            <button class="theme-diabetes main-text" onclick="navigateToDisease('diabetes')">Diabetes</button>
+            <button class="theme-heart main-text" onclick="navigateToDisease('heart')">Heart Disease</button>
+            <button class="theme-cancer main-text" onclick="navigateToDisease('cancer')">Breast Cancer</button>
+            <a href="about.html"><button class="style-about">About The App</button></a>
+        </div>
+    </main>
+
+    <script>
+        let pendingDisease = null;
+
+        function navigateToDisease(disease) {
+            const skipModal = sessionStorage.getItem('drproben_skip_landing') === '1';
+            if (skipModal) {
+                sessionStorage.setItem('selectedDisease', disease);
+                window.location.href = 'singlePrediction.html';
+                return;
+            }
+            openLandingModal(disease);
+        }
+
+        function openLandingModal(disease) {
+            pendingDisease = disease;
+
+            Swal.fire({
+                html: `
+                    <div class="modal-card figma-modal">
+                        <div class="modal-warning">
+                            <img src="assets/vector.svg" alt="Warning" class="modal-icon-img" width="24" height="24">
+                            <h2 class="modal-title">Disclaimer!</h2>
+                        </div>
+                        <div class="modal-divider"></div>
+                        <div class="modal-message">
+                            <div class="modal-description">
+                                <p>This tool serves as guide for the decision-making of medical professionals such as doctors and specialists. This is <strong>NOT A DIAGNOSIS</strong>. Do not treat it as such.</p>
+                                <p>Dr. PROBEN's outputs should not be considered, interpreted, or used as a substitute for professional medical advice or diagnosis by a qualified healthcare provider.</p>
+                            </div>
+                        </div>
+                        <div class="modal-consent">
+                            <input type="checkbox" id="modal-dont-show">
+                            <label for="modal-dont-show">Don't show again</label>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn-link" onclick="Swal.close(); proceedFromLandingModal();">Yes, I understand.</button>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCloseButton: false,
+                allowOutsideClick: true,
+                allowEscapeKey: true,
+                customClass: {
+                    popup: 'swal-custom-popup',
+                    htmlContainer: 'swal-html-container'
+                },
+                buttonsStyling: false,
+                didOpen: () => {
+                    // Focus on the custom button
+                    const customBtn = document.querySelector('.modal-actions .btn-link');
+                    if (customBtn) customBtn.focus();
+                }
+            });
+        }
+
+        function proceedFromLandingModal() {
+            if (!pendingDisease) return;
+            const dontShow = document.getElementById('modal-dont-show')?.checked;
+            if (dontShow) {
+                sessionStorage.setItem('drproben_skip_landing', '1');
+            }
+            sessionStorage.setItem('selectedDisease', pendingDisease);
+            window.location.href = 'singlePrediction.html';
+        }
+    </script>
+</body>
+</html>

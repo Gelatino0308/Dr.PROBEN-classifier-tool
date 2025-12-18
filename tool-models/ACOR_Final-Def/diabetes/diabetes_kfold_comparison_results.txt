@@ -1,0 +1,105 @@
+Diabetes Classification - Baseline ACOR vs Hybrid ACOR-LM
+K-Fold Cross-Validation Comparison
+======================================================================
+Architecture: 8-6-1 (Total weights: 61)
+Number of folds: 4
+Runs per fold per algorithm: 50
+Loss Threshold: Computed post-hoc per fold from baseline's average final loss
+Penalty for runs not reaching threshold: 101
+
+PER-FOLD LOSS THRESHOLDS
+======================================================================
+  Fold 1: 1.431568
+  Fold 2: 1.511065
+  Fold 3: 1.501497
+  Fold 4: 1.445812
+  Average: 1.472485 ± 0.034336
+
+PER-FOLD RESULTS
+======================================================================
+
+Fold 1 (Threshold: 1.431568):
+  Baseline ACOR:
+    Accuracy:          0.6297
+    Precision:         0.7147
+    Recall:            0.7254
+    F1-Score:          0.7138
+    Convergence Speed: 56.6
+    Loss:              1.431568
+  Hybrid ACOR-LM:
+    Accuracy:          0.7134
+    Precision:         0.7572
+    Recall:            0.8246
+    F1-Score:          0.7893
+    Convergence Speed: 0.1
+    Loss:              0.384039
+
+Fold 2 (Threshold: 1.511065):
+  Baseline ACOR:
+    Accuracy:          0.6567
+    Precision:         0.7300
+    Recall:            0.7586
+    F1-Score:          0.7396
+    Convergence Speed: 56.6
+    Loss:              1.511065
+  Hybrid ACOR-LM:
+    Accuracy:          0.7756
+    Precision:         0.8024
+    Recall:            0.8699
+    F1-Score:          0.8346
+    Convergence Speed: 0.0
+    Loss:              0.433067
+
+Fold 3 (Threshold: 1.501497):
+  Baseline ACOR:
+    Accuracy:          0.6442
+    Precision:         0.7397
+    Recall:            0.7168
+    F1-Score:          0.7201
+    Convergence Speed: 56.6
+    Loss:              1.501497
+  Hybrid ACOR-LM:
+    Accuracy:          0.7762
+    Precision:         0.8378
+    Recall:            0.8147
+    F1-Score:          0.8258
+    Convergence Speed: 0.1
+    Loss:              0.416496
+
+Fold 4 (Threshold: 1.445812):
+  Baseline ACOR:
+    Accuracy:          0.6356
+    Precision:         0.7283
+    Recall:            0.7147
+    F1-Score:          0.7139
+    Convergence Speed: 54.5
+    Loss:              1.445812
+  Hybrid ACOR-LM:
+    Accuracy:          0.7331
+    Precision:         0.7781
+    Recall:            0.8258
+    F1-Score:          0.8011
+    Convergence Speed: 0.2
+    Loss:              0.412063
+
+
+OVERALL RESULTS (Mean ± Std)
+======================================================================
+
+Baseline ACOR:
+  Accuracy: 0.6415 ± 0.0654
+  Precision: 0.7282 ± 0.0592
+  Recall: 0.7289 ± 0.1198
+  F1_score: 0.7218 ± 0.0655
+  Convergence Speed: 56.1 ± 50.2
+  Success Rate: 44.5% (89/200)
+  Loss: 1.472485 ± 0.286328
+
+Hybrid ACOR-LM:
+  Accuracy: 0.7496 ± 0.0333
+  Precision: 0.7939 ± 0.0347
+  Recall: 0.8338 ± 0.0304
+  F1_score: 0.8127 ± 0.0234
+  Convergence Speed: 0.1 ± 0.6
+  Success Rate: 100.0% (200/200)
+  Loss: 0.411416 ± 0.023088

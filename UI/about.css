@@ -1,0 +1,299 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    font-family: Poppins, 'Times New Roman', Times, serif;
+    background-color: #EFEFEF;
+    color: #1E1E1E;
+}
+
+header {
+    padding: 30px 30px 0 40px;
+}
+
+main {
+    display: flex;
+    justify-content: space-around;
+    padding-inline: 40px;
+}
+
+button {
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+}
+
+header h1 {
+    font-weight: bold;
+    font-size: 60px;
+    display: flex;
+    justify-self: center;
+}
+
+.tool-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 45%;
+    gap: 20px;
+}
+
+.tool-container-section h2 {
+    font-size: 30px;
+}
+
+.tool-container-section p {
+    font-size: 20px;
+    text-indent: 4ch;
+}
+
+.model-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.model-info h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.model-info-section h3 {
+    font-size: 25px;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.model-info-section ul {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.model-info-section ul li span {
+    font-weight: bold;
+}
+
+.model-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Mobile responsiveness - Media Queries */
+
+/* Large tablets and small desktops */
+@media (max-width: 1024px) {
+    header {
+        padding: 25px 25px 0 30px;
+    }
+    
+    header h1 {
+        font-size: 50px;
+    }
+    
+    .tool-container-section h2 {
+        font-size: 26px;
+    }
+    
+    .tool-container-section p {
+        font-size: 18px;
+    }
+    
+    .model-container h2 {
+        font-size: 26px;
+    }
+    
+    .model-info-section h3 {
+        font-size: 22px;
+    }
+    
+    .model-info-section ul {
+        font-size: 18px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px;
+    }
+    
+    header {
+        padding: 20px 20px 0 20px;
+        text-align: center;
+    }
+    
+    header h1 {
+        font-size: 40px;
+        justify-content: center;
+    }
+    
+    main {
+        gap: 30px;
+        padding: 0 10px;
+    }
+    
+    .tool-container {
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+    }
+    
+    .tool-container section {
+        width: 90%;
+    }
+    
+    .tool-container-section h2 {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .tool-container-section p {
+        font-size: 16px;
+        text-align: justify;
+        line-height: 1.5;
+    }
+    
+    .model-container {
+        padding: 0 10px;
+    }
+    
+    .model-container h2 {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .model-info {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .model-info section {
+        width: 100%;
+    }
+    
+    .model-info-section h3 {
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .model-info-section ul {
+        font-size: 16px;
+        line-height: 1.4;
+        padding-left: 20px;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    
+    header {
+        padding: 15px 15px 0 15px;
+    }
+    
+    header h1 {
+        font-size: 32px;
+        line-height: 1.1;
+    }
+    
+    main {
+        gap: 25px;
+        padding: 0 5px;
+    }
+    
+    button {
+        font-size: 20px;
+    }
+    
+    .tool-container {
+        gap: 20px;
+    }
+    
+    .tool-container section {
+        width: 95%;
+    }
+    
+    .tool-container-section h2 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+    
+    .tool-container-section p {
+        font-size: 14px;
+        text-indent: 2ch;
+        line-height: 1.4;
+    }
+    
+    .model-container {
+        padding: 0 5px;
+    }
+    
+    .model-container h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .model-info {
+        gap: 15px;
+    }
+    
+    .model-info-section h3 {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+    
+    .model-info-section ul {
+        font-size: 14px;
+        line-height: 1.3;
+        padding-left: 15px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 320px) {
+    header h1 {
+        font-size: 28px;
+    }
+    
+    .tool-container-section h2 {
+        font-size: 18px;
+    }
+    
+    .tool-container-section p {
+        font-size: 13px;
+        text-indent: 1ch;
+    }
+    
+    .model-container h2 {
+        font-size: 18px;
+    }
+    
+    .model-info-section h3 {
+        font-size: 16px;
+    }
+    
+    .model-info-section ul {
+        font-size: 13px;
+        padding-left: 12px;
+    }
+    
+    button {
+        font-size: 18px;
+    }
+}
