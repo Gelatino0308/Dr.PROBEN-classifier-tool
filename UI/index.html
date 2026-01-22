@@ -29,6 +29,9 @@
         let pendingDisease = null;
 
         function navigateToDisease(disease) {
+            // Clear any previous mode selection when coming from home page
+            sessionStorage.removeItem('selectedMode');
+            
             const skipModal = sessionStorage.getItem('drproben_skip_landing') === '1';
             if (skipModal) {
                 sessionStorage.setItem('selectedDisease', disease);

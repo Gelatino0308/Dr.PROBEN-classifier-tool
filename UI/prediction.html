@@ -64,14 +64,36 @@
                 <section class="result-section">
                     <h3>Class Prediction Results:</h3>
                     <div id="result" class="result">
-                        <h1>RESULT</h1>
-                        <p>Description will appear here after prediction.</p>
-                        <div id="chartDetails">
-                            <div class="chart-container">
-                                <canvas id="doughnutChart"></canvas>
-                                <div class="chart-text">
-                                    <span id="percentText">--%</span>
-                                    <span id="chartLabel">Class Probability</span>
+                        <!-- Placeholder content - shows when no results -->
+                        <div class="result-placeholder" id="resultPlaceholder">
+                            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 11H15M9 15H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+                                <circle cx="12" cy="12" r="9" stroke="white" stroke-width="2" stroke-dasharray="2 2" opacity="0.3"/>
+                            </svg>
+                            <p>Results will appear here after prediction</p>
+                        </div>
+                        
+                        <!-- Actual results content - hidden by default -->
+                        <div class="result-content" id="resultContent" style="display: none;">
+                            <h1>RESULT</h1>
+                            <p>Description will appear here after prediction.</p>
+                            <div id="chartDetails">
+                                <div class="chart-container">
+                                    <canvas id="doughnutChart"></canvas>
+                                    <div class="chart-text">
+                                        <span id="percentText">--%</span>
+                                        <span id="chartLabel">Class Probability</span>
+                                    </div>
+                                </div>
+                                <div class="chart-legend" id="chartLegend">
+                                    <div class="legend-item legend-positive">
+                                        <div class="legend-color" style="background-color: #ffffff;"></div>
+                                        <span class="legend-label">Positive Class</span>
+                                    </div>
+                                    <div class="legend-item legend-negative">
+                                        <div class="legend-color" style="background-color: #008042;"></div>
+                                        <span class="legend-label">Negative Class</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

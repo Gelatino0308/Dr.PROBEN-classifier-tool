@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveClass: 'DIABETIC',
             negativeClass: 'NON-DIABETIC',
             positiveDesc: "Diabetic means the person has diabetes, a chronic disease that affects how your body turns food into energy. It occurs when your pancreas doesn't make enough insulin or your cells don't respond to insulin properly.",
-            negativeDesc: 'Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces.',
+            negativeDesc: 'Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose.',
             attributes: [
                 { id: 'pregnancies', label: 'Number of Pregnancies', placeholder: '0', min: '0', type: 'number', 
                     info: 'If you have been pregnant twice, you would enter "2." If you have never been pregnant, you would enter "0."' 
@@ -67,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
             batchEndpoint: '/api/predict/heart/batch',
             positiveClass: 'POSITIVE',
             negativeClass: 'NEGATIVE',
-            positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally.",
-            negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body.',
+            positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
+            negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
             attributes: [
                 { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number', info: 'This is your current age.' },
                 { id: 'sex', label: 'Sex', type: 'radio', options: [{ value: '1', label: 'Male' }, { value: '0', label: 'Female' }], info: 'This refers to your biological sex.' },
@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
             batchEndpoint: '/api/predict/cancer/batch',
             positiveClass: 'MALIGNANT',
             negativeClass: 'BENIGN',
-            positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body.",
-            negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body.',
+            positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
+            negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
                 { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Degree of cell clustering.' },
                 { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Consistency in cell sizes.' },
@@ -107,21 +107,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Initialize page
+    // Disease information content for modals
+    const diseaseInfoContent = {
+        diabetes: {
+            title: 'Diabetes',
+            content: `
+                <p>This data is available from a general practitioner through a standard medical check-up, blood tests (like an Oral Glucose Tolerance Test), and your patient history.</p>
+                <p>This predictor uses your actual, raw test results (ex. glucose level in mg/dL), not a graded scale.</p>
+                <p class="citation">Smith, J.W., et al. (1988). Pima Indians Diabetes Database. UCI Machine Learning Repository</p>
+            `,
+            buttonColor: '#00BF63'
+        },
+        heart: {
+            title: 'Heart',
+            content: `
+                <p>The information needed here must come from a comprehensive cardiac exam by a cardiologist, which includes blood tests, a physical exam, and a cardiac stress test.</p>
+                <p>The model uses a mix of direct measurements (like blood pressure) and categories defined by your doctor (like chest pain type). Use the exact values from your medical report.</p>
+                <p class="citation">Janosi, A., et al. (1988). Heart Disease Data Set. UCI Machine Learning Repository.</p>
+            `,
+            buttonColor: '#DF6565'
+        },
+        cancer: {
+            title: 'Cancer',
+            content: `
+                <p>These values are highly specialized and can only be found in a pathology report after a fine-needle aspiration (FNA) biopsy. You must get this report from your oncologist or pathologist.</p>
+                <p>The 1 to 10 scale for these features was originally developed by Dr. William H. Wolberg, a physician and one of the researchers. He introduced the system by personally assigning each feature an integer value ranging from 1 to 10.</p>
+                <p>According to his system, a value of 1 represented a state closest to benign (non-cancerous), while a value of 10 represented the most anaplastic (a severe form of malignant) state.</p>
+                <p class="citation">Wolberg, W.H., & Mangasarian, O.L. (1990). Wisconsin Breast Cancer Database. UCI Machine Learning Repository.</p>
+            `,
+            buttonColor: '#0097B2'
+        }
+    };
+
     function initializePage() {
+        // Check for stored disease and mode from sessionStorage
         const storedDisease = sessionStorage.getItem('selectedDisease');
+        const storedMode = sessionStorage.getItem('selectedMode');
+        
         if (storedDisease && diseaseConfigs[storedDisease]) {
             currentDisease = storedDisease;
-            sessionStorage.removeItem('selectedDisease');
+        }
+        
+        if (storedMode && (storedMode === 'single' || storedMode === 'batch')) {
+            currentMode = storedMode;
         }
 
         updatePageContent(currentDisease);
         setupEventListeners();
         initializeSinglePrediction();
         initializeBatchPrediction();
+        
+        // Show the correct mode section
+        switchMode(currentMode);
+        
+        // Add beforeunload event listener to warn about unsaved data
+        window.addEventListener('beforeunload', handleBeforeUnload);
     }
 
-    // Setup event listeners
     function setupEventListeners() {
         // Segment control buttons
         document.querySelectorAll('.segment-button').forEach(button => {
@@ -134,9 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Switch between single and batch mode
     function switchMode(mode) {
         currentMode = mode;
+    
+        // Store current mode in sessionStorage
+        sessionStorage.setItem('selectedMode', mode);
         
         // Update segment control UI
         document.querySelectorAll('.segment-button').forEach(btn => {
@@ -149,10 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('batchPredictionSection').classList.toggle('active', mode === 'batch');
     }
 
-    // Update page content based on disease
     function updatePageContent(disease) {
         currentDisease = disease;
         const config = diseaseConfigs[disease];
+        
+        // Store current disease in sessionStorage
+        sessionStorage.setItem('selectedDisease', disease);
         
         // Update title
         document.getElementById('diseaseTitle').textContent = config.name;
@@ -169,8 +215,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Back button functionality
     window.goBack = function() {
+        // Clear sessionStorage when intentionally leaving the page
+        sessionStorage.removeItem('selectedDisease');
+        sessionStorage.removeItem('selectedMode');
         window.location.href = 'index.html';
     };
+
+    function handleBeforeUnload(e) {
+        e.preventDefault();
+        e.returnValue = ''; // Chrome requires returnValue to be set
+        return ''; // Some browsers show this message
+        
+    }
 
     
     
@@ -217,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 animation: {
                     duration: 0,
                     animateRotate: true,
-                    animateScale: false
+                    animateScale: false,
                 },
                 plugins: {
                     legend: { display: false },
@@ -230,9 +286,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const config = diseaseConfigs[currentDisease];
 
                                 if (dataIndex === 0) {
-                                    return `${config.positiveClass}: ${value.toFixed(2)}%`;
+                                    return `${config.positiveClass}: ${Math.round(value)}%`;
                                 } else {
-                                    return `${config.negativeClass}: ${value.toFixed(2)}%`;
+                                    return `${config.negativeClass}: ${Math.round(value)}%`;
                                 }
                             }
                         }
@@ -247,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const chart = new Chart(document.getElementById('doughnutChart'), config);
 
-        // Update chart colors based on disease theme
         function updateChartColors(disease) {
             const themeColors = {
                 diabetes: ['#ffffff', '#008042'],
@@ -257,6 +312,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
             chart.data.datasets[0].backgroundColor = themeColors[disease];
             chart.update('none');
+            
+            updateCustomLegend(disease);
+            updateLegendColors(disease);
+        }
+
+        function updateCustomLegend(disease) {
+            const config = diseaseConfigs[disease];
+            const state = diseaseStates[disease];
+            const legendContainer = document.getElementById('chartLegend');
+            
+            if (!legendContainer) return;
+            
+            // Update legend labels with current disease class names
+            const legendPositive = legendContainer.querySelector('.legend-positive .legend-label');
+            const legendNegative = legendContainer.querySelector('.legend-negative .legend-label');
+            
+            if (legendPositive && legendNegative) {
+                // Check if we have result data with percentage
+                if (state.singleResultData && typeof state.singleResultData.percentage !== 'undefined') {
+                    const percentage = state.singleResultData.percentage;
+                    const prediction = state.singleResultData.prediction;
+                    
+                    // Calculate percentages based on prediction
+                    let positivePercent, negativePercent;
+                    if (prediction === 1) {
+                        // Positive class was predicted
+                        positivePercent = Math.round(percentage);
+                        negativePercent = Math.round(100 - percentage);
+                    } else {
+                        // Negative class was predicted
+                        negativePercent = Math.round(percentage);
+                        positivePercent = Math.round(100 - percentage);
+                    }
+                    
+                    legendPositive.textContent = `${config.positiveClass}: ${positivePercent}%`;
+                    legendNegative.textContent = `${config.negativeClass}: ${negativePercent}%`;
+                } else {
+                    // No result data, show class names only
+                    legendPositive.textContent = config.positiveClass;
+                    legendNegative.textContent = config.negativeClass;
+                }
+            }
+        }
+
+        // Function to update legend colors based on theme
+        function updateLegendColors(disease) {
+            const themeColors = {
+                diabetes: ['#ffffff', '#008042'],
+                heart: ['#ffffff', '#651515'],
+                cancer: ['#ffffff', '#073056']
+            };
+            
+            const colors = themeColors[disease];
+            const legendPositive = document.querySelector('.legend-positive .legend-color');
+            const legendNegative = document.querySelector('.legend-negative .legend-color');
+            
+            if (legendPositive && legendNegative) {
+                legendPositive.style.backgroundColor = colors[0];
+                legendNegative.style.backgroundColor = colors[1];
+            }
         }
 
         // Handle form submission
@@ -310,14 +425,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const result = await response.json();
 
-                // Store result in state
-                diseaseStates[currentDisease].singleResultData = result;
+                console.log('API Response:', result); // Debug log
 
-                // Display result
-                displayResult.style.display = 'flex';
-                const resultElement = displayResult.querySelector('h1');
-                const descElement = displayResult.querySelector('p');
+                // Store result
+                diseaseStates[currentDisease].singleResultData = {
+                    prediction: result.prediction,
+                    percentage: result.percentage
+                };
 
+                // Hide placeholder and show results
+                document.getElementById('resultPlaceholder').style.display = 'none';
+                document.getElementById('resultContent').style.display = 'flex';
+                
+                const resultElement = document.querySelector('#resultContent h1');
+                const descElement = document.querySelector('#resultContent p');
+
+                // Display the predicted class name and description
                 if (result.prediction === 1) {
                     resultElement.textContent = config.positiveClass;
                     descElement.textContent = config.positiveDesc;
@@ -326,11 +449,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     descElement.textContent = config.negativeDesc;
                 }
 
-                // Update chart
-                percentage = result.probability;
-                percentText.textContent = `${percentage.toFixed(2)}%`;
-                chart.data.datasets[0].data = [percentage, 100 - percentage];
-                chart.update('none');
+                // Update center percentage - use result.percentage which is already 0-100
+                percentText.textContent = `${Math.round(result.percentage)}%`;
+                
+                // Calculate chart percentages
+                // result.percentage is the confidence (0-100) of whichever class was predicted
+                let positivePercent, negativePercent;
+                
+                if (result.prediction === 1) {
+                    // Positive class was predicted
+                    // So result.percentage = confidence of positive class
+                    positivePercent = result.percentage;
+                    negativePercent = 100 - result.percentage;
+                } else {
+                    // Negative class was predicted (prediction === 0)
+                    // So result.percentage = confidence of negative class
+                    negativePercent = result.percentage;
+                    positivePercent = 100 - result.percentage;
+                }
+                
+                console.log('Chart data - Positive:', positivePercent, 'Negative:', negativePercent); // Debug log
+                
+                // Update chart - array is ALWAYS [positive%, negative%]
+                chart.data.datasets[0].data = [positivePercent, negativePercent];
+                chart.update('active');
+                
+                // Update legend with both percentages
+                updateCustomLegend(currentDisease);
 
             } catch (error) {
                 console.error('Prediction error:', error);
@@ -365,15 +510,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }, 0);
 
-            displayResult.style.display = 'none';
+            // Show placeholder and hide results
+            document.getElementById('resultPlaceholder').style.display = 'flex';
+            document.getElementById('resultContent').style.display = 'none';
+            
             percentText.textContent = '--%';
             chart.data.datasets[0].data = [0, 100];
             chart.update('none');
+            
+            // Reset legend to show class names only
+            updateCustomLegend(currentDisease);
         });
 
         // Expose functions for global access
         window.singlePrediction = {
             updateChartColors,
+            updateCustomLegend,
+            updateLegendColors,
             chart
         };
     }
@@ -479,6 +632,45 @@ document.addEventListener('DOMContentLoaded', () => {
             placement: 'right',
             arrow: true,
             maxWidth: 300
+        });
+
+        // Re-attach event listener for info icon after form update
+        const infoIcon = document.getElementById('infoIcon');
+        if (infoIcon) {
+            // Remove any existing listeners by cloning and replacing
+            const newInfoIcon = infoIcon.cloneNode(true);
+            infoIcon.parentNode.replaceChild(newInfoIcon, infoIcon);
+            
+            // Add new event listener
+            newInfoIcon.addEventListener('click', function() {
+                showDiseaseInfoModal(currentDisease);
+            });
+        }
+
+        // Update chart colors and legend when form updates (disease changes)
+        if (window.singlePrediction) {
+            window.singlePrediction.updateChartColors(currentDisease);
+        }
+    }
+
+    function showDiseaseInfoModal(disease) {
+        const info = diseaseInfoContent[disease];
+        
+        Swal.fire({
+            html: `
+                <div class="info-modal-content">
+                    <h2>${info.title}</h2>
+                    <div>${info.content}</div>
+                </div>
+            `,
+            confirmButtonText: 'I understand',
+            confirmButtonColor: info.buttonColor,
+            customClass: {
+                popup: 'info-modal',
+                confirmButton: 'info-modal-button'
+            },
+            showCloseButton: false,
+            focusConfirm: false
         });
     }
 
