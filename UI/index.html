@@ -32,7 +32,7 @@
             const skipModal = sessionStorage.getItem('drproben_skip_landing') === '1';
             if (skipModal) {
                 sessionStorage.setItem('selectedDisease', disease);
-                window.location.href = 'singlePrediction.html';
+                window.location.href = 'prediction.html';
                 return;
             }
             openLandingModal(disease);
@@ -88,7 +88,7 @@
                 sessionStorage.setItem('drproben_skip_landing', '1');
             }
             sessionStorage.setItem('selectedDisease', pendingDisease);
-            window.location.href = 'singlePrediction.html';
+            window.location.href = 'prediction.html';
         }
     </script>
 </body>

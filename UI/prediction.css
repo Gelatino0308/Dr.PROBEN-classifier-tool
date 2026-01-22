@@ -1,0 +1,217 @@
+/* Prediction Page Specific Styles - Only new elements */
+
+/* Navigation modifications */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Back Button - Match existing button styling */
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px 20px;
+    background-color: white;
+    border: none;
+    border-radius: 25px;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.back-button:hover {
+    opacity: 0.8;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.back-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Theme-specific back button colors */
+.theme-diabetes .back-button {
+    color: #00BF63;
+}
+
+.theme-heart .back-button {
+    color: #DF6565;
+}
+
+.theme-cancer .back-button {
+    color: #0097B2;
+}
+
+/* Segment Control - Rounded pill design */
+.segment-control {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    padding: 6px;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.segment-button {
+    padding: 8px 24px;
+    background-color: transparent;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.segment-button.active {
+    background-color: white;
+    color: #333;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.segment-button:hover:not(.active) {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Theme-specific segment button active colors */
+.theme-diabetes .segment-button.active {
+    color: #00BF63;
+}
+
+.theme-heart .segment-button.active {
+    color: #DF6565;
+}
+
+.theme-cancer .segment-button.active {
+    color: #0097B2;
+}
+
+/* Brand link styling */
+.brand-link {
+    text-decoration: none;
+    color: inherit;
+    font-size: 36px;
+    font-weight: bold;
+    transition: opacity 0.3s ease;
+}
+
+.brand-link:hover {
+    opacity: 0.8;
+}
+
+/* Disease Title */
+.disease-title {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    margin: 20px 0;
+}
+
+/* Prediction Mode Sections */
+.prediction-mode {
+    display: none;
+}
+
+.prediction-mode.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 10px;
+    }
+
+    .back-button {
+        align-self: flex-start;
+        font-size: 14px;
+        padding: 6px 16px;
+        border-radius: 20px;
+    }
+
+    .segment-control {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .segment-button {
+        flex: 1;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .brand-link {
+        font-size: 28px;
+    }
+
+    .disease-title {
+        font-size: 24px;
+        margin: 15px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-button {
+        font-size: 13px;
+        padding: 5px 12px;
+    }
+
+    .segment-button {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .brand-link {
+        font-size: 24px;
+    }
+
+    .disease-title {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 320px) {
+    .back-button {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+
+    .segment-button {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .brand-link {
+        font-size: 20px;
+    }
+
+    .disease-title {
+        font-size: 18px;
+    }
+}
