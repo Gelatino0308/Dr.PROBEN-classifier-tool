@@ -220,31 +220,47 @@ def predict_diabetes_endpoint():
         # Extract values in correct order for diabetes
         raw_values = [
             float(data['pregnancies']),
-            float(data['plasma']),      # Glucose
-            float(data['BP']),           # BloodPressure
-            float(data['skin']),         # SkinThickness
+            float(data['plasma']),
+            float(data['BP']),
+            float(data['skin']),
             float(data['insulin']),
             float(data['BMI']),
-            float(data['pedigree']),     # DiabetesPedigreeFunction
+            float(data['pedigree']),
             float(data['age'])
         ]
         
-        # Prepare input (no preprocessing - model scaler handles it)
+        # Prepare input
         X = prepare_diabetes_input(raw_values)
         
-        # Make prediction
-        prediction = model.predict(X)[0]
-        
-        # Get probability
+        # Get probability for class 1 (which is actually NON-DIABETIC in preprocessed data)
         if hasattr(model, 'predict_proba'):
-            probability = model.predict_proba(X)[0][1]
+            prob_class_1 = model.predict_proba(X)[0][1]
         else:
-            probability = float(prediction)
+            prediction = model.predict(X)[0]
+            prob_class_1 = float(prediction)
+        
+        # INVERSION FIX: The preprocessed data has inverted labels
+        # In diabetes1.dat: [1,0] = class 0 = NON-DIABETIC, [0,1] = class 1 = DIABETIC
+        # But standard: class 0 = NON-DIABETIC, class 1 = DIABETIC
+        # So we need to invert the probability
+        prob_diabetic = 1 - prob_class_1  # True probability of DIABETIC class
+        
+        # Determine prediction based on inverted probability
+        # If prob_diabetic > 0.5, predict DIABETIC (1), else NON-DIABETIC (0)
+        final_prediction = 1 if prob_diabetic > 0.5 else 0
+        
+        # Calculate percentage for the predicted class (always >= 50%)
+        if final_prediction == 1:
+            # Predicted DIABETIC
+            final_percentage = round(prob_diabetic * 100)
+        else:
+            # Predicted NON-DIABETIC
+            final_percentage = round((1 - prob_diabetic) * 100)
         
         result = {
-            'prediction': int(prediction),
-            'probability': float(probability),
-            'percentage': round(float(probability * 100))
+            'prediction': final_prediction,  # 0 = NON-DIABETIC, 1 = DIABETIC (corrected)
+            'probability': float(prob_diabetic),  # Corrected probability of DIABETIC
+            'percentage': final_percentage  # Percentage of predicted class (>= 50)
         }
         
         return jsonify(result)
@@ -284,19 +300,26 @@ def predict_heart_endpoint():
         # Expand to 35 features
         X = prepare_heart_input(raw_values)
         
-        # Make prediction
-        prediction = model.predict(X)[0]
-        
-        # Get probability
+        # Get probability for class 1 (positive/heart disease)
         if hasattr(model, 'predict_proba'):
-            probability = model.predict_proba(X)[0][1]
+            prob_class_1 = model.predict_proba(X)[0][1]
         else:
-            probability = float(prediction)
+            prediction = model.predict(X)[0]
+            prob_class_1 = float(prediction)
+        
+        # Determine prediction based on probability
+        final_prediction = 1 if prob_class_1 > 0.5 else 0
+        
+        # Calculate percentage for the predicted class (always >= 50%)
+        if final_prediction == 1:
+            final_percentage = round(prob_class_1 * 100)
+        else:
+            final_percentage = round((1 - prob_class_1) * 100)
         
         result = {
-            'prediction': int(prediction),
-            'probability': float(probability),
-            'percentage': round(float(probability * 100))
+            'prediction': final_prediction,
+            'probability': float(prob_class_1),
+            'percentage': final_percentage
         }
         
         return jsonify(result)
@@ -329,21 +352,28 @@ def predict_cancer_endpoint():
             float(data['mitoses'])
         ]
         
-        # Prepare input (no preprocessing - model scaler handles it)
+        # Prepare input
         X = prepare_cancer_input(raw_values)
         
-        # Make prediction
-        prediction = model.predict(X)[0]
-        
-        # Get probability
+        # Get probability for class 1 (positive/malignant)
         if hasattr(model, 'predict_proba'):
-            probability = model.predict_proba(X)[0][1]
+            prob_class_1 = model.predict_proba(X)[0][1]
         else:
-            probability = float(prediction)
+            prediction = model.predict(X)[0]
+            prob_class_1 = float(prediction)
+        
+        # Determine prediction based on probability
+        final_prediction = 1 if prob_class_1 > 0.5 else 0
+        
+        # Calculate percentage for the predicted class (always >= 50%)
+        if final_prediction == 1:
+            final_percentage = round(prob_class_1 * 100)
+        else:
+            final_percentage = round((1 - prob_class_1) * 100)
         
         result = {
-            'prediction': int(prediction),
-            'percentage': round(float(probability * 100))
+            'prediction': final_prediction,
+            'percentage': final_percentage
         }
         
         return jsonify(result)
@@ -358,7 +388,7 @@ def predict_cancer_endpoint():
 def predict_diabetes_batch_endpoint():
     try:
         model = models['diabetes']
-        preprocessor = preprocessors['diabetes']  # ADD THIS LINE
+        preprocessor = preprocessors['diabetes']
         
         if model is None:
             return jsonify({"error": "Diabetes model not loaded properly"}), 500
@@ -386,19 +416,36 @@ def predict_diabetes_batch_endpoint():
         # Use preprocessor to normalize (handles raw -> 0-1 scaling)
         X, _, msgs = preprocessor.preprocess_batch_matrix(raw_array)
         
-        # Make predictions
-        predictions = model.predict(X).tolist()
-        
-        # Get probabilities
+        # Get probabilities for class 1 (which is actually NON-DIABETIC in preprocessed data)
         if hasattr(model, 'predict_proba'):
-            probabilities = model.predict_proba(X)[:, 1].tolist()
+            prob_class_1_array = model.predict_proba(X)[:, 1]  # Prob of class 1
         else:
-            probabilities = [float(p) for p in predictions]
+            raw_predictions = model.predict(X)
+            prob_class_1_array = raw_predictions.astype(float)
+        
+        # INVERSION FIX: Apply same inversion as single prediction
+        # Invert probabilities: get probability of DIABETIC class
+        prob_diabetic_array = 1 - prob_class_1_array  # True probability of DIABETIC
+        
+        # Determine predictions based on inverted probability
+        corrected_predictions = [1 if prob > 0.5 else 0 for prob in prob_diabetic_array]
+        
+        # Calculate percentages for predicted class (always >= 50%)
+        corrected_percentages = []
+        for i, prediction in enumerate(corrected_predictions):
+            prob_diabetic = prob_diabetic_array[i]
+            if prediction == 1:
+                # Predicted DIABETIC
+                percentage = round(prob_diabetic * 100)
+            else:
+                # Predicted NON-DIABETIC
+                percentage = round((1 - prob_diabetic) * 100)
+            corrected_percentages.append(percentage)
         
         result = {
-            'predictions': [int(p) for p in predictions],
-            'probabilities': probabilities,
-            'messages': msgs + ['Batch prediction completed successfully']
+            'predictions': corrected_predictions,  # Corrected predictions (0 or 1)
+            'probabilities': corrected_percentages,  # Corrected percentages (always >= 50)
+            'messages': msgs + ['Batch prediction completed successfully (labels corrected)']
         }
         
         return jsonify(result)
@@ -444,17 +491,31 @@ def predict_heart_batch_endpoint():
         # Convert to numpy array
         X = np.array(expanded_batch, dtype=float)
         
-        # Make predictions
-        predictions = model.predict(X).tolist()
-        
+        # Get probabilities for class 1 (POSITIVE/HEART DISEASE)
         if hasattr(model, 'predict_proba'):
-            probabilities = model.predict_proba(X)[:, 1].tolist()
+            prob_class_1_array = model.predict_proba(X)[:, 1]
         else:
-            probabilities = [float(p) for p in predictions]
+            raw_predictions = model.predict(X)
+            prob_class_1_array = raw_predictions.astype(float)
+        
+        # Determine predictions based on probability (threshold 0.5)
+        predictions = [1 if prob > 0.5 else 0 for prob in prob_class_1_array]
+        
+        # Calculate percentages for predicted class (always >= 50%)
+        percentages = []
+        for i, prediction in enumerate(predictions):
+            prob_class_1 = prob_class_1_array[i]
+            if prediction == 1:
+                # Predicted POSITIVE (HEART DISEASE)
+                percentage = round(prob_class_1 * 100)
+            else:
+                # Predicted NEGATIVE (NO HEART DISEASE)
+                percentage = round((1 - prob_class_1) * 100)
+            percentages.append(percentage)
         
         result = {
-            'predictions': [int(p) for p in predictions],
-            'probabilities': probabilities,
+            'predictions': predictions,
+            'probabilities': percentages,  # Now returns percentages >= 50
             'messages': ['Batch prediction completed successfully (13 features expanded to 35)']
         }
         
@@ -499,17 +560,31 @@ def predict_cancer_batch_endpoint():
         # Use preprocessor to normalize (handles 1-10 -> 0-1 scaling)
         X, _, msgs = preprocessor.preprocess_batch_matrix(raw_array)
         
-        # Make predictions
-        predictions = model.predict(X).tolist()
-        
+        # Get probabilities for class 1 (MALIGNANT)
         if hasattr(model, 'predict_proba'):
-            probabilities = model.predict_proba(X)[:, 1].tolist()
+            prob_class_1_array = model.predict_proba(X)[:, 1]
         else:
-            probabilities = [float(p) for p in predictions]
+            raw_predictions = model.predict(X)
+            prob_class_1_array = raw_predictions.astype(float)
+        
+        # Determine predictions based on probability (threshold 0.5)
+        predictions = [1 if prob > 0.5 else 0 for prob in prob_class_1_array]
+        
+        # Calculate percentages for predicted class (always >= 50%)
+        percentages = []
+        for i, prediction in enumerate(predictions):
+            prob_class_1 = prob_class_1_array[i]
+            if prediction == 1:
+                # Predicted MALIGNANT
+                percentage = round(prob_class_1 * 100)
+            else:
+                # Predicted BENIGN
+                percentage = round((1 - prob_class_1) * 100)
+            percentages.append(percentage)
         
         result = {
-            'predictions': [int(p) for p in predictions],
-            'probabilities': probabilities,
+            'predictions': predictions,
+            'probabilities': percentages,  # Now returns percentages >= 50
             'messages': msgs + ['Batch prediction completed successfully']
         }
         
