@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 'exang', label: 'Exercise Induced Angina', type: 'radio', options: [{ value: '1', label: 'Yes' }, { value: '0', label: 'No' }], info: 'Chest pain during exercise.' },
                 { id: 'oldpeak', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any', info: 'ST segment depression during exercise.' },
                 { id: 'slope', label: 'Slope of Peak Exercise ST', type: 'dropdown', options: [{ value: '0', label: 'Downsloping' }, { value: '1', label: 'Flat' }, { value: '2', label: 'Upsloping' }], info:'Slope of ST segment on ECG.' },
-                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-4', min: '0', max: '4', type: 'slider', default: '0', info: 'Number of major blood vessels narrowed.' },
+                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'slider', default: '0', info: 'Number of major blood vessels narrowed.' },
                 { id: 'thal', label: 'Thalassemia', type: 'dropdown', options: [{ value: '1', label: 'Normal' }, { value: '2', label: 'Fixed Defect' }, { value: '3', label: 'Reversible Defect' }], info: 'Thallium scan results.' }
             ]
         },
