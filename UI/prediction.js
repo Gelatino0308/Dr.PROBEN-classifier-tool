@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         diabetes: {
             name: 'Diabetes',
             endpoint: '/api/predict/diabetes',
-            batchEndpoint: '/api/predict/diabetes/batch',
             positiveClass: 'DIABETIC',
             negativeClass: 'NON-DIABETIC',
             positiveDesc: "Diabetic means the person has diabetes, a chronic disease that affects how your body turns food into energy. It occurs when your pancreas doesn't make enough insulin or your cells don't respond to insulin properly.",
@@ -39,22 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     info: 'If you have been pregnant twice, you would enter "2." If you have never been pregnant, you would enter "0."' 
                 },
                 { id: 'plasma', label: 'Plasma Glucose Concentration', placeholder: '0 (mg/dL)', min: '0', type: 'number', 
-                    info: 'This measures the amount of sugar in your blood. You will need to get this value from a recent blood test, often called a blood sugar test or glucose test.' 
+                    info: 'This measures the amount of sugar in your blood. You will need to get this value from a recent blood test, often called a blood sugar test or glucose test. Look for a result listed as "Fasting Plasma Glucose" or similar, which is measured in milligrams per deciliter (mg/dL).'
                 },
                 { id: 'BP', label: 'Diastolic Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
-                    info: 'This is the second, or lower, number in a blood pressure reading. A reading is typically written as two numbers, like "120/80."'
+                    info: 'This is the second, or lower, number in a blood pressure reading. A reading is typically written as two numbers, like "120/80." In this example, "80" is the diastolic pressure. You can get this from a recent doctor\'s visit or a home blood pressure monitor.'
                 },
                 { id: 'skin', label: 'Triceps Skin Fold Thickness', placeholder: '0 (mm)', min: '0', type: 'number',
-                    info: 'This value is a way to estimate the amount of body fat by measuring the thickness of a fold of skin and fat on the back of your upper arm.'    
+                    info: 'This value is a way to estimate the amount of body fat by measuring the thickness of a fold of skin and fat on the back of your upper arm. This measurement is usually taken with a special tool called a caliper. You will need to get this value from your doctor.'    
                 },
                 { id: 'insulin', label: '2-Hour Serum Insulin', placeholder: '0 (µU/mL)', min: '0', type: 'number',
-                    info: 'This measures the amount of insulin in your blood specifically two hours after you\'ve taken a glucose tolerance test.'
+                    info: 'This measures the amount of insulin in your blood specifically two hours after you\'ve taken a glucose tolerance test. It shows how well your body processes sugar over time. This value should be obtained from a specific blood test.'
                 },
                 { id: 'BMI', label: 'Body Mass Index', placeholder: '0.0 (kg/m²)', min: '0', type: 'number', step: 'any',
-                    info: 'Your BMI is a value calculated from your weight and height that helps determine if you are at a healthy weight.'
+                    info: 'Your BMI is a value calculated from your weight and height that helps determine if you are at a healthy weight. To find your BMI, you can use an online calculator. Simply enter your height and weight, and the calculator will provide your BMI value. For example, if you weigh 150 lbs and are 5\'5" tall, your BMI is approximately 25.'
                 },
                 { id: 'pedigree', label: 'Diabetes Pedigree Function', placeholder: '0.000', min: '0', type: 'number', step: 'any',
-                    info: 'This is a complex score that quantifies the genetic risk of diabetes based on your family history.'
+                    info: 'This is a complex score that quantifies the genetic risk of diabetes based on your family history. You won\'t have a number for this yourself. This value is typically calculated by the diagnostic tool based on the family history information you provide, such as whether your parents or siblings have diabetes.'
                 },
                 { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number',
                     info:'This is your current age.'
@@ -64,45 +63,120 @@ document.addEventListener('DOMContentLoaded', () => {
         heart: {
             name: 'Heart Disease',
             endpoint: '/api/predict/heart',
-            batchEndpoint: '/api/predict/heart/batch',
             positiveClass: 'POSITIVE',
             negativeClass: 'NEGATIVE',
             positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
             negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
             attributes: [
-                { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number', info: 'This is your current age.' },
-                { id: 'sex', label: 'Sex', type: 'radio', options: [{ value: '1', label: 'Male' }, { value: '0', label: 'Female' }], info: 'This refers to your biological sex.' },
-                { id: 'cp', label: 'Chest Pain Type', type: 'dropdown', options: [{ value: '0', label: 'Asymptomatic' }, { value: '1', label: 'Atypical Angina' }, { value: '2', label: 'Non-anginal Pain' }, { value: '3', label: 'Typical Angina' }], info: 'Common types of chest pain.' },
-                { id: 'trestbps', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number', info: 'This is the top number of your blood pressure reading.' },
-                { id: 'chol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', type: 'number', info: 'This is the amount of total cholesterol in your blood.' },
-                { id: 'fbs', label: 'FBS > 120mg/dL', type: 'radio', options: [{ value: '1', label: 'True' }, { value: '0', label: 'False' }], info: 'Indicates whether fasting blood sugar is greater than 120 mg/dL.' },
-                { id: 'restecg', label: 'Resting ECG Results', type: 'dropdown', options: [{ value: '0', label: 'Normal' }, { value: '1', label: 'ST-T Wave Abnormality' }, { value: '2', label: 'Left Ventricular Hypertrophy' }], info: 'Record of heart electrical activity at rest.' },
-                { id: 'thalach', label: 'Maximum Heart Rate', placeholder: '0', min: '0', type: 'number', info:'Highest heart rate reached during stress test.' },
-                { id: 'exang', label: 'Exercise Induced Angina', type: 'radio', options: [{ value: '1', label: 'Yes' }, { value: '0', label: 'No' }], info: 'Chest pain during exercise.' },
-                { id: 'oldpeak', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any', info: 'ST segment depression during exercise.' },
-                { id: 'slope', label: 'Slope of Peak Exercise ST', type: 'dropdown', options: [{ value: '0', label: 'Downsloping' }, { value: '1', label: 'Flat' }, { value: '2', label: 'Upsloping' }], info:'Slope of ST segment on ECG.' },
-                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'slider', default: '0', info: 'Number of major blood vessels narrowed.' },
-                { id: 'thal', label: 'Thalassemia', type: 'dropdown', options: [{ value: '1', label: 'Normal' }, { value: '2', label: 'Fixed Defect' }, { value: '3', label: 'Reversible Defect' }], info: 'Thallium scan results.' }
+                { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number',
+                    info: 'This is your current age.'
+                },
+                { id: 'sex', label: 'Sex', type: 'radio', 
+                    options: [
+                        { value: '1', label: 'Male' },
+                        { value: '0', label: 'Female' }
+                    ],
+                    info: 'This refers to your biological sex.'
+                },
+                { id: 'cp', label: 'Chest Pain Type', type: 'dropdown', 
+                    options: [
+                        { value: '0', label: 'Asymptomatic' },
+                        { value: '1', label: 'Atypical Angina' },
+                        { value: '2', label: 'Non-anginal Pain' },
+                        { value: '3', label: 'Typical Angina' }
+                    ],
+                    info: 'Common types are:\n• Typical Angina: Chest pain caused by reduced blood flow to the heart\n• Atypical Angina: Chest discomfort that doesn\'t follow typical angina patterns\n• Non-anginal Pain: Chest pain not related to heart conditions\n• Asymptomatic: No chest pain symptoms'
+                },
+                { id: 'trestbps', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
+                    info: 'This is the top number of your blood pressure reading, measured while you are at rest. It is measured in millimeters of mercury (mm Hg).'
+                },
+                { id: 'chol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', type: 'number',
+                    info: 'This is the amount of total cholesterol in your blood. It is measured in milligrams per deciliter (mg/dL).'
+                },
+                { id: 'fbs', label: 'FBS > 120mg/dL', type: 'radio', 
+                    options: [
+                        { value: '1', label: 'True' },
+                        { value: '0', label: 'False' }
+                    ],
+                    info: 'This indicates whether your fasting blood sugar is greater than 120 mg/dL. This is a common threshold for diagnosing prediabetes or diabetes.\n• True: Your fasting blood sugar is greater than 120 mg/dL.\n• False: Your fasting blood sugar is 120 mg/dL or less.'
+                },
+                { id: 'restecg', label: 'Resting ECG Results', type: 'dropdown', 
+                    options: [
+                        { value: '0', label: 'Normal' },
+                        { value: '1', label: 'ST-T Wave Abnormality' },
+                        { value: '2', label: 'Left Ventricular Hypertrophy' }
+                    ],
+                    info: 'This is a record of your heart\'s electrical activity while you are at rest. You will need a recent ECG report.\n• Normal: No significant abnormalities.\n• ST-T Wave Abnormality: Minor changes that could indicate a heart issue.\n• Left Ventricular Hypertrophy (LVH): Thickening of the heart\'s main pumping chamber.'
+                },
+                { id: 'thalach', label: 'Maximum Heart Rate', placeholder: '0', min: '0', type: 'number',
+                    info:'This is the highest heart rate you reached during a stress or exercise test. This measurement is often taken on a treadmill or stationary bike while your heart rate is monitored.'
+                },
+                { id: 'exang', label: 'Exercise Induced Angina', type: 'radio', 
+                    options: [
+                        { value: '1', label: 'Yes' },
+                        { value: '0', label: 'No' }
+                    ],
+                    info: 'This indicates whether you experienced chest pain during physical exercise.\n• Yes: You experienced chest pain during exercise.\n• No: You did not experience chest pain during exercise.'
+                },
+                { id: 'oldpeak', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any',
+                    info: 'This measures the amount of depression in the ST segment of your ECG during exercise, which can be a sign of reduced blood flow to the heart. The value is measured in millimeters.'
+                },
+                { id: 'slope', label: 'Slope of Peak Exercise ST', type: 'dropdown', 
+                    options: [
+                        { value: '0', label: 'Downsloping' },
+                        { value: '1', label: 'Flat' },
+                        { value: '2', label: 'Upsloping' }
+                    ],
+                    info:'Describes the slope of ST segment on your ECG during an exercise stress test.\n• Upsloping: The ST segment goes up.\n• Flat: The ST segment is horizontal.\n• Downsloping: The ST segment goes down. A downsloping or flat slope can be a sign of heart disease.'
+                },
+                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-4', min: '0', max: '4', type: 'slider', default: '0',
+                    info: 'This refers to the number of major blood vessels (0 to 4) that are significantly narrowed as seen in a coronary angiography. This value is provided by a cardiologist.'
+                },
+                { id: 'thal', label: 'Thalassemia', type: 'dropdown', 
+                    options: [
+                        { value: '1', label: 'Normal' },
+                        { value: '2', label: 'Fixed Defect' },
+                        { value: '3', label: 'Reversible Defect' }
+                    ],
+                    info: 'This refers to a type of stress test called a Thallium scan, which assesses blood flow to the heart muscle.\n• Normal: Blood flow to the heart muscle is normal.\n• Fixed Defect: An area of the heart muscle has reduced blood flow at rest and during exercise.\n• Reversible Defect: An area of the heart has reduced blood flow only during exercise, but normal flow at rest.'
+                }
             ]
         },
         cancer: {
             name: 'Breast Cancer',
             endpoint: '/api/predict/cancer',
-            batchEndpoint: '/api/predict/cancer/batch',
             positiveClass: 'MALIGNANT',
             negativeClass: 'BENIGN',
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
-                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Degree of cell clustering.' },
-                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Consistency in cell sizes.' },
-                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Uniformity of cell shapes.' },
-                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Extent of cell adhesion.' },
-                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Average epithelial cell size.' },
-                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Presence of nuclei without cytoplasm.' },
-                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Chromatin texture and appearance.' },
-                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Nucleoli visibility and prominence.' },
-                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', info:'Frequency of cell division.' }
+                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Refers to the degree to which cells are clustered together. Higher thickness values may indicate abnormal cell growth or potential malignancy.' 
+                },
+                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Measures the consistency in cell sizes within the sample. Significant variation in size may suggest the presence of abnormal or cancerous cells.' 
+                },
+                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Evaluates the uniformity of cell shapes. Normal cells generally maintain consistent shapes, while irregular shapes may be indicative of malignancy.' 
+                },
+                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Describes the extent to which cells adhere to one another. Poor adhesion may signify abnormal or invasive cellular behavior.' 
+                },
+                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Represents the average size of individual epithelial cells. Enlarged epithelial cells are often associated with abnormal cellular activity.' 
+                },
+                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Indicates the presence of nuclei without surrounding cytoplasm. A higher count of bare nuclei is commonly observed in malignant samples.' 
+                },
+                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Refers to the texture and appearance of the chromatin within the nucleus. Coarse or uneven chromatin patterns may suggest abnormal or cancerous growth.' 
+                },
+                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Pertains to the visibility and prominence of nucleoli within the nucleus. Prominent or multiple nucleoli are often linked to increased cellular activity, typical of cancerous cells.' 
+                },
+                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                    info:'Measures the frequency of cell division. An elevated mitotic rate reflects rapid cellular proliferation, which may indicate malignant behavior.' 
+                }
             ]
         }
     };
@@ -152,10 +226,15 @@ document.addEventListener('DOMContentLoaded', () => {
             currentMode = storedMode;
         }
 
-        updatePageContent(currentDisease);
-        setupEventListeners();
+        // Initialize single and batch prediction FIRST to expose functions
         initializeSinglePrediction();
         initializeBatchPrediction();
+        
+        // THEN update page content (which calls chart color updates)
+        updatePageContent(currentDisease);
+        
+        // Setup event listeners
+        setupEventListeners();
         
         // Show the correct mode section
         switchMode(currentMode);
@@ -211,6 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update batch prediction table
         updateBatchPredictionTable(config);
+
+        // Update chart colors and legend AFTER singlePrediction is initialized
+        if (window.singlePrediction) {
+            window.singlePrediction.updateChartColors(disease);
+        }
     }
 
     // Back button functionality
@@ -384,9 +468,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentDisease === 'cancer') {
                 const unmodifiedFields = [];
                 config.attributes.forEach(attr => {
-                    const input = document.getElementById(attr.id);
-                    if (input && input.type === 'range' && input.value === '0') {
-                        unmodifiedFields.push(attr.label);
+                    if (attr.type === 'slider') {
+                        const slider = document.getElementById(attr.id);
+                        if (slider && slider.value === '0') {
+                            unmodifiedFields.push(attr.label);
+                        }
                     }
                 });
 
@@ -396,16 +482,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Get form data dynamically
+            // Get form data dynamically - FIXED VERSION
             const formData = {};
             config.attributes.forEach(attr => {
-                const element = document.getElementById(attr.id);
-                if (element) {
-                    if (attr.type === 'radio') {
-                        const selected = document.querySelector(`input[name="${attr.id}"]:checked`);
-                        formData[attr.id] = selected ? parseFloat(selected.value) : null;
-                    } else {
-                        formData[attr.id] = parseFloat(element.value);
+                if (attr.type === 'radio') {
+                    // For radio buttons, get the checked value
+                    const radioInput = document.querySelector(`input[name="${attr.id}"]:checked`);
+                    if (radioInput) {
+                        formData[attr.id] = radioInput.value;
+                    }
+                } else if (attr.type === 'dropdown') {
+                    // For dropdowns, get the selected value
+                    const selectInput = document.getElementById(attr.id);
+                    if (selectInput) {
+                        formData[attr.id] = selectInput.value;
+                    }
+                } else if (attr.type === 'slider') {
+                    // For sliders, get the value
+                    const sliderInput = document.getElementById(attr.id);
+                    if (sliderInput) {
+                        formData[attr.id] = sliderInput.value;
+                    }
+                } else {
+                    // For regular inputs (text, number)
+                    const input = document.getElementById(attr.id);
+                    if (input) {
+                        formData[attr.id] = input.value;
                     }
                 }
             });
@@ -497,6 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const config = diseaseConfigs[currentDisease];
                 config.attributes.forEach(attr => {
                     if (attr.type === 'slider') {
+                        // Reset sliders to default (0)
                         const input = document.getElementById(attr.id);
                         const valueDisplay = input?.nextElementSibling;
                         if (input && valueDisplay) {
@@ -505,6 +608,24 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (input.value === '0') {
                                 valueDisplay.classList.add('slider-unmodified');
                             }
+                        }
+                    } else if (attr.type === 'dropdown') {
+                        // Reset dropdowns to default (first disabled option)
+                        const select = document.getElementById(attr.id);
+                        if (select) {
+                            select.selectedIndex = 0; // Select the "Select an option" default
+                        }
+                    } else if (attr.type === 'radio') {
+                        // Uncheck all radio buttons
+                        const radioInputs = document.querySelectorAll(`input[name="${attr.id}"]`);
+                        radioInputs.forEach(radio => {
+                            radio.checked = false;
+                        });
+                    } else if (attr.type === 'number') {
+                        // Reset number inputs to empty
+                        const input = document.getElementById(attr.id);
+                        if (input) {
+                            input.value = '';
                         }
                     }
                 });
@@ -541,9 +662,14 @@ document.addEventListener('DOMContentLoaded', () => {
         config.attributes.forEach(attr => {
             // Create label
             const label = document.createElement('label');
-            label.htmlFor = attr.id;
+            
+            // Only set htmlFor for input types that have a single matching id
+            // Don't set it for radio buttons since they have multiple inputs with different ids
+            if (attr.type !== 'radio') {
+                label.htmlFor = attr.id;
+            }
+            
             label.textContent = attr.label + ':';
-            label.setAttribute('data-tippy-content', attr.info);
             labelsContainer.appendChild(label);
 
             // Create input wrapper
@@ -554,34 +680,49 @@ document.addEventListener('DOMContentLoaded', () => {
             if (attr.type === 'radio') {
                 const radioGroup = document.createElement('div');
                 radioGroup.className = 'radio-group';
-                attr.options.forEach(option => {
+                
+                attr.options.forEach((option, index) => {
                     const radioOption = document.createElement('div');
                     radioOption.className = 'radio-option';
+                    
                     const input = document.createElement('input');
                     input.type = 'radio';
-                    input.id = `${attr.id}_${option.value}`;
                     input.name = attr.id;
+                    input.id = `${attr.id}_${index}`;  // Unique id for each radio button
                     input.value = option.value;
-                    input.required = true;
+                    
                     const radioLabel = document.createElement('label');
-                    radioLabel.htmlFor = `${attr.id}_${option.value}`;
+                    radioLabel.htmlFor = `${attr.id}_${index}`;  // Match the radio button's unique id
                     radioLabel.textContent = option.label;
+                    
                     radioOption.appendChild(input);
                     radioOption.appendChild(radioLabel);
                     radioGroup.appendChild(radioOption);
                 });
+                
                 wrapper.appendChild(radioGroup);
             } else if (attr.type === 'dropdown') {
                 const select = document.createElement('select');
                 select.id = attr.id;
                 select.className = 'dropdown-input';
                 select.required = true;
+                
+                // Add default disabled option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select an option';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                
+                // Add attribute options
                 attr.options.forEach(option => {
-                    const opt = document.createElement('option');
-                    opt.value = option.value;
-                    opt.textContent = option.label;
-                    select.appendChild(opt);
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.label;
+                    select.appendChild(optionElement);
                 });
+                
                 wrapper.appendChild(select);
             } else if (attr.type === 'slider') {
                 const slider = document.createElement('input');
@@ -591,47 +732,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 slider.min = attr.min;
                 slider.max = attr.max;
                 slider.value = attr.default || '0';
-                slider.required = true;
-
+                slider.step = '1';
+                
                 const valueDisplay = document.createElement('span');
                 valueDisplay.className = 'slider-value';
                 valueDisplay.textContent = slider.value;
+                
+                // Add unmodified class if value is 0
                 if (slider.value === '0') {
                     valueDisplay.classList.add('slider-unmodified');
                 }
-
+                
                 slider.addEventListener('input', function() {
                     valueDisplay.textContent = this.value;
+                    // Remove unmodified class when user changes the value
                     if (this.value !== '0') {
                         valueDisplay.classList.remove('slider-unmodified');
                     } else {
                         valueDisplay.classList.add('slider-unmodified');
                     }
                 });
-
+                
                 wrapper.appendChild(slider);
                 wrapper.appendChild(valueDisplay);
             } else {
+                // Regular number input
                 const input = document.createElement('input');
                 input.type = attr.type;
                 input.id = attr.id;
-                input.placeholder = attr.placeholder;
+                input.placeholder = attr.placeholder || '';
                 input.min = attr.min;
                 input.max = attr.max;
-                input.step = attr.step || '';
+                input.step = attr.step || '1';
                 input.required = true;
+                
                 wrapper.appendChild(input);
             }
 
             inputsContainer.appendChild(wrapper);
         });
 
-        // Initialize tooltips
+        // Initialize tooltips after DOM update
+        document.querySelectorAll('.labels-container label').forEach((label, index) => {
+            const attr = config.attributes[index];
+            if (attr && attr.info) {
+                label.setAttribute('data-tippy-content', attr.info.replace(/\n/g, '<br>'));
+            }
+        });
+
+        // Initialize tippy
         tippy('[data-tippy-content]', {
+            placement: 'top',
             theme: 'light',
-            placement: 'right',
-            arrow: true,
-            maxWidth: 300
         });
 
         // Re-attach event listener for info icon after form update
@@ -645,11 +797,6 @@ document.addEventListener('DOMContentLoaded', () => {
             newInfoIcon.addEventListener('click', function() {
                 showDiseaseInfoModal(currentDisease);
             });
-        }
-
-        // Update chart colors and legend when form updates (disease changes)
-        if (window.singlePrediction) {
-            window.singlePrediction.updateChartColors(currentDisease);
         }
     }
 

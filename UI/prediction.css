@@ -460,3 +460,13 @@ nav {
     align-items: center;
     justify-content: center;
 }
+
+
+
+
+.tippy-tooltip.light-theme {
+    font-size: 1rem;
+    box-shadow: 2px 2px 10px;
+    opacity: 0.9;
+    border-radius: 6px;
+}
