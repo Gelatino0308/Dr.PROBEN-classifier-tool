@@ -46,40 +46,42 @@
 
             Swal.fire({
                 html: `
-                    <div class="modal-card figma-modal">
-                        <div class="modal-warning">
-                            <img src="assets/vector.svg" alt="Warning" class="modal-icon-img" width="24" height="24">
-                            <h2 class="modal-title">Disclaimer!</h2>
+                    <div class="disclaimer-modal-content">
+                        <div class="modal-icon-container">
+                            <img src="assets/Vector.svg">
+                            <h2 class="modal-title-text">Disclaimer!</h2>
                         </div>
-                        <div class="modal-divider"></div>
-                        <div class="modal-message">
-                            <div class="modal-description">
-                                <p>This tool serves as guide for the decision-making of medical professionals such as doctors and specialists. This is <strong>NOT A DIAGNOSIS</strong>. Do not treat it as such.</p>
-                                <p>Dr. PROBEN's outputs should not be considered, interpreted, or used as a substitute for professional medical advice or diagnosis by a qualified healthcare provider.</p>
-                            </div>
+                        <div class="modal-description-text">
+                            <p>This tool serves as a guide for the decision-making of medical professionals such as doctors and specialists. This is <strong>NOT A DIAGNOSIS</strong>. Do not treat it as such.</p>
+                            <p>Dr. PROBEN's outputs should not be considered, interpreted, or used as a substitute for professional medical advice or diagnosis by a qualified healthcare provider.</p>
                         </div>
-                        <div class="modal-consent">
-                            <input type="checkbox" id="modal-dont-show">
-                            <label for="modal-dont-show">Don't show again</label>
-                        </div>
-                        <div class="modal-actions">
-                            <button class="btn-link" onclick="Swal.close(); proceedFromLandingModal();">Yes, I understand.</button>
+                        <div class="modal-checkbox-container">
+                            <input type="checkbox" id="modal-dont-show" class="modal-checkbox">
+                            <label for="modal-dont-show" class="modal-checkbox-label">Don't show this again</label>
                         </div>
                     </div>
                 `,
-                showConfirmButton: false,
-                showCloseButton: false,
+                showCancelButton: false,
+                showConfirmButton: true,
+                confirmButtonText: 'Yes, I understand',
+                confirmButtonColor: '#00BF63',
                 allowOutsideClick: true,
                 allowEscapeKey: true,
                 customClass: {
-                    popup: 'swal-custom-popup',
-                    htmlContainer: 'swal-html-container'
+                    popup: 'disclaimer-popup',
+                    confirmButton: 'disclaimer-confirm-btn'
                 },
-                buttonsStyling: false,
+                width: '600px',
+                padding: '30px',
+                buttonsStyling: true,
                 didOpen: () => {
-                    // Focus on the custom button
-                    const customBtn = document.querySelector('.modal-actions .btn-link');
-                    if (customBtn) customBtn.focus();
+                    // Focus on the confirm button
+                    const confirmBtn = document.querySelector('.disclaimer-confirm-btn');
+                    if (confirmBtn) confirmBtn.focus();
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    proceedFromLandingModal();
                 }
             });
         }

@@ -95,167 +95,201 @@ button {
     transition: all 0.3s ease;
 }
 
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 1000;
+/* ===================================
+   DISCLAIMER MODAL STYLES
+   =================================== */
+
+/* SweetAlert2 Custom Popup */
+.disclaimer-popup {
+    border-radius: 20px !important;
+    font-family: 'Poppins', sans-serif !important;
 }
 
-.modal.hidden {
-    display: none;
-}
-
-.modal-card {
-    background: #ffffff;
-    width: 100%;
-    max-width: 800px;
-    border-radius: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    padding: 50px 0; 
+/* Modal Content Container */
+.disclaimer-modal-content {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-}
-
-.modal-title {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.modal-warning .modal-title {
-    margin: 0;
-    line-height: 24px;
-}
-
-.modal-description {
-    display: block;
-    font-size: 20px;
-    color: #333;
-    text-align: center;
-}
-
-.modal-description p + p {
-    margin-top: 10px;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: center;
-}
-
-.modal-consent {
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: 8px;
-    margin-top: 4px;
-    font-size: 16px;
-}
-
-.btn-secondary {
-    background: #EFEFEF;
-    color: #333;
-}
-
-.btn-secondary:hover {
-    background: #dcdcdc;
-    cursor: pointer;
-}
-
-
-.figma-modal {
     gap: 40px;
 }
 
-.modal-warning {
+/* Warning Icon Container */
+.modal-icon-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* width: 60px;
+    height: 60px; */
+    /* background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%); */
+    border-radius: 50%;
+}
+
+/* Modal Title */
+.modal-title-text {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    text-align: center;
+}
+
+/* Modal Description */
+.modal-description-text {
+    text-align: center;
+    color: #333;
+    line-height: 1.8;
+}
+
+.modal-description-text p {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.modal-description-text p:last-child {
+    margin-bottom: 0;
+}
+
+.modal-description-text strong {
+    color: #d32f2f;
+    font-weight: 700;
+    font-size: 19px;
+}
+
+/* Checkbox Container */
+.modal-checkbox-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
     gap: 10px;
+    margin-top: 10px;
 }
 
-.modal-divider {
-    height: 0;
-    width: 100%;
-    border-top: 2px solid #E5E5E5; 
-}
-
-.modal-message {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 10px;
-    padding: 0 100px;
-}
-
-.modal-icon-img {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-}
-
-.modal-icon-fallback {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-}
-
-.btn-link {
-    background: transparent;
-    border: none;
-    color: #000;
-    font-size: 16px;
-    text-decoration: underline;
-    height: auto; 
-    width: auto;  
-    padding: 0;   
-    box-shadow: none;
-    border-radius: 0; 
-    font-weight: 400; 
-}
-
-.btn-link:hover {
+.modal-checkbox {
+    width: 20px;
+    height: 20px;
     cursor: pointer;
-    opacity: 0.8;
+    accent-color: #00BF63;
 }
 
-
-/* SweetAlert2 Custom Styling for Disclaimer Modal*/
-.swal-custom-popup {
-    padding: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    width: auto !important;
-    max-width: 800px !important;
+.modal-checkbox-label {
+    font-size: 16px;
+    color: #666;
+    cursor: pointer;
+    user-select: none;
 }
 
-.swal-html-container {
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
+/* Confirm Button */
+.disclaimer-confirm-btn {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    border-radius: 25px !important;
+    transition: all 0.3s ease !important;
+    margin: 0;
 }
 
+.disclaimer-confirm-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(0, 191, 99, 0.4) !important;
+}
 
+.swal2-actions {
+    margin-top: 0;
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
 
 @media (max-width: 768px) {
-    .modal-card {
-        padding: 32px 0;
-        border-radius: 24px;
+    .disclaimer-popup {
+        width: 90% !important;
+        padding: 30px 20px !important;
     }
-    .modal-message {
-        padding: 0 24px;
+    
+    .disclaimer-modal-content {
+        gap: 15px;
+        padding: 5px;
     }
-    .btn-link {
-        font-size: 18px;
+    
+    .modal-icon-container {
+        width: 70px;
+        height: 70px;
     }
-    .modal-description {
-        font-size: 18px;
+    
+    .modal-icon-container svg {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .modal-title-text {
+        font-size: 28px;
+    }
+    
+    .modal-description-text p {
+        font-size: 16px;
+    }
+    
+    .modal-description-text strong {
+        font-size: 17px;
+    }
+    
+    .modal-checkbox-label {
+        font-size: 14px;
+    }
+    
+    .disclaimer-confirm-btn {
+        font-size: 16px !important;
+        padding: 10px 25px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .disclaimer-popup {
+        width: 95% !important;
+        padding: 25px 15px !important;
+    }
+    
+    .disclaimer-modal-content {
+        gap: 12px;
+    }
+    
+    .modal-icon-container {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .modal-icon-container svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .modal-title-text {
+        font-size: 24px;
+    }
+    
+    .modal-description-text p {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    
+    .modal-description-text strong {
+        font-size: 15px;
+    }
+    
+    .modal-checkbox {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .modal-checkbox-label {
+        font-size: 13px;
+    }
+    
+    .disclaimer-confirm-btn {
+        font-size: 14px !important;
+        padding: 8px 20px !important;
     }
 }
 
@@ -373,5 +407,17 @@ button {
     
     div {
         gap: 12px;
+    }
+    
+    .modal-title-text {
+        font-size: 20px;
+    }
+    
+    .modal-description-text p {
+        font-size: 12px;
+    }
+    
+    .modal-description-text strong {
+        font-size: 13px;
     }
 }
