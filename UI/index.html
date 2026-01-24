@@ -13,15 +13,44 @@
 </head>
 <body>
     <main>
-        <div>
-            <img src="assets/Logo.png" alt="Dr.PROBEN logo" height="350" width="350">
-            <h1 class="header-text">Dr. PROBEN</h1>
+        <div class="top-section">
+            <img src="assets/Logo.png" alt="Dr.PROBEN logo" class="logo-image">
+            <div class="title-section">
+                <h1 class="header-text">Dr. PROBEN</h1>
+                <p class="subtitle-text">An Advanced Disease Prediction<br>using Hybrid Neural Networks.</p>
+                <a href="about.html"><button class="about-button">About The App</button></a>
+            </div>
         </div>
-        <div>
-            <button class="theme-diabetes main-text" onclick="navigateToDisease('diabetes')">Diabetes</button>
-            <button class="theme-heart main-text" onclick="navigateToDisease('heart')">Heart Disease</button>
-            <button class="theme-cancer main-text" onclick="navigateToDisease('cancer')">Breast Cancer</button>
-            <a href="about.html"><button class="style-about">About The App</button></a>
+
+        <div class="divider"></div>
+
+        <div class="bottom-section">
+            <h2 class="section-title">Choose a disease classifier to start prediction:</h2>
+            <div class="disease-cards">
+                <div class="disease-card diabetes-card" onclick="navigateToDisease('diabetes')">
+                    <div class="card-icon">
+                        <img src="assets/diabetes-icon.png" alt="Diabetes Icon">
+                    </div>
+                    <h3>Diabetes</h3>
+                    <p>Predict Diabetic or Non-Diabetic based on diagnostic measurements.</p>
+                </div>
+
+                <div class="disease-card heart-card" onclick="navigateToDisease('heart')">
+                    <div class="card-icon">
+                        <img src="assets/heart-icon.png" alt="Heart Icon">
+                    </div>
+                    <h3>Heart</h3>
+                    <p>Predict if Positive or Negative on heart disease using various health attributes.</p>
+                </div>
+
+                <div class="disease-card cancer-card" onclick="navigateToDisease('cancer')">
+                    <div class="card-icon">
+                        <img src="assets/cancer-icon.png" alt="Cancer Icon">
+                    </div>
+                    <h3>Cancer</h3>
+                    <p>Predict if the cell is Malignant or Benign based on the cell analysis.</p>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -75,7 +104,6 @@
                 padding: '30px',
                 buttonsStyling: true,
                 didOpen: () => {
-                    // Focus on the confirm button
                     const confirmBtn = document.querySelector('.disclaimer-confirm-btn');
                     if (confirmBtn) confirmBtn.focus();
                 }
