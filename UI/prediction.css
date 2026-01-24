@@ -13,39 +13,8 @@
 body {
     height: 100vh;
     font-family: Poppins, 'Times New Roman', Times, serif;
-    background-color: #00BF63;
-    color: white;
-}
-
-/* Theme Colors */
-.theme-diabetes {
-    background-color: #00BF63;
-}
-
-.theme-heart {
-    background-color: #DF6565;
-}
-
-.theme-cancer {
-    background-color: #0097B2;
-}
-
-/* Header Styles */
-header {
-    padding: 10px 20px 0;
-}
-
-hr {
-    border: none;
-    height: 2px;
-    background-color: white;
-    margin-bottom: 20px;
-}
-
-/* Links */
-a {
-    text-decoration: none;
-    color: white;
+    background-color: #F5F5F5; /* Changed from #00BF63 to light gray */
+    color: #333; /* Changed from white to dark gray for better readability */
 }
 
 p {
@@ -57,13 +26,21 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 10px 30px;
     position: relative;
+    transition: background-color 0.3s ease;
 }
 
-nav > a {
-    font-size: 36px;
-    font-weight: bold;
+.theme-diabetes nav {
+    background-color: #096F29;
+}
+
+.theme-heart nav {
+    background-color: #811111;
+}
+
+.theme-cancer nav {
+    background-color: #1E2F4E;
 }
 
 /* Hamburger Menu */
@@ -98,44 +75,6 @@ nav > a {
     transform: rotate(-45deg) translate(7px, -6px);
 }
 
-/* Navigation Links Container */
-.links-container {
-    list-style-type: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-}
-
-.links-container a {
-    font-size: 24px;
-    position: relative;
-    text-decoration: none;
-    color: white;
-    transition: all 0.3s ease;
-    padding-bottom: 3px;
-}
-
-.links-container a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 50%;
-    background-color: white;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-}
-
-.links-container a:hover::after {
-    width: 100%;
-}
-
-.links-container a.active {
-    font-weight: bold;
-}
-
 /* Back Button */
 .back-button {
     display: flex;
@@ -165,15 +104,15 @@ nav > a {
 }
 
 .theme-diabetes .back-button {
-    color: #00BF63;
+    color: #096F29;
 }
 
 .theme-heart .back-button {
-    color: #DF6565;
+    color: #811111;
 }
 
 .theme-cancer .back-button {
-    color: #0097B2;
+    color: #1E2F4E;
 }
 
 /* Segment Control */
@@ -184,10 +123,11 @@ nav > a {
     padding: 6px;
     gap: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin-left: 87px;
 }
 
 .segment-button {
-    padding: 8px 24px;
+    padding: 4px 20px;
     background-color: transparent;
     border: none;
     border-radius: 20px;
@@ -212,24 +152,27 @@ nav > a {
 }
 
 .theme-diabetes .segment-button.active {
-    color: #00BF63;
+    color: #096F29;
 }
 
 .theme-heart .segment-button.active {
-    color: #DF6565;
+    color: #811111;
 }
 
 .theme-cancer .segment-button.active {
-    color: #0097B2;
+    color: #1E2F4E;
 }
 
 /* Brand Link */
 .brand-link {
     text-decoration: none;
-    color: inherit;
-    font-size: 36px;
+    color: white;
+    font-size: 24px;
     font-weight: bold;
     transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .brand-link:hover {
@@ -240,10 +183,22 @@ nav > a {
 .disease-title {
     text-align: center;
     font-family: 'Poppins', sans-serif;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
-    color: white;
     margin-top: 20px;
+    transition: color 0.3s ease;
+}
+
+.theme-diabetes .disease-title {
+    color: #096F29;
+}
+
+.theme-heart .disease-title {
+    color: #811111;
+}
+
+.theme-cancer .disease-title {
+    color: #1E2F4E;
 }
 
 /* Prediction Mode Sections */
@@ -292,6 +247,18 @@ nav > a {
     width: 30px;
     height: 30px;
     transition: opacity 0.2s ease;
+}
+
+.theme-diabetes .info-icon {
+    color: #096F29;
+}
+
+.theme-heart .info-icon {
+    color: #811111;
+}
+
+.theme-cancer .info-icon {
+    color: #1E2F4E;
 }
 
 .info-icon:hover {

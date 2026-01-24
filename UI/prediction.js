@@ -131,8 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info:'Describes the slope of ST segment on your ECG during an exercise stress test.\n• Upsloping: The ST segment goes up.\n• Flat: The ST segment is horizontal.\n• Downsloping: The ST segment goes down. A downsloping or flat slope can be a sign of heart disease.'
                 },
-                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-4', min: '0', max: '4', type: 'slider', default: '0',
-                    info: 'This refers to the number of major blood vessels (0 to 4) that are significantly narrowed as seen in a coronary angiography. This value is provided by a cardiologist.'
+                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'slider', default: '0',
+                    info: 'This refers to the number of major blood vessels (0 to 3) that are significantly narrowed as seen in a coronary angiography. This value is provided by a cardiologist.'
                 },
                 { id: 'thal', label: 'Thalassemia', type: 'dropdown', 
                     options: [
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>This predictor uses your actual, raw test results (ex. glucose level in mg/dL), not a graded scale.</p>
                 <p class="citation">Smith, J.W., et al. (1988). Pima Indians Diabetes Database. UCI Machine Learning Repository</p>
             `,
-            buttonColor: '#00BF63'
+            buttonColor: '#096F29'
         },
         heart: {
             title: 'Heart',
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>The model uses a mix of direct measurements (like blood pressure) and categories defined by your doctor (like chest pain type). Use the exact values from your medical report.</p>
                 <p class="citation">Janosi, A., et al. (1988). Heart Disease Data Set. UCI Machine Learning Repository.</p>
             `,
-            buttonColor: '#DF6565'
+            buttonColor: '#811111'
         },
         cancer: {
             title: 'Cancer',
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>According to his system, a value of 1 represented a state closest to benign (non-cancerous), while a value of 10 represented the most anaplastic (a severe form of malignant) state.</p>
                 <p class="citation">Wolberg, W.H., & Mangasarian, O.L. (1990). Wisconsin Breast Cancer Database. UCI Machine Learning Repository.</p>
             `,
-            buttonColor: '#0097B2'
+            buttonColor: '#1E2F4E'
         }
     };
 
@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('selectedDisease', disease);
         
         // Update title
-        document.getElementById('diseaseTitle').textContent = config.name;
+        document.getElementById('diseaseTitle').textContent = config.name + " Classifier";
         
         // Apply theme
         document.body.className = `theme-${disease}`;
@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = {
             datasets: [{
                 data: [percentage, 100 - percentage],
-                backgroundColor: ['#ffffff', '#008042'],
+                backgroundColor: ['#096F29', '#929292'],
                 borderWidth: 0,
                 cutout: '65%',
             }]
@@ -366,6 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     legend: { display: false },
                     tooltip: {
                         enabled: true,
+                        position: 'nearest',
+                        z: 9999, // Highest z-index
                         callbacks: {
                             label: function(context) {
                                 const dataIndex = context.dataIndex;
@@ -392,9 +394,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updateChartColors(disease) {
             const themeColors = {
-                diabetes: ['#ffffff', '#008042'],
-                heart: ['#ffffff', '#651515'],
-                cancer: ['#ffffff', '#073056']
+                diabetes: ['#096F29', '#929292'],
+                heart: ['#811111', '#929292'],
+                cancer: ['#1E2F4E', '#929292']
             };
 
             chart.data.datasets[0].backgroundColor = themeColors[disease];
@@ -446,9 +448,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Function to update legend colors based on theme
         function updateLegendColors(disease) {
             const themeColors = {
-                diabetes: ['#ffffff', '#008042'],
-                heart: ['#ffffff', '#651515'],
-                cancer: ['#ffffff', '#073056']
+                diabetes: ['#096F29', '#929292'],
+                heart: ['#811111', '#929292'],
+                cancer: ['#1E2F4E', '#929292']
             };
             
             const colors = themeColors[disease];
@@ -608,7 +610,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (input && valueDisplay) {
                             input.value = attr.default || '0';
                             valueDisplay.textContent = input.value;
-                            if (input.value === '0') {
+                            if (input.value === '0' && currentDisease === 'cancer') {
                                 valueDisplay.classList.add('slider-unmodified');
                             }
                         }
@@ -742,18 +744,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 valueDisplay.textContent = slider.value;
                 
                 // Add unmodified class if value is 0
-                if (slider.value === '0') {
+                if (slider.value === '0' && currentDisease === 'cancer') {
                     valueDisplay.classList.add('slider-unmodified');
                 }
                 
                 slider.addEventListener('input', function() {
                     valueDisplay.textContent = this.value;
                     // Remove unmodified class when user changes the value
-                    if (this.value !== '0') {
+                    if (this.value !== '0' && currentDisease === 'cancer') {
                         valueDisplay.classList.remove('slider-unmodified');
-                    } else {
-                        valueDisplay.classList.add('slider-unmodified');
-                    }
+                    } 
                 });
                 
                 wrapper.appendChild(slider);
@@ -855,7 +855,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `,
             confirmButtonText: 'Got it!',
-            confirmButtonColor: '#073056',
+            confirmButtonColor: '#1E2F4E',
             customClass: {
                 popup: 'validation-modal-popup',
                 confirmButton: 'validation-modal-button'
@@ -907,6 +907,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const predictionHeader = document.createElement('th');
         predictionHeader.textContent = 'Prediction';
         predictionHeader.className = 'prediction-column';
+        predictionHeader.style.backgroundColor = getThemeColor();
+        predictionHeader.style.color = 'white';
         predictionHeader.style.display = 'none';
         tableHeader.appendChild(predictionHeader);
         
@@ -1459,9 +1461,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getThemeColor() {
         const colors = {
-            diabetes: '#00BF63',
-            heart: '#DF6565',
-            cancer: '#0097B2'
+            diabetes: '#096F29',
+            heart: '#811111',
+            cancer: '#1E2F4E'
         };
         return colors[currentDisease];
     }

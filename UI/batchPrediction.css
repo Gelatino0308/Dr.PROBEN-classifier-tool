@@ -48,97 +48,94 @@
 
 /* Theme-specific button colors for control buttons */
 .theme-diabetes .control-btn {
-    color: #00BF63;
-    border-color: #00BF63;
+    color: #096F29;
+    border-color: #096F29;
 }
 
 .theme-diabetes .control-btn:hover {
-    background-color: #008042;
+    background-color: #096F29;
     color: white;
 }
 
 .theme-heart .control-btn {
-    color: #DF6565;
-    border-color: #DF6565;
+    color: #811111;
+    border-color: #811111;
 }
 
 .theme-heart .control-btn:hover {
-    background-color: #651515;
+    background-color: #811111;
     color: white;
 }
 
 .theme-cancer .control-btn {
-    color: #0097B2;
-    border-color: #0097B2;
+    color: #1E2F4E;
+    border-color: #1E2F4E;
 }
 
 .theme-cancer .control-btn:hover {
-    background-color: #073056;
+    background-color: #1E2F4E;
     color: white;
 }
 
 /* Theme-specific button colors for predict button */
 .theme-diabetes #predictBtn {
-    background-color: #00BF63;
+    background-color: #096F29;
     color: white;
-    border: 4px solid white;
+    border: 4px solid #096F29;
 }
 
 .theme-diabetes #predictBtn:hover {
-    background-color: #008042;
-    border-color: #008042;
+    opacity: 0.8;
 }
 
 .theme-heart #predictBtn {
-    background-color: #DF6565;
+    background-color: #811111;
     color: white;
-    border: 4px solid white;
+    border: 4px solid #811111;
 }
 
 .theme-heart #predictBtn:hover {
-    background-color: #651515;
-    border-color: #651515;
+    opacity: 0.8;
 }
 
 .theme-cancer #predictBtn {
-    background-color: #0097B2;
+    background-color: #1E2F4E;
     color: white;
-    border: 4px solid white;
+    border: 4px solid #1E2F4E;
 }
 
 .theme-cancer #predictBtn:hover {
-    background-color: #073056;
-    border-color: #073056;
+    opacity: 0.8;
 }
 
 /* Theme-specific button colors for download button */
 .theme-diabetes #downloadBtn {
-    color: #00BF63;
-    border-color: #00BF63;
+    color: #096F29;
+    border-color: #096F29;
 }
 
 .theme-diabetes #downloadBtn:hover {
-    background-color: #008042;
+    background-color: #096F29;
     color: white;
 }
 
 .theme-heart #downloadBtn {
-    color: #DF6565;
-    border-color: #DF6565;
+    color: #811111;
+    border-color: #811111;
 }
 
 .theme-heart #downloadBtn:hover {
-    background-color: #651515;
+    background-color: #811111;
     color: white;
 }
 
 .theme-cancer #downloadBtn {
-    color: #0097B2;
-    border-color: #0097B2;
+    color: #1E2F4E;
+    border-color: #1E2F4E;
 }
 
 .theme-cancer #downloadBtn:hover {
-    background-color: #073056;
+    background-color: #1E2F4E;
     color: white;
 }
 
@@ -155,11 +152,12 @@
     margin: 20px;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: white;
     max-height: 350px;
     overflow-x: auto;
     overflow-y: auto;
+    scrollbar-color: #333 transparent;
 }
 
 #dataTable {
@@ -172,7 +170,6 @@
 
 #dataTable th {
     background-color: lightgray;
-    color: #333;
     padding: 12px 15px;
     text-align: center;
     font-weight: 600;
@@ -205,36 +202,17 @@
 }
 
 .theme-diabetes .prediction-column {
-    color: #00BF63;
+    color: #096F29;
 }
 
 .theme-heart .prediction-column {
-    color: #DF6565;
+    color: #811111;
 }
 
 .theme-cancer .prediction-column {
-    color: #0097B2;
+    color: #1E2F4E;
 }
 
-/* Custom scrollbar for table */
-.table-container::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-.table-container::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
-}
 
 /* Loading state */
 .loading {
