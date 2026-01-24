@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         diabetes: {
             name: 'Diabetes',
             endpoint: '/api/predict/diabetes',
+            batchEndpoint: '/api/predict/diabetes/batch',
             positiveClass: 'DIABETIC',
             negativeClass: 'NON-DIABETIC',
             positiveDesc: "Diabetic means the person has diabetes, a chronic disease that affects how your body turns food into energy. It occurs when your pancreas doesn't make enough insulin or your cells don't respond to insulin properly.",
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         heart: {
             name: 'Heart Disease',
             endpoint: '/api/predict/heart',
+            batchEndpoint: '/api/predict/heart/batch',
             positiveClass: 'POSITIVE',
             negativeClass: 'NEGATIVE',
             positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
@@ -145,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cancer: {
             name: 'Breast Cancer',
             endpoint: '/api/predict/cancer',
+            batchEndpoint: '/api/predict/cancer/batch',
             positiveClass: 'MALIGNANT',
             negativeClass: 'BENIGN',
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
