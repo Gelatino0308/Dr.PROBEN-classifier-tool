@@ -219,14 +219,14 @@ def predict_diabetes_endpoint():
         
         # Extract values in correct order for diabetes
         raw_values = [
-            float(data['pregnancies']),
-            float(data['plasma']),
-            float(data['BP']),
-            float(data['skin']),
-            float(data['insulin']),
-            float(data['BMI']),
-            float(data['pedigree']),
-            float(data['age'])
+            float(data['Number of Pregnancies']),
+            float(data['Plasma Glucose Concentration']),
+            float(data['Diastolic Blood Pressure']),
+            float(data['Triceps Skin Fold Thickness']),
+            float(data['2-Hour Serum Insulin']),
+            float(data['Body Mass Index']),
+            float(data['Diabetes Pedigree Function']),
+            float(data['Age'])
         ]
         
         # Prepare input
@@ -282,19 +282,19 @@ def predict_heart_endpoint():
         
         # Extract 13 raw heart features
         raw_values = [
-            float(data['age']),
-            float(data['sex']),
-            float(data['cp']),
-            float(data['trestbps']),
-            float(data['chol']),
-            float(data['fbs']),
-            float(data['restecg']),
-            float(data['thalach']),
-            float(data['exang']),
-            float(data['oldpeak']),
-            float(data['slope']),
-            float(data['ca']),
-            float(data['thal'])
+            float(data['Age']),
+            float(data['Sex']),
+            float(data['Chest Pain Type']),
+            float(data['Resting Blood Pressure']),
+            float(data['Serum Cholesterol']),
+            float(data['FBS > 120mg/dL']),
+            float(data['Resting ECG Results']),
+            float(data['Maximum Heart Rate']),
+            float(data['Exercise Induced Angina']),
+            float(data['ST Depression (Oldpeak)']),
+            float(data['Slope of Peak Exercise ST']),
+            float(data['Number of Major Vessels']),
+            float(data['Thalassemia'])
         ]
         
         # Expand to 35 features
@@ -341,15 +341,15 @@ def predict_cancer_endpoint():
         
         # Extract 9 cancer features
         raw_values = [
-            float(data['clump_thickness']),
-            float(data['uniformity_cell_size']),
-            float(data['uniformity_cell_shape']),
-            float(data['marginal_adhesion']),
-            float(data['single_epithelial_cell_size']),
-            float(data['bare_nuclei']),
-            float(data['bland_chromatin']),
-            float(data['normal_nucleoli']),
-            float(data['mitoses'])
+            float(data['Clump Thickness']),
+            float(data['Uniformity of Cell Size']),
+            float(data['Uniformity of Cell Shape']),
+            float(data['Marginal Adhesion']),
+            float(data['Single Epithelial Cell Size']),
+            float(data['Bare Nuclei']),
+            float(data['Bland Chromatin']),
+            float(data['Normal Nucleoli']),
+            float(data['Mitoses'])
         ]
         
         # Prepare input
@@ -400,14 +400,14 @@ def predict_diabetes_batch_endpoint():
         raw_batch = []
         for row in batch_data:
             raw_batch.append([
-                float(row['pregnancies']),
-                float(row['plasma']),
-                float(row['BP']),
-                float(row['skin']),
-                float(row['insulin']),
-                float(row['BMI']),
-                float(row['pedigree']),
-                float(row['age'])
+                float(row['Number of Pregnancies']),
+                float(row['Plasma Glucose Concentration']),
+                float(row['Diastolic Blood Pressure']),
+                float(row['Triceps Skin Fold Thickness']),
+                float(row['2-Hour Serum Insulin']),
+                float(row['Body Mass Index']),
+                float(row['Diabetes Pedigree Function']),
+                float(row['Age'])
             ])
         
         # Convert to numpy array
@@ -471,19 +471,19 @@ def predict_heart_batch_endpoint():
         expanded_batch = []
         for row in batch_data:
             raw_values = [
-                float(row['age']),
-                float(row['sex']),
-                float(row['cp']),
-                float(row['trestbps']),
-                float(row['chol']),
-                float(row['fbs']),
-                float(row['restecg']),
-                float(row['thalach']),
-                float(row['exang']),
-                float(row['oldpeak']),
-                float(row['slope']),
-                float(row['ca']),
-                float(row['thal'])
+                float(row['Age']),
+                float(row['Sex']),
+                float(row['Chest Pain Type']),
+                float(row['Resting Blood Pressure']),
+                float(row['Serum Cholesterol']),
+                float(row['FBS > 120mg/dL']),
+                float(row['Resting ECG Results']),
+                float(row['Maximum Heart Rate']),
+                float(row['Exercise Induced Angina']),
+                float(row['ST Depression (Oldpeak)']),
+                float(row['Slope of Peak Exercise ST']),
+                float(row['Number of Major Vessels']),
+                float(row['Thalassemia'])
             ]
             expanded = expand_heart_features(raw_values)
             expanded_batch.append(expanded)
@@ -542,15 +542,15 @@ def predict_cancer_batch_endpoint():
         raw_batch = []
         for row in batch_data:
             raw_values = [
-                float(row['clump_thickness']),
-                float(row['uniformity_cell_size']),
-                float(row['uniformity_cell_shape']),
-                float(row['marginal_adhesion']),
-                float(row['single_epithelial_cell_size']),
-                float(row['bare_nuclei']),
-                float(row['bland_chromatin']),
-                float(row['normal_nucleoli']),
-                float(row['mitoses'])
+                float(row['Clump Thickness']),
+                float(row['Uniformity of Cell Size']),
+                float(row['Uniformity of Cell Shape']),
+                float(row['Marginal Adhesion']),
+                float(row['Single Epithelial Cell Size']),
+                float(row['Bare Nuclei']),
+                float(row['Bland Chromatin']),
+                float(row['Normal Nucleoli']),
+                float(row['Mitoses'])
             ]
             raw_batch.append(raw_values)
         
