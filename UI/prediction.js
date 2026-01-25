@@ -35,28 +35,28 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Diabetic means the person has diabetes, a chronic disease that affects how your body turns food into energy. It occurs when your pancreas doesn't make enough insulin or your cells don't respond to insulin properly.",
             negativeDesc: 'Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose.',
             attributes: [
-                { id: 'pregnancies', label: 'Number of Pregnancies', placeholder: '0', min: '0', type: 'number', 
+                { id: 'Number of Pregnancies', label: 'Number of Pregnancies', placeholder: '0', min: '0', type: 'number', 
                     info: 'If you have been pregnant twice, you would enter "2." If you have never been pregnant, you would enter "0."' 
                 },
-                { id: 'plasma', label: 'Plasma Glucose Concentration', placeholder: '0 (mg/dL)', min: '0', type: 'number', 
+                { id: 'Plasma Glucose Concentration', label: 'Plasma Glucose Concentration', placeholder: '0 (mg/dL)', min: '0', type: 'number', 
                     info: 'This measures the amount of sugar in your blood. You will need to get this value from a recent blood test, often called a blood sugar test or glucose test. Look for a result listed as "Fasting Plasma Glucose" or similar, which is measured in milligrams per deciliter (mg/dL).'
                 },
-                { id: 'BP', label: 'Diastolic Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
+                { id: 'Diastolic Blood Pressure', label: 'Diastolic Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
                     info: 'This is the second, or lower, number in a blood pressure reading. A reading is typically written as two numbers, like "120/80." In this example, "80" is the diastolic pressure. You can get this from a recent doctor\'s visit or a home blood pressure monitor.'
                 },
-                { id: 'skin', label: 'Triceps Skin Fold Thickness', placeholder: '0 (mm)', min: '0', type: 'number',
+                { id: 'Triceps Skin Fold Thickness', label: 'Triceps Skin Fold Thickness', placeholder: '0 (mm)', min: '0', type: 'number',
                     info: 'This value is a way to estimate the amount of body fat by measuring the thickness of a fold of skin and fat on the back of your upper arm. This measurement is usually taken with a special tool called a caliper. You will need to get this value from your doctor.'    
                 },
-                { id: 'insulin', label: '2-Hour Serum Insulin', placeholder: '0 (µU/mL)', min: '0', type: 'number',
+                { id: '2-Hour Serum Insulin', label: '2-Hour Serum Insulin', placeholder: '0 (µU/mL)', min: '0', type: 'number',
                     info: 'This measures the amount of insulin in your blood specifically two hours after you\'ve taken a glucose tolerance test. It shows how well your body processes sugar over time. This value should be obtained from a specific blood test.'
                 },
-                { id: 'BMI', label: 'Body Mass Index', placeholder: '0.0 (kg/m²)', min: '0', type: 'number', step: 'any',
+                { id: 'Body Mass Index', label: 'Body Mass Index', placeholder: '0.0 (kg/m²)', min: '0', type: 'number', step: 'any',
                     info: 'Your BMI is a value calculated from your weight and height that helps determine if you are at a healthy weight. To find your BMI, you can use an online calculator. Simply enter your height and weight, and the calculator will provide your BMI value. For example, if you weigh 150 lbs and are 5\'5" tall, your BMI is approximately 25.'
                 },
-                { id: 'pedigree', label: 'Diabetes Pedigree Function', placeholder: '0.000', min: '0', type: 'number', step: 'any',
+                { id: 'Diabetes Pedigree Function', label: 'Diabetes Pedigree Function', placeholder: '0.000', min: '0', type: 'number', step: 'any',
                     info: 'This is a complex score that quantifies the genetic risk of diabetes based on your family history. You won\'t have a number for this yourself. This value is typically calculated by the diagnostic tool based on the family history information you provide, such as whether your parents or siblings have diabetes.'
                 },
-                { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number',
+                { id: 'Age', label: 'Age', placeholder: '0', min: '0', type: 'number',
                     info:'This is your current age.'
                 }
             ]
@@ -70,17 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
             negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
             attributes: [
-                { id: 'age', label: 'Age', placeholder: '0', min: '0', type: 'number',
+                { id: 'Age', label: 'Age', placeholder: '0', min: '0', type: 'number',
                     info: 'This is your current age.'
                 },
-                { id: 'sex', label: 'Sex', type: 'radio', 
+                { id: 'Sex', label: 'Sex', type: 'radio', 
                     options: [
                         { value: '1', label: 'Male' },
                         { value: '0', label: 'Female' }
                     ],
                     info: 'This refers to your biological sex.'
                 },
-                { id: 'cp', label: 'Chest Pain Type', type: 'dropdown', 
+                { id: 'Chest Pain Type', label: 'Chest Pain Type', type: 'dropdown', 
                     options: [
                         { value: '0', label: 'Asymptomatic' },
                         { value: '1', label: 'Atypical Angina' },
@@ -89,20 +89,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info: 'Common types are:\n• Typical Angina: Chest pain caused by reduced blood flow to the heart\n• Atypical Angina: Chest discomfort that doesn\'t follow typical angina patterns\n• Non-anginal Pain: Chest pain not related to heart conditions\n• Asymptomatic: No chest pain symptoms'
                 },
-                { id: 'trestbps', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
+                { id: 'Resting Blood Pressure', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
                     info: 'This is the top number of your blood pressure reading, measured while you are at rest. It is measured in millimeters of mercury (mm Hg).'
                 },
-                { id: 'chol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', type: 'number',
+                { id: 'Serum Cholesterol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', type: 'number',
                     info: 'This is the amount of total cholesterol in your blood. It is measured in milligrams per deciliter (mg/dL).'
                 },
-                { id: 'fbs', label: 'FBS > 120mg/dL', type: 'radio', 
+                { id: 'FBS > 120mg/dL', label: 'FBS > 120mg/dL', type: 'radio', 
                     options: [
                         { value: '1', label: 'True' },
                         { value: '0', label: 'False' }
                     ],
                     info: 'This indicates whether your fasting blood sugar is greater than 120 mg/dL. This is a common threshold for diagnosing prediabetes or diabetes.\n• True: Your fasting blood sugar is greater than 120 mg/dL.\n• False: Your fasting blood sugar is 120 mg/dL or less.'
                 },
-                { id: 'restecg', label: 'Resting ECG Results', type: 'dropdown', 
+                { id: 'Resting ECG Results', label: 'Resting ECG Results', type: 'dropdown', 
                     options: [
                         { value: '0', label: 'Normal' },
                         { value: '1', label: 'ST-T Wave Abnormality' },
@@ -110,20 +110,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info: 'This is a record of your heart\'s electrical activity while you are at rest. You will need a recent ECG report.\n• Normal: No significant abnormalities.\n• ST-T Wave Abnormality: Minor changes that could indicate a heart issue.\n• Left Ventricular Hypertrophy (LVH): Thickening of the heart\'s main pumping chamber.'
                 },
-                { id: 'thalach', label: 'Maximum Heart Rate', placeholder: '0', min: '0', type: 'number',
+                { id: 'Maximum Heart Rate', label: 'Maximum Heart Rate', placeholder: '0', min: '0', type: 'number',
                     info:'This is the highest heart rate you reached during a stress or exercise test. This measurement is often taken on a treadmill or stationary bike while your heart rate is monitored.'
                 },
-                { id: 'exang', label: 'Exercise Induced Angina', type: 'radio', 
+                { id: 'Exercise Induced Angina', label: 'Exercise Induced Angina', type: 'radio', 
                     options: [
                         { value: '1', label: 'Yes' },
                         { value: '0', label: 'No' }
                     ],
                     info: 'This indicates whether you experienced chest pain during physical exercise.\n• Yes: You experienced chest pain during exercise.\n• No: You did not experience chest pain during exercise.'
                 },
-                { id: 'oldpeak', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any',
+                { id: 'ST Depression (Oldpeak)', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any',
                     info: 'This measures the amount of depression in the ST segment of your ECG during exercise, which can be a sign of reduced blood flow to the heart. The value is measured in millimeters.'
                 },
-                { id: 'slope', label: 'Slope of Peak Exercise ST', type: 'dropdown', 
+                { id: 'Slope of Peak Exercise ST', label: 'Slope of Peak Exercise ST', type: 'dropdown', 
                     options: [
                         { value: '0', label: 'Downsloping' },
                         { value: '1', label: 'Flat' },
@@ -131,10 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info:'Describes the slope of ST segment on your ECG during an exercise stress test.\n• Upsloping: The ST segment goes up.\n• Flat: The ST segment is horizontal.\n• Downsloping: The ST segment goes down. A downsloping or flat slope can be a sign of heart disease.'
                 },
-                { id: 'ca', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'slider', default: '0',
-                    info: 'This refers to the number of major blood vessels (0 to 3) that are significantly narrowed as seen in a coronary angiography. This value is provided by a cardiologist.'
+                { 
+                    id: 'Number of Major Vessels', 
+                    label: 'Number of Major Vessels', 
+                    type: 'radio', 
+                    options: [
+                        { value: '0', label: '0' },
+                        { value: '1', label: '1' },
+                        { value: '2', label: '2' },
+                        { value: '3', label: '3' }
+                    ],
+                    info: 'This refers to the number of major blood vessels (0 to 3) that are significantly narrowed as seen in a coronary angiography.'
                 },
-                { id: 'thal', label: 'Thalassemia', type: 'dropdown', 
+                { id: 'Thalassemia', label: 'Thalassemia', type: 'dropdown', 
                     options: [
                         { value: '1', label: 'Normal' },
                         { value: '2', label: 'Fixed Defect' },
@@ -153,31 +162,31 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
-                { id: 'clump_thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Clump Thickness', label: ' Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Refers to the degree to which cells are clustered together. Higher thickness values may indicate abnormal cell growth or potential malignancy.' 
                 },
-                { id: 'uniformity_cell_size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Uniformity of Cell Size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Measures the consistency in cell sizes within the sample. Significant variation in size may suggest the presence of abnormal or cancerous cells.' 
                 },
-                { id: 'uniformity_cell_shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Uniformity of Cell Shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Evaluates the uniformity of cell shapes. Normal cells generally maintain consistent shapes, while irregular shapes may be indicative of malignancy.' 
                 },
-                { id: 'marginal_adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Marginal Adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Describes the extent to which cells adhere to one another. Poor adhesion may signify abnormal or invasive cellular behavior.' 
                 },
-                { id: 'single_epithelial_cell_size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Single Epithelial Cell Size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Represents the average size of individual epithelial cells. Enlarged epithelial cells are often associated with abnormal cellular activity.' 
                 },
-                { id: 'bare_nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Bare Nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Indicates the presence of nuclei without surrounding cytoplasm. A higher count of bare nuclei is commonly observed in malignant samples.' 
                 },
-                { id: 'bland_chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Bland Chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Refers to the texture and appearance of the chromatin within the nucleus. Coarse or uneven chromatin patterns may suggest abnormal or cancerous growth.' 
                 },
-                { id: 'normal_nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Normal Nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Pertains to the visibility and prominence of nucleoli within the nucleus. Prominent or multiple nucleoli are often linked to increased cellular activity, typical of cancerous cells.' 
                 },
-                { id: 'mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Measures the frequency of cell division. An elevated mitotic rate reflects rapid cellular proliferation, which may indicate malignant behavior.' 
                 }
             ]
@@ -476,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (attr.type === 'slider') {
                         const slider = document.getElementById(attr.id);
                         if (slider && slider.value === '0') {
-                            unmodifiedFields.push(attr.label);
+                            unmodifiedFields.push(attr.id);
                         }
                     }
                 });
@@ -668,21 +677,46 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create label
             const label = document.createElement('label');
             
-            // Only set htmlFor for input types that have a single matching id
-            // Don't set it for radio buttons since they have multiple inputs with different ids
-            if (attr.type !== 'radio') {
+            if (attr.type !== 'radio' && !(currentDisease === 'cancer' && attr.type === 'slider')) {
                 label.htmlFor = attr.id;
             }
             
-            label.textContent = attr.label + ':';
+            label.textContent = attr.id + ':';
             labelsContainer.appendChild(label);
 
             // Create input wrapper
             const wrapper = document.createElement('div');
             wrapper.className = 'input-wrapper';
 
-            // Create input based on type
-            if (attr.type === 'radio') {
+            // --- NEW: FORCE Cancer Sliders to become 1-10 Radio Circles ---
+            if (currentDisease === 'cancer' && attr.type === 'slider') {
+                const radioContainer = document.createElement('div');
+                radioContainer.className = 'radio-scale-container';
+                radioContainer.id = attr.id;
+
+                for (let i = 1; i <= 10; i++) {
+                    const radioLabel = document.createElement('label');
+                    radioLabel.className = 'radio-scale-item';
+
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = attr.id;
+                    radioInput.id = `${attr.id}_${i}`;
+                    radioInput.value = i;
+                    radioInput.required = true;
+
+                    const circleSpan = document.createElement('span');
+                    circleSpan.className = 'radio-scale-circle';
+                    circleSpan.textContent = i;
+
+                    radioLabel.appendChild(radioInput);
+                    radioLabel.appendChild(circleSpan);
+                    radioContainer.appendChild(radioLabel);
+                }
+                wrapper.appendChild(radioContainer);
+            } 
+            // --- Standard Radio Group (e.g. Sex) ---
+            else if (attr.type === 'radio') {
                 const radioGroup = document.createElement('div');
                 radioGroup.className = 'radio-group';
                 
@@ -693,11 +727,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const input = document.createElement('input');
                     input.type = 'radio';
                     input.name = attr.id;
-                    input.id = `${attr.id}_${index}`;  // Unique id for each radio button
+                    input.id = `${attr.id}_${index}`;
                     input.value = option.value;
+                    input.required = true;
                     
                     const radioLabel = document.createElement('label');
-                    radioLabel.htmlFor = `${attr.id}_${index}`;  // Match the radio button's unique id
+                    radioLabel.htmlFor = `${attr.id}_${index}`;
                     radioLabel.textContent = option.label;
                     
                     radioOption.appendChild(input);
@@ -706,30 +741,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 wrapper.appendChild(radioGroup);
-            } else if (attr.type === 'dropdown') {
-                const select = document.createElement('select');
-                select.id = attr.id;
-                select.className = 'dropdown-input';
-                select.required = true;
-                
-                // Add default disabled option
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = 'Select an option';
-                defaultOption.disabled = true;
-                defaultOption.selected = true;
-                select.appendChild(defaultOption);
-                
-                // Add attribute options
-                attr.options.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = option.value;
-                    optionElement.textContent = option.label;
-                    select.appendChild(optionElement);
-                });
-                
-                wrapper.appendChild(select);
-            } else if (attr.type === 'slider') {
+            } 
+            // --- Standard Slider (e.g. Heart Disease Major Vessels) ---
+            else if (attr.type === 'slider') {
                 const slider = document.createElement('input');
                 slider.type = 'range';
                 slider.id = attr.id;
@@ -743,23 +757,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 valueDisplay.className = 'slider-value';
                 valueDisplay.textContent = slider.value;
                 
-                // Add unmodified class if value is 0
-                if (slider.value === '0' && currentDisease === 'cancer') {
-                    valueDisplay.classList.add('slider-unmodified');
-                }
-                
                 slider.addEventListener('input', function() {
                     valueDisplay.textContent = this.value;
-                    // Remove unmodified class when user changes the value
-                    if (this.value !== '0' && currentDisease === 'cancer') {
-                        valueDisplay.classList.remove('slider-unmodified');
-                    } 
                 });
                 
                 wrapper.appendChild(slider);
                 wrapper.appendChild(valueDisplay);
-            } else {
-                // Regular number input
+            } 
+            // --- Dropdown ---
+            else if (attr.type === 'dropdown') {
+                const select = document.createElement('select');
+                select.id = attr.id;
+                select.className = 'dropdown-input';
+                select.required = true;
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select an option';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                
+                attr.options.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.label;
+                    select.appendChild(optionElement);
+                });
+                
+                wrapper.appendChild(select);
+            } 
+            // --- Standard Number Input ---
+            else {
                 const input = document.createElement('input');
                 input.type = attr.type;
                 input.id = attr.id;
@@ -775,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inputsContainer.appendChild(wrapper);
         });
 
-        // Initialize tooltips after DOM update
+        // Initialize tooltips
         document.querySelectorAll('.labels-container label').forEach((label, index) => {
             const attr = config.attributes[index];
             if (attr && attr.info) {
@@ -783,23 +812,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Initialize tippy
         tippy('[data-tippy-content]', {
             placement: 'top',
             theme: 'light',
+            allowHTML: true
         });
 
-        // Re-attach event listener for info icon after form update
+        // Re-attach info icon logic
         const infoIcon = document.getElementById('infoIcon');
         if (infoIcon) {
-            // Remove any existing listeners by cloning and replacing
             const newInfoIcon = infoIcon.cloneNode(true);
             infoIcon.parentNode.replaceChild(newInfoIcon, infoIcon);
-            
-            // Add new event listener
-            newInfoIcon.addEventListener('click', function() {
-                showDiseaseInfoModal(currentDisease);
-            });
+            newInfoIcon.addEventListener('click', () => showDiseaseInfoModal(currentDisease));
         }
     }
 
@@ -912,10 +936,19 @@ document.addEventListener('DOMContentLoaded', () => {
         predictionHeader.style.display = 'none';
         tableHeader.appendChild(predictionHeader);
         
+        // Add probability column header (initially hidden)
+        const probabilityHeader = document.createElement('th');
+        probabilityHeader.textContent = 'Class Probability';
+        probabilityHeader.className = 'prediction-column probability-column';
+        probabilityHeader.style.backgroundColor = getThemeColor();
+        probabilityHeader.style.color = 'white';
+        probabilityHeader.style.display = 'none';
+        tableHeader.appendChild(probabilityHeader);
+        
         // Add attribute headers
         config.attributes.forEach(attr => {
             const th = document.createElement('th');
-            th.textContent = attr.label;
+            th.textContent = attr.id;
             tableHeader.appendChild(th);
         });
         
@@ -929,37 +962,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
 
-        // Reset current data
-        diseaseStates[currentDisease].batchUploadedData = null;
-        diseaseStates[currentDisease].batchPredictedData = null;
-        
-        // Reset UI state
-        document.getElementById('predictBtn').style.display = 'none';
-        document.getElementById('downloadBtn').style.display = 'none';
-        document.querySelector('.prediction-column').style.display = 'none';
-
         const reader = new FileReader();
         reader.onload = async function(e) {
             try {
                 const csvData = e.target.result;
                 const parsedData = parseCSV(csvData);
                 
+                // Store original count before validation
+                const originalCount = parsedData.data.length;
+                
                 const isValid = await validateData(parsedData);
                 
-                if (isValid) {
-                    if (!diseaseStates[currentDisease].batchUploadedData) {
-                        diseaseStates[currentDisease].batchUploadedData = parsedData;
-                        displayData(parsedData);
-                        document.getElementById('predictBtn').style.display = 'block';
-                        
-                        await Swal.fire({
-                            icon: 'success',
-                            title: 'File Uploaded Successfully!',
-                            text: `Loaded ${parsedData.data.length} records.`,
-                            confirmButtonColor: getThemeColor()
-                        });
-                    }
+                if (!isValid) {
+                    resetFileInput();
+                    return;
                 }
+                
+                // Calculate how many records were removed (if any)
+                const finalCount = parsedData.data.length;
+                const removedCount = originalCount - finalCount;
+                
+                // Validation succeeded - now we can safely update state
+                diseaseStates[currentDisease].batchUploadedData = parsedData;
+                diseaseStates[currentDisease].batchPredictedData = null;
+                
+                displayData(parsedData);
+                document.getElementById('predictBtn').style.display = 'block';
+                document.getElementById('downloadBtn').style.display = 'none';
+                
+                // Hide prediction columns
+                document.querySelectorAll('.prediction-column').forEach(col => {
+                    col.style.display = 'none';
+                });
+                
+                // Show success modal with appropriate message
+                if (removedCount > 0) {
+                    // Data was cleaned
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'File Uploaded Successfully!',
+                        html: `
+                            <div style="text-align: center;">
+                                <p>Loaded ${finalCount} valid records.</p>
+                                <p style="color: #666; font-size: 14px;">
+                                    ${removedCount} invalid record${removedCount > 1 ? 's were' : ' was'} removed.
+                                </p>
+                            </div>
+                        `,
+                        confirmButtonColor: getThemeColor()
+                    });
+                } else {
+                    // No cleaning needed
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'File Uploaded Successfully!',
+                        text: `Loaded ${finalCount} records.`,
+                        confirmButtonColor: getThemeColor()
+                    });
+                }
+
             } catch (error) {
                 console.error('CSV parsing error:', error);
                 Swal.fire({
@@ -968,7 +1029,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     text: error.message || 'Unable to parse the CSV file. Please check the format.',
                     confirmButtonColor: getThemeColor()
                 });
+                
+                resetFileInput();
             }
+        };
+        
+        reader.onerror = function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'File Reading Error',
+                text: 'Unable to read the selected file. Please try again.',
+                confirmButtonColor: getThemeColor()
+            });
+            
+            resetFileInput();
         };
         
         reader.readAsText(file);
@@ -1103,6 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 confirmButtonColor: getThemeColor()
             });
             
+            // DON'T reset file input here - let handleFileUpload do it
             return false;
         }
 
@@ -1115,12 +1190,13 @@ document.addEventListener('DOMContentLoaded', () => {
             let hasErrors = false;
             
             for (const attr of config.attributes) {
-                const value = row[attr.id];
+                const value = row[headerMap[attr.id] || attr.id];
+                
                 if (!validateAttributeValue(value, attr)) {
                     validationErrors.push({
                         row: rowIndex + 2,
                         column: attr.label,
-                        value: value,
+                        value: value || 'empty',
                         expected: getExpectedValueDescription(attr)
                     });
                     hasErrors = true;
@@ -1159,21 +1235,23 @@ document.addEventListener('DOMContentLoaded', () => {
             
             await Swal.fire({
                 icon: 'error',
-                title: 'All Records Invalid',
+                title: 'No Valid Records',
                 html: errorMessage,
-                confirmButtonColor: getThemeColor()
+                confirmButtonColor: getThemeColor(),
+                confirmButtonText: 'OK'
             });
             
+            // DON'T reset file input here - let handleFileUpload do it
             return false;
         }
         
         errorMessage += '<p><strong>Sample validation errors:</strong></p>';
         errorMessage += '<ul style="font-size: 12px; margin-bottom: 15px;">';
         validationErrors.slice(0, 8).forEach(error => {
-            errorMessage += `<li>Row ${error.row}, ${error.column}: "${error.value}" (Expected: ${error.expected})</li>`;
+            errorMessage += `<li>Row ${error.row}, Column "${error.column}": Found "${error.value}", Expected ${error.expected}</li>`;
         });
         if (validationErrors.length > 8) {
-            errorMessage += `<li>... and ${validationErrors.length - 8} more errors</li>`;
+            errorMessage += `<li><em>...and ${validationErrors.length - 8} more errors</em></li>`;
         }
         errorMessage += '</ul>';
         
@@ -1193,35 +1271,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         if (result.isConfirmed) {
-            const cleanedData = {
-                headers: parsedData.headers,
-                data: parsedData.data.filter((row, index) => !invalidRowIndexes.has(index))
-            };
+            // Filter out invalid rows
+            const validData = parsedData.data.filter((row, index) => !invalidRowIndexes.has(index));
+            parsedData.data = validData;
             
-            diseaseStates[currentDisease].batchUploadedData = cleanedData;
+            // await Swal.fire({
+            //     icon: 'success',
+            //     title: 'Data Cleaned!',
+            //     text: `Removed ${invalidCount} invalid records. ${validCount} valid records remaining.`,
+            //     confirmButtonColor: getThemeColor()
+            // });
             
-            displayData(cleanedData);
-            document.getElementById('predictBtn').style.display = 'block';
-            document.getElementById('downloadBtn').style.display = 'none';
-            
-            await Swal.fire({
-                icon: 'success',
-                title: 'File Uploaded Successfully!',
-                html: `
-                    <div style="text-align: center;">
-                        <p>Loaded ${cleanedData.data.length} valid records.</p>
-                        <p style="color: #666; font-size: 14px;">
-                            ${invalidCount} invalid records were removed.
-                        </p>
-                    </div>
-                `,
-                confirmButtonColor: getThemeColor()
-            });
-            
-            return true;
+            return true; // Validation passed after cleaning
         } else {
-            diseaseStates[currentDisease].batchUploadedData = null;
-            diseaseStates[currentDisease].batchPredictedData = null;
+            // User cancelled - DON'T reset file input here, let handleFileUpload do it
             return false;
         }
     }
@@ -1277,21 +1340,39 @@ document.addEventListener('DOMContentLoaded', () => {
         
         tableBody.innerHTML = '';
         
-        document.querySelector('.prediction-column').style.display = showPrediction ? 'table-cell' : 'none';
+        // Show/hide prediction columns
+        document.querySelectorAll('.prediction-column').forEach(col => {
+            col.style.display = showPrediction ? 'table-cell' : 'none';
+        });
+        
+        // Get predicted data from disease state
+        const predictedData = diseaseStates[currentDisease].batchPredictedData;
         
         data.data.forEach((row, index) => {
             const tr = document.createElement('tr');
             
-            if (showPrediction && diseaseStates[currentDisease].batchPredictedData) {
-                const predCell = document.createElement('td');
-                predCell.textContent = diseaseStates[currentDisease].batchPredictedData[index];
-                predCell.className = 'prediction-column';
-                tr.appendChild(predCell);
+            // Add prediction cell if available
+            if (showPrediction && predictedData) {
+                const predictionCell = document.createElement('td');
+                const prediction = predictedData.predictions[index];
+                predictionCell.textContent = prediction === 1 ? config.positiveClass : config.negativeClass;
+                predictionCell.className = 'prediction-column';
+                tr.appendChild(predictionCell);
+                
+                // Add probability cell
+                const probabilityCell = document.createElement('td');
+                const probability = predictedData.probabilities[index];
+                probabilityCell.textContent = `${probability}%`;
+                probabilityCell.className = 'prediction-column probability-column';
+                tr.appendChild(probabilityCell);
             } else if (showPrediction) {
-                const predCell = document.createElement('td');
-                predCell.textContent = '-';
-                predCell.className = 'prediction-column';
-                tr.appendChild(predCell);
+                const predictionCell = document.createElement('td');
+                predictionCell.className = 'prediction-column';
+                tr.appendChild(predictionCell);
+                
+                const probabilityCell = document.createElement('td');
+                probabilityCell.className = 'prediction-column probability-column';
+                tr.appendChild(probabilityCell);
             }
             
             config.attributes.forEach(attr => {
@@ -1304,7 +1385,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         if (data.data.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="${config.attributes.length + 1}" class="empty-table-message">No valid data found.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="${config.attributes.length + 2}" class="empty-table-message">No valid data found.</td></tr>`;
         }
     }
 
@@ -1315,7 +1396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         config.attributes.forEach(attr => {
             content += `<div style="margin-bottom: 10px;">`;
-            content += `<strong>${attr.label}:</strong> `;
+            content += `<strong>${attr.id}:</strong> `;
             
             if (attr.type === 'number') {
                 if (attr.min !== undefined && attr.max !== undefined) {
@@ -1360,11 +1441,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const config = diseaseConfigs[currentDisease];
             
             const apiData = uploadedData.data.map(row => {
-                const dataPoint = {};
+                const dataRow = {};
                 config.attributes.forEach(attr => {
-                    dataPoint[attr.id] = parseFloat(row[attr.id]);
+                    dataRow[attr.id] = row[attr.id];
                 });
-                return dataPoint;
+                return dataRow;
             });
 
             const response = await fetch(`http://127.0.0.1:5000${config.batchEndpoint}`, {
@@ -1380,10 +1461,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
-            
-            const predictedData = result.predictions.map(pred => 
-                pred === 1 ? config.positiveClass : config.negativeClass
-            );
+
+            // FIXED: Backend returns 'probabilities' not 'percentages'
+            predictedData = {
+                predictions: result.predictions,
+                probabilities: result.probabilities  // This is the correct key from backend
+            };
 
             diseaseStates[currentDisease].batchPredictedData = predictedData;
 
@@ -1418,17 +1501,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const uploadedData = diseaseStates[currentDisease].batchUploadedData;
         const predictedData = diseaseStates[currentDisease].batchPredictedData;
         
-        if (!uploadedData || !predictedData) return;
-
+        if (!uploadedData || !predictedData) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Predictions',
+                text: 'Please make predictions first.',
+                confirmButtonColor: getThemeColor()
+            });
+            return;
+        }
+    
+        // Create CSV content
         const config = diseaseConfigs[currentDisease];
-        const headers = ['Prediction', ...config.attributes.map(attr => attr.label)];
+        const headers = ['Prediction', 'Class Probability', ...config.attributes.map(attr => attr.label)];
         let csvContent = headers.join(',') + '\n';
-
+    
         uploadedData.data.forEach((row, index) => {
-            const rowData = [
-                predictedData[index],
-                ...config.attributes.map(attr => row[attr.id])
-            ];
+            const prediction = predictedData.predictions[index] === 1 ? config.positiveClass : config.negativeClass;
+            const probability = `${predictedData.probabilities[index]}%`;
+            const rowData = [prediction, probability, ...config.attributes.map(attr => row[attr.id])];
             csvContent += rowData.join(',') + '\n';
         });
 
