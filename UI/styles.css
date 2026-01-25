@@ -9,7 +9,7 @@ body {
     height: 100vh;
     font-family: Poppins, 'Times New Roman', Times, serif;
     background-color: #EFEFEF;
-    color: #1E1E1E;
+    color: #333;
     padding: 30px 40px;
     overflow: hidden;
 }
@@ -20,6 +20,9 @@ main {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    /* justify-content: space-around; */
+    gap: 3rem;
+    padding-top: 5px;
 }
 
 /* ===================================
@@ -30,7 +33,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 50px;
+    gap: 65px;
 }
 
 .title-section {
@@ -61,7 +64,7 @@ main {
 .subtitle-text {
     font-size: 30px;
     font-weight: 600;
-    color: #1E1E1E;
+    color: #333;
     line-height: 1.4;
     margin: 0;
 }
@@ -71,8 +74,8 @@ main {
     font-size: 18px;
     font-weight: 600;
     background-color: white;
-    color: #1E1E1E;
-    border: 3px solid #1E1E1E;
+    color: #333;
+    border: 3px solid #333;
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -81,14 +84,14 @@ main {
 }
 
 .about-button:hover {
-    background-color: #1E1E1E;
+    background-color: #333;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .logo-image {
-    width: 300px;
+    /* width: 300px; */
     height: 300px;
     object-fit: contain;
     flex-shrink: 0;
@@ -100,8 +103,9 @@ main {
 
 .divider {
     width: 100%;
-    height: 2px;
-    background-color: #D0D0D0;
+    height: 4px;
+    border-radius: 8px;
+    background: #333;
     margin: 20px 0;
 }
 
@@ -117,8 +121,8 @@ main {
 
 .section-title {
     font-size: 24px;
-    font-weight: 600;
-    color: #1E1E1E;
+    font-weight: 500;
+    color: #333;
     text-align: center;
 }
 
