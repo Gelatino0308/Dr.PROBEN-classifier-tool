@@ -938,37 +938,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
 
-        // Reset current data
-        diseaseStates[currentDisease].batchUploadedData = null;
-        diseaseStates[currentDisease].batchPredictedData = null;
-        
-        // Reset UI state
-        document.getElementById('predictBtn').style.display = 'none';
-        document.getElementById('downloadBtn').style.display = 'none';
-        document.querySelector('.prediction-column').style.display = 'none';
-
         const reader = new FileReader();
         reader.onload = async function(e) {
             try {
                 const csvData = e.target.result;
                 const parsedData = parseCSV(csvData);
                 
+                // Store original count before validation
+                const originalCount = parsedData.data.length;
+                
                 const isValid = await validateData(parsedData);
                 
-                if (isValid) {
-                    if (!diseaseStates[currentDisease].batchUploadedData) {
-                        diseaseStates[currentDisease].batchUploadedData = parsedData;
-                        displayData(parsedData);
-                        document.getElementById('predictBtn').style.display = 'block';
-                        
-                        await Swal.fire({
-                            icon: 'success',
-                            title: 'File Uploaded Successfully!',
-                            text: `Loaded ${parsedData.data.length} records.`,
-                            confirmButtonColor: getThemeColor()
-                        });
-                    }
+                if (!isValid) {
+                    resetFileInput();
+                    return;
                 }
+                
+                // Calculate how many records were removed (if any)
+                const finalCount = parsedData.data.length;
+                const removedCount = originalCount - finalCount;
+                
+                // Validation succeeded - now we can safely update state
+                diseaseStates[currentDisease].batchUploadedData = parsedData;
+                diseaseStates[currentDisease].batchPredictedData = null;
+                
+                displayData(parsedData);
+                document.getElementById('predictBtn').style.display = 'block';
+                document.getElementById('downloadBtn').style.display = 'none';
+                
+                // Hide prediction columns
+                document.querySelectorAll('.prediction-column').forEach(col => {
+                    col.style.display = 'none';
+                });
+                
+                // Show success modal with appropriate message
+                if (removedCount > 0) {
+                    // Data was cleaned
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'File Uploaded Successfully!',
+                        html: `
+                            <div style="text-align: center;">
+                                <p>Loaded ${finalCount} valid records.</p>
+                                <p style="color: #666; font-size: 14px;">
+                                    ${removedCount} invalid record${removedCount > 1 ? 's were' : ' was'} removed.
+                                </p>
+                            </div>
+                        `,
+                        confirmButtonColor: getThemeColor()
+                    });
+                } else {
+                    // No cleaning needed
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'File Uploaded Successfully!',
+                        text: `Loaded ${finalCount} records.`,
+                        confirmButtonColor: getThemeColor()
+                    });
+                }
+
             } catch (error) {
                 console.error('CSV parsing error:', error);
                 Swal.fire({
@@ -977,7 +1005,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     text: error.message || 'Unable to parse the CSV file. Please check the format.',
                     confirmButtonColor: getThemeColor()
                 });
+                
+                resetFileInput();
             }
+        };
+        
+        reader.onerror = function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'File Reading Error',
+                text: 'Unable to read the selected file. Please try again.',
+                confirmButtonColor: getThemeColor()
+            });
+            
+            resetFileInput();
         };
         
         reader.readAsText(file);
@@ -1112,6 +1153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 confirmButtonColor: getThemeColor()
             });
             
+            // DON'T reset file input here - let handleFileUpload do it
             return false;
         }
 
@@ -1124,12 +1166,13 @@ document.addEventListener('DOMContentLoaded', () => {
             let hasErrors = false;
             
             for (const attr of config.attributes) {
-                const value = row[attr.id];
+                const value = row[headerMap[attr.id] || attr.id];
+                
                 if (!validateAttributeValue(value, attr)) {
                     validationErrors.push({
                         row: rowIndex + 2,
-                        column: attr.id,
-                        value: value,
+                        column: attr.label,
+                        value: value || 'empty',
                         expected: getExpectedValueDescription(attr)
                     });
                     hasErrors = true;
@@ -1168,21 +1211,23 @@ document.addEventListener('DOMContentLoaded', () => {
             
             await Swal.fire({
                 icon: 'error',
-                title: 'All Records Invalid',
+                title: 'No Valid Records',
                 html: errorMessage,
-                confirmButtonColor: getThemeColor()
+                confirmButtonColor: getThemeColor(),
+                confirmButtonText: 'OK'
             });
             
+            // DON'T reset file input here - let handleFileUpload do it
             return false;
         }
         
         errorMessage += '<p><strong>Sample validation errors:</strong></p>';
         errorMessage += '<ul style="font-size: 12px; margin-bottom: 15px;">';
         validationErrors.slice(0, 8).forEach(error => {
-            errorMessage += `<li>Row ${error.row}, ${error.column}: "${error.value}" (Expected: ${error.expected})</li>`;
+            errorMessage += `<li>Row ${error.row}, Column "${error.column}": Found "${error.value}", Expected ${error.expected}</li>`;
         });
         if (validationErrors.length > 8) {
-            errorMessage += `<li>... and ${validationErrors.length - 8} more errors</li>`;
+            errorMessage += `<li><em>...and ${validationErrors.length - 8} more errors</em></li>`;
         }
         errorMessage += '</ul>';
         
@@ -1202,35 +1247,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         if (result.isConfirmed) {
-            const cleanedData = {
-                headers: parsedData.headers,
-                data: parsedData.data.filter((row, index) => !invalidRowIndexes.has(index))
-            };
+            // Filter out invalid rows
+            const validData = parsedData.data.filter((row, index) => !invalidRowIndexes.has(index));
+            parsedData.data = validData;
             
-            diseaseStates[currentDisease].batchUploadedData = cleanedData;
+            // await Swal.fire({
+            //     icon: 'success',
+            //     title: 'Data Cleaned!',
+            //     text: `Removed ${invalidCount} invalid records. ${validCount} valid records remaining.`,
+            //     confirmButtonColor: getThemeColor()
+            // });
             
-            displayData(cleanedData);
-            document.getElementById('predictBtn').style.display = 'block';
-            document.getElementById('downloadBtn').style.display = 'none';
-            
-            await Swal.fire({
-                icon: 'success',
-                title: 'File Uploaded Successfully!',
-                html: `
-                    <div style="text-align: center;">
-                        <p>Loaded ${cleanedData.data.length} valid records.</p>
-                        <p style="color: #666; font-size: 14px;">
-                            ${invalidCount} invalid records were removed.
-                        </p>
-                    </div>
-                `,
-                confirmButtonColor: getThemeColor()
-            });
-            
-            return true;
+            return true; // Validation passed after cleaning
         } else {
-            diseaseStates[currentDisease].batchUploadedData = null;
-            diseaseStates[currentDisease].batchPredictedData = null;
+            // User cancelled - DON'T reset file input here, let handleFileUpload do it
             return false;
         }
     }
