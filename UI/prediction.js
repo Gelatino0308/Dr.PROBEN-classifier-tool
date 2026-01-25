@@ -942,80 +942,92 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = `<tr><td colspan="${config.attributes.length + 1}" class="empty-table-message">No data uploaded yet. Upload a CSV file to see data here.</td></tr>`;
     }
 
-    function handleFileUpload(event) {
+    async function handleFileUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
-
+    
         console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
-
+    
+        // CHECK FOR EXISTING PREDICTIONS FIRST - before any processing
+        const predictedData = diseaseStates[currentDisease].batchPredictedData;
+        
+        if (predictedData) {
+            // Show confirmation modal
+            const result = await Swal.fire({
+                icon: 'warning',
+                title: 'Replace Current Data?',
+                html: `
+                    <p style="font-size: 16px; line-height: 1.6;">
+                        You already have predictions displayed in the table.
+                    </p>
+                    <p style="font-size: 16px; line-height: 1.6; margin-top: 10px;">
+                        <strong>Uploading a new file will:</strong>
+                    </p>
+                    <ul style="text-align: left; font-size: 15px; margin-top: 10px; padding-left: 30px;">
+                        <li>Replace the currently uploaded data</li>
+                        <li>Remove all prediction results from the table</li>
+                        <li>Require you to make new predictions</li>
+                    </ul>
+                    <p style="font-size: 16px; margin-top: 15px; font-weight: 600;">
+                        Do you want to continue?
+                    </p>
+                `,
+                showCancelButton: true,
+                confirmButtonColor: getThemeColor(),
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Upload New File',
+                cancelButtonText: 'Cancel',
+                width: '500px'
+            });
+            
+            // If user cancels, reset file input and stop immediately
+            if (!result.isConfirmed) {
+                resetFileInput();
+                return; // STOP HERE - don't proceed with file reading
+            }
+        }
+    
+        // User confirmed (or no predictions exist), NOW proceed with file processing
         const reader = new FileReader();
         reader.onload = async function(e) {
             try {
                 const csvData = e.target.result;
                 const parsedData = parseCSV(csvData);
                 
-                // Store original count before validation
-                const originalCount = parsedData.data.length;
-                
                 const isValid = await validateData(parsedData);
                 
-                if (!isValid) {
-                    resetFileInput();
-                    return;
-                }
-                
-                // Calculate how many records were removed (if any)
-                const finalCount = parsedData.data.length;
-                const removedCount = originalCount - finalCount;
-                
-                // Validation succeeded - now we can safely update state
-                diseaseStates[currentDisease].batchUploadedData = parsedData;
-                diseaseStates[currentDisease].batchPredictedData = null;
-                
-                displayData(parsedData);
-                document.getElementById('predictBtn').style.display = 'block';
-                document.getElementById('downloadBtn').style.display = 'none';
-                
-                // Hide prediction columns
-                document.querySelectorAll('.prediction-column').forEach(col => {
-                    col.style.display = 'none';
-                });
-                
-                // Show success modal with appropriate message
-                if (removedCount > 0) {
-                    // Data was cleaned
-                    await Swal.fire({
+                if (isValid) {
+                    uploadedData = parsedData;
+                    diseaseStates[currentDisease].batchUploadedData = parsedData;
+                    
+                    // Clear predicted data since we have new upload
+                    diseaseStates[currentDisease].batchPredictedData = null;
+                    
+                    displayData(parsedData, false);
+                    
+                    predictBtn.style.display = 'block';
+                    downloadBtn.style.display = 'none';
+                    
+                    // Update button text after successful upload
+                    updateUploadButtonText();
+                    
+                    Swal.fire({
                         icon: 'success',
-                        title: 'File Uploaded Successfully!',
-                        html: `
-                            <div style="text-align: center;">
-                                <p>Loaded ${finalCount} valid records.</p>
-                                <p style="color: #666; font-size: 14px;">
-                                    ${removedCount} invalid record${removedCount > 1 ? 's were' : ' was'} removed.
-                                </p>
-                            </div>
-                        `,
+                        title: 'Data Uploaded Successfully!',
+                        text: `${parsedData.data.length} valid records loaded.`,
                         confirmButtonColor: getThemeColor()
                     });
                 } else {
-                    // No cleaning needed
-                    await Swal.fire({
-                        icon: 'success',
-                        title: 'File Uploaded Successfully!',
-                        text: `Loaded ${finalCount} records.`,
-                        confirmButtonColor: getThemeColor()
-                    });
+                    resetFileInput();
                 }
-
             } catch (error) {
                 console.error('CSV parsing error:', error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Invalid CSV File',
+                    title: 'Invalid CSV Format',
                     text: error.message || 'Unable to parse the CSV file. Please check the format.',
                     confirmButtonColor: getThemeColor()
                 });
-                
                 resetFileInput();
             }
         };
@@ -1027,7 +1039,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 text: 'Unable to read the selected file. Please try again.',
                 confirmButtonColor: getThemeColor()
             });
-            
             resetFileInput();
         };
         
@@ -1527,6 +1538,17 @@ document.addEventListener('DOMContentLoaded', () => {
             timer: 2000,
             showConfirmButton: false
         });
+    }
+
+    function updateUploadButtonText() {
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadedData = diseaseStates[currentDisease].batchUploadedData;
+        
+        if (uploadedData && uploadedData.data && uploadedData.data.length > 0) {
+            uploadBtn.textContent = 'Upload New Data';
+        } else {
+            uploadBtn.textContent = 'Upload Data';
+        }
     }
 
     function resetFileInput() {
