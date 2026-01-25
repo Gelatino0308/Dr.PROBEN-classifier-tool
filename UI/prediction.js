@@ -912,6 +912,15 @@ document.addEventListener('DOMContentLoaded', () => {
         predictionHeader.style.display = 'none';
         tableHeader.appendChild(predictionHeader);
         
+        // Add probability column header (initially hidden)
+        const probabilityHeader = document.createElement('th');
+        probabilityHeader.textContent = 'Class Probability';
+        probabilityHeader.className = 'prediction-column probability-column';
+        probabilityHeader.style.backgroundColor = getThemeColor();
+        probabilityHeader.style.color = 'white';
+        probabilityHeader.style.display = 'none';
+        tableHeader.appendChild(probabilityHeader);
+        
         // Add attribute headers
         config.attributes.forEach(attr => {
             const th = document.createElement('th');
@@ -1277,21 +1286,39 @@ document.addEventListener('DOMContentLoaded', () => {
         
         tableBody.innerHTML = '';
         
-        document.querySelector('.prediction-column').style.display = showPrediction ? 'table-cell' : 'none';
+        // Show/hide prediction columns
+        document.querySelectorAll('.prediction-column').forEach(col => {
+            col.style.display = showPrediction ? 'table-cell' : 'none';
+        });
+        
+        // Get predicted data from disease state
+        const predictedData = diseaseStates[currentDisease].batchPredictedData;
         
         data.data.forEach((row, index) => {
             const tr = document.createElement('tr');
             
-            if (showPrediction && diseaseStates[currentDisease].batchPredictedData) {
-                const predCell = document.createElement('td');
-                predCell.textContent = diseaseStates[currentDisease].batchPredictedData[index];
-                predCell.className = 'prediction-column';
-                tr.appendChild(predCell);
+            // Add prediction cell if available
+            if (showPrediction && predictedData) {
+                const predictionCell = document.createElement('td');
+                const prediction = predictedData.predictions[index];
+                predictionCell.textContent = prediction === 1 ? config.positiveClass : config.negativeClass;
+                predictionCell.className = 'prediction-column';
+                tr.appendChild(predictionCell);
+                
+                // Add probability cell
+                const probabilityCell = document.createElement('td');
+                const probability = predictedData.probabilities[index];
+                probabilityCell.textContent = `${probability}%`;
+                probabilityCell.className = 'prediction-column probability-column';
+                tr.appendChild(probabilityCell);
             } else if (showPrediction) {
-                const predCell = document.createElement('td');
-                predCell.textContent = '-';
-                predCell.className = 'prediction-column';
-                tr.appendChild(predCell);
+                const predictionCell = document.createElement('td');
+                predictionCell.className = 'prediction-column';
+                tr.appendChild(predictionCell);
+                
+                const probabilityCell = document.createElement('td');
+                probabilityCell.className = 'prediction-column probability-column';
+                tr.appendChild(probabilityCell);
             }
             
             config.attributes.forEach(attr => {
@@ -1304,7 +1331,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         if (data.data.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="${config.attributes.length + 1}" class="empty-table-message">No valid data found.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="${config.attributes.length + 2}" class="empty-table-message">No valid data found.</td></tr>`;
         }
     }
 
@@ -1360,11 +1387,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const config = diseaseConfigs[currentDisease];
             
             const apiData = uploadedData.data.map(row => {
-                const dataPoint = {};
+                const dataRow = {};
                 config.attributes.forEach(attr => {
-                    dataPoint[attr.id] = parseFloat(row[attr.id]);
+                    dataRow[attr.id] = row[attr.id];
                 });
-                return dataPoint;
+                return dataRow;
             });
 
             const response = await fetch(`http://127.0.0.1:5000${config.batchEndpoint}`, {
@@ -1380,10 +1407,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
-            
-            const predictedData = result.predictions.map(pred => 
-                pred === 1 ? config.positiveClass : config.negativeClass
-            );
+
+            // FIXED: Backend returns 'probabilities' not 'percentages'
+            predictedData = {
+                predictions: result.predictions,
+                probabilities: result.probabilities  // This is the correct key from backend
+            };
 
             diseaseStates[currentDisease].batchPredictedData = predictedData;
 
@@ -1418,17 +1447,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const uploadedData = diseaseStates[currentDisease].batchUploadedData;
         const predictedData = diseaseStates[currentDisease].batchPredictedData;
         
-        if (!uploadedData || !predictedData) return;
-
+        if (!uploadedData || !predictedData) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Predictions',
+                text: 'Please make predictions first.',
+                confirmButtonColor: getThemeColor()
+            });
+            return;
+        }
+    
+        // Create CSV content
         const config = diseaseConfigs[currentDisease];
-        const headers = ['Prediction', ...config.attributes.map(attr => attr.id)];
+        const headers = ['Prediction', 'Class Probability', ...config.attributes.map(attr => attr.label)];
         let csvContent = headers.join(',') + '\n';
-
+    
         uploadedData.data.forEach((row, index) => {
-            const rowData = [
-                predictedData[index],
-                ...config.attributes.map(attr => row[attr.id])
-            ];
+            const prediction = predictedData.predictions[index] === 1 ? config.positiveClass : config.negativeClass;
+            const probability = `${predictedData.probabilities[index]}%`;
+            const rowData = [prediction, probability, ...config.attributes.map(attr => row[attr.id])];
             csvContent += rowData.join(',') + '\n';
         });
 
