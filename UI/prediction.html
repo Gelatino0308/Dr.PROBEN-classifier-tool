@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/tippy.css" />
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/themes/light.css" />
     <link rel="stylesheet" href="singlePrediction.css">
@@ -71,11 +72,10 @@
                     <div id="result" class="result">
                         <!-- Placeholder content - shows when no results -->
                         <div class="result-placeholder" id="resultPlaceholder">
-                            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 11H15M9 15H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
-                                <circle cx="12" cy="12" r="9" stroke="black" stroke-width="2" stroke-dasharray="2 2" opacity="0.3"/>
-                            </svg>
-                            <p>Results will appear here after prediction</p>
+                            <div class="class-text-skeleton"></div>
+                            <div class="desc-text-skeleton"></div>
+                            <span class="material-icons">donut_large</span>
+                            <p>Results will appear here after input and "Predict Class"</p>
                         </div>
                         
                         <!-- Actual results content - hidden by default -->

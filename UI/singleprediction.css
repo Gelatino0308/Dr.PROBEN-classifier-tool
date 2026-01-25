@@ -159,9 +159,30 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
-    padding: 80px 20px;
-    opacity: 0.6;
+    gap: 15px;
+    padding: 20px;
+    opacity: 0.5;
+    /* background-color: darkgray;
+    border-radius: 30px; */
+}
+
+.class-text-skeleton {
+    background-color: #ccc;
+    height: 3rem;
+    width: 200px;
+    border-radius: 10px;
+}
+
+.desc-text-skeleton {
+    background-color: #ccc;
+    height: 3rem;
+    width: 500px;
+    border-radius: 10px;
+}
+
+.result-placeholder span {
+    color: #ccc; 
+    font-size: 200px;
 }
 
 .result-placeholder p {
