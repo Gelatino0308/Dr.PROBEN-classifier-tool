@@ -873,6 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
      function initializeBatchPrediction() {
         const uploadBtn = document.getElementById('uploadBtn');
         const checkValuesBtn = document.getElementById('checkValuesBtn');
+        const downloadSampleCSVBtn = document.getElementById('downloadSampleCSV');
         const downloadBtn = document.getElementById('downloadBtn');
         const predictBtn = document.getElementById('predictBtn');
         const fileInput = document.getElementById('fileInput');
@@ -890,6 +891,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Check values button
         checkValuesBtn.addEventListener('click', showValidAttributeValues);
+
+        // Download sample CSV button
+        downloadSampleCSVBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = `csv-files/diabetes_sample.csv`;
+            link.download = `${currentDisease}_sample.csv`;
+            link.click();
+        });
 
         // Predict button
         predictBtn.addEventListener('click', handlePrediction);
@@ -1513,7 +1522,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Swal.fire({
             icon: 'success',
             title: 'Download Complete!',
-            text: 'The cleaned data with predictions has been downloaded.',
+            text: 'The result data with predictions has been downloaded.',
             confirmButtonColor: getThemeColor(),
             timer: 2000,
             showConfirmButton: false

@@ -8,8 +8,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 0;
-    padding: 0 20px;
+    margin: 20px auto;
+    /* padding: 0 20px; */
+    max-width: 85%;
 }
 
 .control-buttons {
@@ -21,7 +22,7 @@
     background-color: white;
     border: 2px solid transparent;
     border-radius: 25px;
-    padding: 10px 20px;
+    padding: 5px 15px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
@@ -38,7 +39,7 @@
     background-color: white;
     border: 2px solid transparent;
     border-radius: 25px;
-    padding: 10px 20px;
+    padding: 5px 15px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
@@ -78,38 +79,38 @@
 }
 
 /* Theme-specific button colors for predict button */
-.theme-diabetes #predictBtn {
+.theme-diabetes .action-btn {
     background-color: #096F29;
     color: white;
     border: 4px solid #096F29;
 }
 
-.theme-diabetes #predictBtn:hover {
+.theme-diabetes .action-btn:hover {
     opacity: 0.8;
 }
 
-.theme-heart #predictBtn {
+.theme-heart .action-btn {
     background-color: #811111;
     color: white;
     border: 4px solid #811111;
 }
 
-.theme-heart #predictBtn:hover {
+.theme-heart .action-btn:hover {
     opacity: 0.8;
 }
 
-.theme-cancer #predictBtn {
+.theme-cancer .action-btn {
     background-color: #1E2F4E;
     color: white;
     border: 4px solid #1E2F4E;
 }
 
-.theme-cancer #predictBtn:hover {
+.theme-cancer .action-btn:hover {
     opacity: 0.8;
 }
 
 /* Theme-specific button colors for download button */
-.theme-diabetes #downloadBtn {
+/* .theme-diabetes #downloadBtn {
     color: #096F29;
     border-color: #096F29;
 }
@@ -137,19 +138,19 @@
 .theme-cancer #downloadBtn:hover {
     background-color: #1E2F4E;
     color: white;
-}
+} */
 
 /* Ensure predict button maintains special styling */
 #predictBtn.action-btn {
-    font-size: 20px;
-    padding: 3px 30px;
+    /* font-size: 20px; */
+    /* padding: 3px 30px; */
     color: white;
     border-width: 4px;
 }
 
 /* Table Container */
 .table-container {
-    margin: 20px;
+    margin: 0 auto;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -158,6 +159,7 @@
     overflow-x: auto;
     overflow-y: auto;
     scrollbar-color: #333 transparent;
+    max-width: 85%;
 }
 
 #dataTable {

@@ -110,13 +110,14 @@
         <!-- Batch Prediction Section -->
         <div id="batchPredictionSection" class="prediction-mode">
             <p class="instruction">
-                <span>Upload</span> (via <span>"Upload Data"</span>) a CSV format file with the same headers as the table below and the has valid values (click <span>"Check Valid Attribute Values"</span> button for more details). The uploaded data will fill the table below, and clicking the <span>"Predict Class"</span> button will fill the classification result for each row. You can also download the CSV file with the classification result column added.
+                <span>Upload</span> (via <span>"Upload Data"</span>) a CSV format file with the same headers as the table below and the has valid values (click <span>"Check Valid Values"</span> button for more details). The uploaded data will fill the table below, and clicking the <span>"Predict Class"</span> button will fill the classification result for each row. You can also download the CSV file with the classification result column added.
             </p>
             
             <div class="batch-controls">
                 <div class="control-buttons">
                     <button id="uploadBtn" class="control-btn">Upload Data</button>
-                    <button id="checkValuesBtn" class="control-btn">Check Valid Attribute Values</button>
+                    <button id="checkValuesBtn" class="control-btn">Check Valid Values</button>
+                    <button id="downloadSampleCSV" class="control-btn">Download Sample CSV</button>
                 </div>
                 <div class="action-buttons">
                     <button id="predictBtn" class="action-btn" style="display: none;">Predict Class</button>
