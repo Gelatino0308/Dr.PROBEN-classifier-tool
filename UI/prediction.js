@@ -695,6 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     input.name = attr.id;
                     input.id = `${attr.id}_${index}`;  // Unique id for each radio button
                     input.value = option.value;
+                    input.required = true;
                     
                     const radioLabel = document.createElement('label');
                     radioLabel.htmlFor = `${attr.id}_${index}`;  // Match the radio button's unique id
