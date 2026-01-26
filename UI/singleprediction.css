@@ -3,6 +3,66 @@
    Styles unique to single prediction mode
    =================================== */
 
+
+   .instruction {
+    display: block;
+    margin: 14px 2rem 18px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 16px;
+    line-height: 1.35;
+    font-style: normal !important; /* don't use italic */
+    /* Default to diabetes theme so existing pages keep current look */
+    background: #dff1e6;
+    border: 1px solid #bfe4cd;
+    color: #0a4d22;
+    white-space: normal;
+    overflow: visible;
+}
+
+/* Theme-specific instruction colors (used by `prediction.html` via body theme classes) */
+.theme-diabetes .instruction {
+    background: #dff1e6;
+    border-color: #bfe4cd;
+    color: #0a4d22;
+}
+
+.theme-heart .instruction {
+    background: #fde4e4;
+    border-color: #f6bcbc;
+    color: #5a0b0b;
+}
+
+.theme-cancer .instruction {
+    background: #e4eefc;
+    border-color: #bfd5f5;
+    color: #0e2449;
+}
+
+@media (max-width: 900px) {
+    .instruction {
+        margin: 14px 1rem 18px;
+        font-size: 14px;
+    }
+}
+
+.instruction .instruction-icon {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    margin-right: 10px;
+    vertical-align: -6px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 26px 26px;
+    background-image: url("backgroun");
+}
+
+.instruction span {
+    font-weight: 700;
+    font-style: normal !important;
+}
+
 /* Problem Details Layout */
 .problem-details-container {
     display: flex;

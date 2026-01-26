@@ -162,6 +162,15 @@
     max-width: 85%;
 }
 
+.table-container.hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+}
+
+.table-container.hide-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
 #dataTable {
     width: 100%;
     border-collapse: collapse;
@@ -196,6 +205,30 @@
 
 #dataTable tr:hover {
     background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+/* Empty placeholder rows */
+#dataTable tr.empty-row {
+    background-color: white !important;
+}
+
+#dataTable tr.empty-row.even-row {
+    background-color: #e8e8e8 !important;
+}
+
+#dataTable tr.empty-row:hover {
+    background-color: inherit !important;
+}
+
+#dataTable tr.empty-row.even-row:hover {
+    background-color: #e8e8e8 !important;
+}
+
+#dataTable .empty-row td {
+    height: 26px;
+    border-bottom: none;
+    padding: 6px 10px;
 }
 
 /* Prediction column styling */

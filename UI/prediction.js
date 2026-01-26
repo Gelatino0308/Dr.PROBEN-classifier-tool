@@ -216,6 +216,151 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Inline accepted-range helper (shown near the focused input)
+    function toFiniteNumber(value) {
+        if (value === undefined || value === null) return null;
+        if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+        if (typeof value !== 'string') return null;
+    
+        const trimmed = value.trim();
+        if (!trimmed) return null;
+        const n = Number(trimmed);
+        return Number.isFinite(n) ? n : null;
+        }
+    
+        function formatAcceptedRange(attr) {
+        const min = toFiniteNumber(attr.min);
+        const max = toFiniteNumber(attr.max);
+    
+        const parts = [];
+        if (min !== null) parts.push(`Min: ${min}`);
+        if (max !== null) parts.push(`Max: ${max}`);
+    
+        // Only show explicit min/max values (no placeholder inference)
+        if (parts.length > 0) return parts.join(' | ');
+        return 'Min/Max not specified.';
+        
+        }
+    
+        function ensureInlineRangeHelper() {
+            let helper = document.getElementById('inlineRangeHelper');
+            if (helper) return helper;
+    
+            helper = document.createElement('div');
+            helper.id = 'inlineRangeHelper';
+            helper.style.display = 'none';
+            helper.style.position = 'fixed';
+            helper.style.zIndex = '9999';
+            helper.style.maxWidth = '260px';
+            helper.style.padding = '10px 12px';
+            helper.style.borderRadius = '10px';
+            helper.style.background = '#ffffff';
+            helper.style.border = '1px solid rgba(0,0,0,0.12)';
+            helper.style.boxShadow = '0 6px 18px rgba(0,0,0,0.12)';
+            helper.style.fontFamily = "'Poppins', sans-serif";
+            helper.style.fontSize = '13px';
+            helper.style.color = '#333';
+    
+            document.body.appendChild(helper);
+            return helper;
+        }
+    
+        function showInlineRangeHelperForInput(input, attr) {
+            const helper = ensureInlineRangeHelper();
+            const rangeText = formatAcceptedRange(attr);
+    
+            helper.innerHTML = `
+                <div style="font-weight:600; margin-bottom:4px;">Accepted values</div>
+                <div>${rangeText}</div>
+            `;
+    
+            // Position to the right of the input, fallback above if near the edge
+            const rect = input.getBoundingClientRect();
+            const margin = 10;
+            const desiredLeft = rect.right + margin;
+            const desiredTop = rect.top;
+    
+            helper.style.display = 'block';
+            const helperRect = helper.getBoundingClientRect();
+            const fitsRight = (desiredLeft + helperRect.width) <= (window.innerWidth - margin);
+    
+            const left = fitsRight ? desiredLeft : Math.max(margin, rect.left);
+            const top = fitsRight
+                ? Math.min(window.innerHeight - helperRect.height - margin, desiredTop)
+                : Math.max(margin, rect.top - helperRect.height - margin);
+    
+            helper.style.left = `${left}px`;
+            helper.style.top = `${top}px`;
+            helper.style.outline = `2px solid ${getThemeColor()}22`;
+        }
+    
+        function hideInlineRangeHelper() {
+            const helper = document.getElementById('inlineRangeHelper');
+            if (helper) helper.style.display = 'none';
+        }
+    
+        function attachInlineRangeHelper(config) {
+            // Only for single prediction, and only for diabetes + heart
+            if (currentMode !== 'single' || !config || !['diabetes', 'heart'].includes(currentDisease)) {
+                hideInlineRangeHelper();
+                return;
+            }
+    
+            // Shared timer so blur from one input doesn't hide the helper after another input is focused
+            if (window.__inlineRangeHideTimerId) {
+                clearTimeout(window.__inlineRangeHideTimerId);
+                window.__inlineRangeHideTimerId = null;
+            }
+    
+            config.attributes.forEach(attr => {
+                if (attr.type !== 'number') return;
+                const input = document.getElementById(attr.id);
+                if (!input) return;
+    
+                // Avoid attaching duplicate listeners when re-rendering
+                if (input.dataset.inlineRangeAttached === 'true') return;
+                input.dataset.inlineRangeAttached = 'true';
+    
+                input.addEventListener('focus', () => {
+                    if (window.__inlineRangeHideTimerId) {
+                        clearTimeout(window.__inlineRangeHideTimerId);
+                        window.__inlineRangeHideTimerId = null;
+                    }
+                    showInlineRangeHelperForInput(input, attr);
+                });
+    
+                input.addEventListener('input', () => showInlineRangeHelperForInput(input, attr));
+    
+                input.addEventListener('blur', () => {
+                    // Delay hide so tabbing/clicking to another input doesn't flicker
+                    window.__inlineRangeHideTimerId = setTimeout(() => {
+                        // Only hide if focus didn't move to another input
+                        const active = document.activeElement;
+                        if (!active || active.tagName !== 'INPUT') {
+                            hideInlineRangeHelper();
+                        }
+                        window.__inlineRangeHideTimerId = null;
+                    }, 50);
+                });
+            });
+    
+            // Global listeners (attach once)
+            if (!document.body.dataset.inlineRangeGlobalAttached) {
+                document.body.dataset.inlineRangeGlobalAttached = 'true';
+    
+                document.addEventListener('click', (e) => {
+                    const helper = document.getElementById('inlineRangeHelper');
+                    if (!helper) return;
+                    if (helper.contains(e.target)) return;
+                    if (e.target && e.target.tagName === 'INPUT') return;
+                    hideInlineRangeHelper();
+                });
+    
+                window.addEventListener('resize', () => hideInlineRangeHelper());
+                window.addEventListener('scroll', () => hideInlineRangeHelper(), true);
+            }
+        }
+
     function initializePage() {
         // Check for stored disease and mode from sessionStorage
         const storedDisease = sessionStorage.getItem('selectedDisease');
@@ -966,6 +1111,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             console.error('setupRealTimeValidation function NOT found!');
         }
+
+        attachInlineRangeHelper(config);
     }
 
     function showDiseaseInfoModal(disease) {
@@ -1032,6 +1179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateBatchPredictionTable(config) {
         const tableHeader = document.getElementById('tableHeader');
         const tableBody = document.getElementById('tableBody');
+        const tableContainer = document.querySelector('.table-container');
         
         tableHeader.innerHTML = '';
         
@@ -1059,9 +1207,34 @@ document.addEventListener('DOMContentLoaded', () => {
             th.textContent = attr.id;
             tableHeader.appendChild(th);
         });
+
+        // Empty state: hide scrollbar chrome (still allows scrolling if needed)
+        tableContainer?.classList.add('hide-scrollbar');
+            
+        // Clear table body and show empty placeholder rows with message
+        const numColumns = config.attributes.length;
+        // Make the placeholder height depend on the number of attributes per disease.
+        // More columns => fewer rows, so the table doesn't overflow vertically.
+        const numEmptyRows = Math.max(6, Math.min(10, Math.round(110 / Math.max(1, numColumns)) + 2));
+        // Keep the message on a white stripe (even index)
+        const messageRowIndex = Math.min(numEmptyRows - 1, 4 - (4 % 2));
         
-        // Clear table body
-        tableBody.innerHTML = `<tr><td colspan="${config.attributes.length + 1}" class="empty-table-message">No data uploaded yet. Upload a CSV file to see data here.</td></tr>`;
+        let emptyRowsHTML = '';
+        for (let i = 0; i < numEmptyRows; i++) {
+            const rowClass = i % 2 === 1 ? 'empty-row even-row' : 'empty-row';
+            if (i === messageRowIndex) {
+                // This row shows the message (on a white row)
+                emptyRowsHTML += `<tr class="${rowClass}"><td colspan="${numColumns}" class="empty-table-message">No data uploaded yet. Upload a CSV file to see data here.</td></tr>`;
+            } else {
+                // Empty rows with just empty cells to show the striping
+                emptyRowsHTML += `<tr class="${rowClass}">`;
+                for (let j = 0; j < numColumns; j++) {
+                    emptyRowsHTML += '<td>&nbsp;</td>';
+                }
+                emptyRowsHTML += '</tr>';
+            }
+        }
+        tableBody.innerHTML = emptyRowsHTML;
     }
 
     async function handleFileUpload(event) {
