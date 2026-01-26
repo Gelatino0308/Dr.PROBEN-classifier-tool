@@ -746,3 +746,46 @@
         height: 12px;
     }
 }
+
+
+
+
+/* Automatic red border for invalid fields (HTML5 validation) */
+input:invalid:not(:placeholder-shown),
+select:invalid:not(:placeholder-shown) {
+    border: 2px solid #ff0000 !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3) !important;
+}
+
+/* Red border for required fields that are empty after interaction */
+input:required:invalid,
+select:required:invalid {
+    border: 2px solid #ff0000 !important;
+}
+
+/* Valid state - return to normal (no green) */
+input:valid,
+select:valid {
+    border: 2px solid #929292;
+}
+
+
+/* Error state for all input types */
+.input-error {
+    border: 2px solid #ff0000 !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3) !important;
+}
+
+/* Error state for radio groups */
+.radio-group.input-error {
+    /* outline: 2px solid #ff0000; */
+    outline-offset: 2px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Error state for dropdowns */
+.dropdown-input.input-error {
+    border: 2px solid #ff0000 !important;
+}
+

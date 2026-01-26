@@ -35,28 +35,28 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Diabetic means the person has diabetes, a chronic disease that affects how your body turns food into energy. It occurs when your pancreas doesn't make enough insulin or your cells don't respond to insulin properly.",
             negativeDesc: 'Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose.',
             attributes: [
-                { id: 'Number of Pregnancies', label: 'Number of Pregnancies', placeholder: '0', min: '0', type: 'number', 
+                { id: 'Number of Pregnancies', label: 'Number of Pregnancies', placeholder: '0', min: '0', max: 20, type: 'number', 
                     info: 'If you have been pregnant twice, you would enter "2." If you have never been pregnant, you would enter "0."' 
                 },
-                { id: 'Plasma Glucose Concentration', label: 'Plasma Glucose Concentration', placeholder: '0 (mg/dL)', min: '0', type: 'number', 
+                { id: 'Plasma Glucose Concentration', label: 'Plasma Glucose Concentration', placeholder: '0 (mg/dL)', min: '0', max: 300, type: 'number', 
                     info: 'This measures the amount of sugar in your blood. You will need to get this value from a recent blood test, often called a blood sugar test or glucose test. Look for a result listed as "Fasting Plasma Glucose" or similar, which is measured in milligrams per deciliter (mg/dL).'
                 },
-                { id: 'Diastolic Blood Pressure', label: 'Diastolic Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
+                { id: 'Diastolic Blood Pressure', label: 'Diastolic Blood Pressure', placeholder: '0 (mm Hg)', min: '0', max: 200, type: 'number',
                     info: 'This is the second, or lower, number in a blood pressure reading. A reading is typically written as two numbers, like "120/80." In this example, "80" is the diastolic pressure. You can get this from a recent doctor\'s visit or a home blood pressure monitor.'
                 },
-                { id: 'Triceps Skin Fold Thickness', label: 'Triceps Skin Fold Thickness', placeholder: '0 (mm)', min: '0', type: 'number',
+                { id: 'Triceps Skin Fold Thickness', label: 'Triceps Skin Fold Thickness', placeholder: '0 (mm)', min: '0', max: 100, type: 'number',
                     info: 'This value is a way to estimate the amount of body fat by measuring the thickness of a fold of skin and fat on the back of your upper arm. This measurement is usually taken with a special tool called a caliper. You will need to get this value from your doctor.'    
                 },
-                { id: '2-Hour Serum Insulin', label: '2-Hour Serum Insulin', placeholder: '0 (µU/mL)', min: '0', type: 'number',
+                { id: '2-Hour Serum Insulin', label: '2-Hour Serum Insulin', placeholder: '0 (µU/mL)', min: '0', max: 1000, type: 'number',
                     info: 'This measures the amount of insulin in your blood specifically two hours after you\'ve taken a glucose tolerance test. It shows how well your body processes sugar over time. This value should be obtained from a specific blood test.'
                 },
-                { id: 'Body Mass Index', label: 'Body Mass Index', placeholder: '0.0 (kg/m²)', min: '0', type: 'number', step: 'any',
+                { id: 'Body Mass Index', label: 'Body Mass Index', placeholder: '0.0 (kg/m²)', min: '0', max: 70, type: 'number', step: 'any',
                     info: 'Your BMI is a value calculated from your weight and height that helps determine if you are at a healthy weight. To find your BMI, you can use an online calculator. Simply enter your height and weight, and the calculator will provide your BMI value. For example, if you weigh 150 lbs and are 5\'5" tall, your BMI is approximately 25.'
                 },
-                { id: 'Diabetes Pedigree Function', label: 'Diabetes Pedigree Function', placeholder: '0.000', min: '0', type: 'number', step: 'any',
+                { id: 'Diabetes Pedigree Function', label: 'Diabetes Pedigree Function', placeholder: '0.000', min: '0', max: 5, type: 'number', step: 'any',
                     info: 'This is a complex score that quantifies the genetic risk of diabetes based on your family history. You won\'t have a number for this yourself. This value is typically calculated by the diagnostic tool based on the family history information you provide, such as whether your parents or siblings have diabetes.'
                 },
-                { id: 'Age', label: 'Age', placeholder: '0', min: '0', type: 'number',
+                { id: 'Age', label: 'Age', placeholder: '0', min: '0', max: 120, type: 'number',
                     info:'This is your current age.'
                 }
             ]
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
             negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
             attributes: [
-                { id: 'Age', label: 'Age', placeholder: '0', min: '0', type: 'number',
+                { id: 'Age', label: 'Age', placeholder: '0', min: '0', max: 120, type: 'number',
                     info: 'This is your current age.'
                 },
                 { id: 'Sex', label: 'Sex', type: 'radio', 
@@ -89,10 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info: 'Common types are:\n• Typical Angina: Chest pain caused by reduced blood flow to the heart\n• Atypical Angina: Chest discomfort that doesn\'t follow typical angina patterns\n• Non-anginal Pain: Chest pain not related to heart conditions\n• Asymptomatic: No chest pain symptoms'
                 },
-                { id: 'Resting Blood Pressure', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
+                { id: 'Resting Blood Pressure', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', max: 300, type: 'number',
                     info: 'This is the top number of your blood pressure reading, measured while you are at rest. It is measured in millimeters of mercury (mm Hg).'
                 },
-                { id: 'Serum Cholesterol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', type: 'number',
+                { id: 'Serum Cholesterol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', max: 1000, type: 'number',
                     info: 'This is the amount of total cholesterol in your blood. It is measured in milligrams per deciliter (mg/dL).'
                 },
                 { id: 'FBS > 120mg/dL', label: 'FBS > 120mg/dL', type: 'radio', 
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info: 'This is a record of your heart\'s electrical activity while you are at rest. You will need a recent ECG report.\n• Normal: No significant abnormalities.\n• ST-T Wave Abnormality: Minor changes that could indicate a heart issue.\n• Left Ventricular Hypertrophy (LVH): Thickening of the heart\'s main pumping chamber.'
                 },
-                { id: 'Maximum Heart Rate', label: 'Maximum Heart Rate', placeholder: '0', min: '0', type: 'number',
+                { id: 'Maximum Heart Rate', label: 'Maximum Heart Rate', placeholder: '0', min: '0', max: 250, type: 'number',
                     info:'This is the highest heart rate you reached during a stress or exercise test. This measurement is often taken on a treadmill or stationary bike while your heart rate is monitored.'
                 },
                 { id: 'Exercise Induced Angina', label: 'Exercise Induced Angina', type: 'radio', 
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info: 'This indicates whether you experienced chest pain during physical exercise.\n• Yes: You experienced chest pain during exercise.\n• No: You did not experience chest pain during exercise.'
                 },
-                { id: 'ST Depression (Oldpeak)', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any',
+                { id: 'ST Depression (Oldpeak)', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', max: 10, type: 'number', step: 'any',
                     info: 'This measures the amount of depression in the ST segment of your ECG during exercise, which can be a sign of reduced blood flow to the heart. The value is measured in millimeters.'
                 },
                 { id: 'Slope of Peak Exercise ST', label: 'Slope of Peak Exercise ST', type: 'dropdown', 
@@ -463,29 +463,175 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        // Validation helper functions
+        function addErrorBorder(element, attr) {
+            console.log('Adding error border to:', attr.id);
+            if (attr.type === 'radio') {
+                const radioGroup = element.closest('.radio-group');
+                if (radioGroup) {
+                    radioGroup.classList.add('input-error');
+                    console.log('Added error to radio group');
+                }
+            } else if (attr.type === 'slider') {
+                const input = document.getElementById(attr.id);
+                const valueDisplay = input?.nextElementSibling;
+                if (input) {
+                    input.classList.add('input-error');
+                    console.log('Added error to slider input');
+                }
+                if (valueDisplay) {
+                    valueDisplay.classList.add('input-error');
+                    console.log('Added error to slider value display');
+                }
+            } else {
+                element.classList.add('input-error');
+                console.log('Added error to element');
+            }
+        }
+
+        function removeErrorBorder(element, attr) {
+            console.log('Removing error border from:', attr.id);
+            if (attr.type === 'radio') {
+                const radioGroup = element.closest('.radio-group');
+                if (radioGroup) {
+                    radioGroup.classList.remove('input-error');
+                }
+            } else if (attr.type === 'slider') {
+                const input = document.getElementById(attr.id);
+                const valueDisplay = input?.nextElementSibling;
+                if (input) input.classList.remove('input-error');
+                if (valueDisplay) valueDisplay.classList.remove('input-error');
+            } else {
+                element.classList.remove('input-error');
+            }
+        }
+
+        function validateForm() {
+            const config = diseaseConfigs[currentDisease];
+            let isValid = true;
+            const invalidFields = [];
+
+            console.log('Validating form for disease:', currentDisease);
+
+            config.attributes.forEach(attr => {
+
+                // Skip validation for sliders completely
+                if (attr.type === 'slider') {
+                    return; // Skip to next iteration
+                }
+
+                let element;
+                let hasValue = false;
+
+                if (attr.type === 'radio') {
+                    element = document.querySelector(`input[name="${attr.id}"]`);
+                    const checked = document.querySelector(`input[name="${attr.id}"]:checked`);
+                    hasValue = !!checked;
+                } else if (attr.type === 'dropdown') {
+                    element = document.getElementById(attr.id);
+                    hasValue = element && element.value !== '' && element.selectedIndex !== 0;
+                } else {
+                    element = document.getElementById(attr.id);
+                    hasValue = element && element.value.trim() !== '';
+                }
+
+                console.log(`Field ${attr.id}: hasValue=${hasValue}, element=`, element);
+
+                if (!hasValue) {
+                    addErrorBorder(element, attr);
+                    invalidFields.push(attr.label);
+                    isValid = false;
+                } else {
+                    removeErrorBorder(element, attr);
+                }
+            });
+
+            console.log('Validation result:', { isValid, invalidFields });
+            return { isValid, invalidFields };
+        }
+
+        function setupRealTimeValidation() {
+            const config = diseaseConfigs[currentDisease];
+            console.log('setupRealTimeValidation called for:', currentDisease);
+            console.log('Number of attributes:', config.attributes.length);
+
+            config.attributes.forEach(attr => {
+                // Skip sliders completely
+                if (attr.type === 'slider') {
+                    return; // Skip to next iteration
+                }
+
+                console.log('Setting up listener for:', attr.id, 'type:', attr.type);
+                
+                if (attr.type === 'radio') {
+                    const radioInputs = document.querySelectorAll(`input[name="${attr.id}"]`);
+                    console.log('Found radio inputs:', radioInputs.length);
+                    radioInputs.forEach(radio => {
+                        radio.addEventListener('change', () => {
+                            console.log('Radio changed:', attr.id);
+                            removeErrorBorder(radio, attr);
+                        });
+                    });
+                } else if (attr.type === 'dropdown') {
+                    const element = document.getElementById(attr.id);
+                    if (element) {
+                        console.log('Found dropdown:', attr.id);
+                        element.addEventListener('change', () => {
+                            console.log('Dropdown changed:', attr.id);
+                            removeErrorBorder(element, attr);
+                        });
+                    } else {
+                        console.error('Dropdown not found:', attr.id);
+                    }
+                } else {
+                    const element = document.getElementById(attr.id);
+                    if (element) {
+                        console.log('Found input:', attr.id);
+                        element.addEventListener('input', () => {
+                            console.log('Input changed:', attr.id, 'value:', element.value);
+                            removeErrorBorder(element, attr);
+                        });
+                    } else {
+                        console.error('Input not found:', attr.id);
+                    }
+                }
+            });
+        }
+
         // Handle form submission
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const config = diseaseConfigs[currentDisease];
 
-            // Special validation for cancer sliders
-            if (currentDisease === 'cancer') {
-                const unmodifiedFields = [];
-                config.attributes.forEach(attr => {
-                    if (attr.type === 'slider') {
-                        const slider = document.getElementById(attr.id);
-                        if (slider && slider.value === '0') {
-                            unmodifiedFields.push(attr.id);
-                        }
-                    }
-                });
+            // Validate form
+            console.log('Form submitted, validating...');
+            const validation = validateForm();
 
-                if (unmodifiedFields.length > 0) {
-                    showValidationModal(unmodifiedFields);
-                    return;
-                }
+            if (!validation.isValid) {
+                console.log('Validation failed, invalid fields:', validation.invalidFields);
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Incomplete Form',
+                    html: `
+                        <div style="text-align: center;">
+                            <p style="font-size: 18px; line-height: 1.8;">
+                                Please complete all required fields before submitting the form.
+                            </p>
+                            <p style="margin-top: 15px; font-size: 14px; color: #666;">
+                                Fields with <span style="color: #ff0000; font-weight: bold;">red borders</span> need to be filled or corrected.
+                            </p>
+                        </div>
+                    `,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: getThemeColor(),
+                    width: '450px'
+                });
+                return;
             }
+
+            console.log('Validation passed, proceeding with prediction...');
 
             // Get form data dynamically - FIXED VERSION
             const formData = {};
@@ -516,6 +662,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             });
+
+            console.log('Form data:', formData);
 
             try {
                 const response = await fetch(`http://127.0.0.1:5000${config.endpoint}`, {
@@ -602,35 +750,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 const config = diseaseConfigs[currentDisease];
+                
+                // Reset all form fields and remove error borders
                 config.attributes.forEach(attr => {
-                    if (attr.type === 'slider') {
-                        // Reset sliders to default (0)
-                        const input = document.getElementById(attr.id);
-                        const valueDisplay = input?.nextElementSibling;
-                        if (input && valueDisplay) {
-                            input.value = attr.default || '0';
-                            valueDisplay.textContent = input.value;
-                            if (input.value === '0' && currentDisease === 'cancer') {
-                                valueDisplay.classList.add('slider-unmodified');
-                            }
-                        }
-                    } else if (attr.type === 'dropdown') {
-                        // Reset dropdowns to default (first disabled option)
-                        const select = document.getElementById(attr.id);
-                        if (select) {
-                            select.selectedIndex = 0; // Select the "Select an option" default
-                        }
-                    } else if (attr.type === 'radio') {
-                        // Uncheck all radio buttons
+                    if (attr.type === 'radio') {
                         const radioInputs = document.querySelectorAll(`input[name="${attr.id}"]`);
                         radioInputs.forEach(radio => {
                             radio.checked = false;
+                            removeErrorBorder(radio, attr);
                         });
-                    } else if (attr.type === 'number') {
-                        // Reset number inputs to empty
+                    } else if (attr.type === 'dropdown') {
+                        const selectInput = document.getElementById(attr.id);
+                        if (selectInput) {
+                            selectInput.selectedIndex = 0;
+                            removeErrorBorder(selectInput, attr);
+                        }
+                    } else if (attr.type === 'slider') {
+                        const slider = document.getElementById(attr.id);
+                        if (slider) {
+                            slider.value = attr.default || '0';
+                            const valueDisplay = slider.nextElementSibling;
+                            if (valueDisplay) {
+                                valueDisplay.textContent = slider.value;
+                                if (slider.value === '0' && currentDisease === 'cancer') {
+                                    valueDisplay.classList.add('slider-unmodified');
+                                }
+                            }
+                            removeErrorBorder(slider, attr);
+                        }
+                    } else {
                         const input = document.getElementById(attr.id);
                         if (input) {
                             input.value = '';
+                            removeErrorBorder(input, attr);
                         }
                     }
                 });
@@ -653,8 +805,11 @@ document.addEventListener('DOMContentLoaded', () => {
             updateChartColors,
             updateCustomLegend,
             updateLegendColors,
+            setupRealTimeValidation,
             chart
         };
+
+        console.log('singlePrediction object created:', window.singlePrediction);
     }
 
     function updateSinglePredictionForm(config) {
@@ -695,7 +850,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     input.name = attr.id;
                     input.id = `${attr.id}_${index}`;  // Unique id for each radio button
                     input.value = option.value;
-                    input.required = true;
+                    // input.required = true;
                     
                     const radioLabel = document.createElement('label');
                     radioLabel.htmlFor = `${attr.id}_${index}`;  // Match the radio button's unique id
@@ -711,7 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const select = document.createElement('select');
                 select.id = attr.id;
                 select.className = 'dropdown-input';
-                select.required = true;
+                // select.required = true;
                 
                 // Add default disabled option
                 const defaultOption = document.createElement('option');
@@ -768,7 +923,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.min = attr.min;
                 input.max = attr.max;
                 input.step = attr.step || '1';
-                input.required = true;
+                // input.required = true;
                 
                 wrapper.appendChild(input);
             }
@@ -802,6 +957,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 showDiseaseInfoModal(currentDisease);
             });
         }
+
+        // Setup real-time validation listeners - ADD DEBUG LOG
+        console.log('Setting up validation listeners...');
+        if (window.singlePrediction && window.singlePrediction.setupRealTimeValidation) {
+            console.log('setupRealTimeValidation function found, calling it...');
+            window.singlePrediction.setupRealTimeValidation();
+        } else {
+            console.error('setupRealTimeValidation function NOT found!');
+        }
     }
 
     function showDiseaseInfoModal(disease) {
@@ -824,48 +988,6 @@ document.addEventListener('DOMContentLoaded', () => {
             focusConfirm: false
         });
     }
-
-    function showValidationModal(unmodifiedFields) {
-        const fieldsList = unmodifiedFields.map(field => `• ${field}`).join('<br>');
-
-        Swal.fire({
-            icon: 'warning',
-            title: 'Invalid Form Values',
-            html: `
-                <p style="margin-bottom: 10px; line-height: 2;">Each field only accepts input between <strong>1-10</strong>, 
-                    so please adjust all slider values accordingly before submitting. To know why, click the 
-                    <svg style="height: 25px;" class="info-icon" id="infoIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                    </svg> 
-                    button above the form.
-                </p>
-                <p style="margin-bottom: 10px; font-weight: 500; color: #555;">The following fields still have invalid values (0):</p>
-                <div style="
-                    background: #f8f9fa; 
-                    border-left: 4px solid #e74c3c; 
-                    padding: 16px; 
-                    border-radius: 4px; 
-                    text-align: left; 
-                    margin-top: 12px;
-                    max-height: 180px;
-                    overflow-y: auto;
-                ">
-                    <div style="color: #e74c3c; font-weight: 500; line-height: 1.8;">
-                        ${fieldsList}
-                    </div>
-                </div>
-            `,
-            confirmButtonText: 'Got it!',
-            confirmButtonColor: '#1E2F4E',
-            customClass: {
-                popup: 'validation-modal-popup',
-                confirmButton: 'validation-modal-button'
-            }
-        });
-    }
-
-
-
 
 
 
@@ -1271,13 +1393,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Filter out invalid rows
             const validData = parsedData.data.filter((row, index) => !invalidRowIndexes.has(index));
             parsedData.data = validData;
-            
-            // await Swal.fire({
-            //     icon: 'success',
-            //     title: 'Data Cleaned!',
-            //     text: `Removed ${invalidCount} invalid records. ${validCount} valid records remaining.`,
-            //     confirmButtonColor: getThemeColor()
-            // });
             
             return true; // Validation passed after cleaning
         } else {
