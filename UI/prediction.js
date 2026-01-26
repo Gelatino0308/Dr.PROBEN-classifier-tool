@@ -131,8 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info:'Describes the slope of ST segment on your ECG during an exercise stress test.\n• Upsloping: The ST segment goes up.\n• Flat: The ST segment is horizontal.\n• Downsloping: The ST segment goes down. A downsloping or flat slope can be a sign of heart disease.'
                 },
-                { id: 'Number of Major Vessels', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'slider', default: '0',
-                    info: 'This refers to the number of major blood vessels (0 to 3) that are significantly narrowed as seen in a coronary angiography. This value is provided by a cardiologist.'
+                { 
+                    id: 'Number of Major Vessels', 
+                    label: 'Number of Major Vessels', 
+                    type: 'radio', 
+                    options: [
+                        { value: '0', label: '0' },
+                        { value: '1', label: '1' },
+                        { value: '2', label: '2' },
+                        { value: '3', label: '3' }
+                    ],
+                    info: 'This refers to the number of major blood vessels (0 to 3) that are significantly narrowed as seen in a coronary angiography.'
                 },
                 { id: 'Thalassemia', label: 'Thalassemia', type: 'dropdown', 
                     options: [
@@ -153,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
-                { id: 'Clump Thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Clump Thickness', label: ' Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Refers to the degree to which cells are clustered together. Higher thickness values may indicate abnormal cell growth or potential malignancy.' 
                 },
                 { id: 'Uniformity of Cell Size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
@@ -668,9 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create label
             const label = document.createElement('label');
             
-            // Only set htmlFor for input types that have a single matching id
-            // Don't set it for radio buttons since they have multiple inputs with different ids
-            if (attr.type !== 'radio') {
+            if (attr.type !== 'radio' && !(currentDisease === 'cancer' && attr.type === 'slider')) {
                 label.htmlFor = attr.id;
             }
             
@@ -681,8 +688,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const wrapper = document.createElement('div');
             wrapper.className = 'input-wrapper';
 
-            // Create input based on type
-            if (attr.type === 'radio') {
+            // --- NEW: FORCE Cancer Sliders to become 1-10 Radio Circles ---
+            if (currentDisease === 'cancer' && attr.type === 'slider') {
+                const radioContainer = document.createElement('div');
+                radioContainer.className = 'radio-scale-container';
+                radioContainer.id = attr.id;
+
+                for (let i = 1; i <= 10; i++) {
+                    const radioLabel = document.createElement('label');
+                    radioLabel.className = 'radio-scale-item';
+
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = attr.id;
+                    radioInput.id = `${attr.id}_${i}`;
+                    radioInput.value = i;
+                    radioInput.required = true;
+
+                    const circleSpan = document.createElement('span');
+                    circleSpan.className = 'radio-scale-circle';
+                    circleSpan.textContent = i;
+
+                    radioLabel.appendChild(radioInput);
+                    radioLabel.appendChild(circleSpan);
+                    radioContainer.appendChild(radioLabel);
+                }
+                wrapper.appendChild(radioContainer);
+            } 
+            // --- Standard Radio Group (e.g. Sex) ---
+            else if (attr.type === 'radio') {
                 const radioGroup = document.createElement('div');
                 radioGroup.className = 'radio-group';
                 
@@ -693,12 +727,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const input = document.createElement('input');
                     input.type = 'radio';
                     input.name = attr.id;
-                    input.id = `${attr.id}_${index}`;  // Unique id for each radio button
+                    input.id = `${attr.id}_${index}`;
                     input.value = option.value;
                     input.required = true;
                     
                     const radioLabel = document.createElement('label');
-                    radioLabel.htmlFor = `${attr.id}_${index}`;  // Match the radio button's unique id
+                    radioLabel.htmlFor = `${attr.id}_${index}`;
                     radioLabel.textContent = option.label;
                     
                     radioOption.appendChild(input);
@@ -707,30 +741,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 wrapper.appendChild(radioGroup);
-            } else if (attr.type === 'dropdown') {
-                const select = document.createElement('select');
-                select.id = attr.id;
-                select.className = 'dropdown-input';
-                select.required = true;
-                
-                // Add default disabled option
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = 'Select an option';
-                defaultOption.disabled = true;
-                defaultOption.selected = true;
-                select.appendChild(defaultOption);
-                
-                // Add attribute options
-                attr.options.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = option.value;
-                    optionElement.textContent = option.label;
-                    select.appendChild(optionElement);
-                });
-                
-                wrapper.appendChild(select);
-            } else if (attr.type === 'slider') {
+            } 
+            // --- Standard Slider (e.g. Heart Disease Major Vessels) ---
+            else if (attr.type === 'slider') {
                 const slider = document.createElement('input');
                 slider.type = 'range';
                 slider.id = attr.id;
@@ -744,23 +757,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 valueDisplay.className = 'slider-value';
                 valueDisplay.textContent = slider.value;
                 
-                // Add unmodified class if value is 0
-                if (slider.value === '0' && currentDisease === 'cancer') {
-                    valueDisplay.classList.add('slider-unmodified');
-                }
-                
                 slider.addEventListener('input', function() {
                     valueDisplay.textContent = this.value;
-                    // Remove unmodified class when user changes the value
-                    if (this.value !== '0' && currentDisease === 'cancer') {
-                        valueDisplay.classList.remove('slider-unmodified');
-                    } 
                 });
                 
                 wrapper.appendChild(slider);
                 wrapper.appendChild(valueDisplay);
-            } else {
-                // Regular number input
+            } 
+            // --- Dropdown ---
+            else if (attr.type === 'dropdown') {
+                const select = document.createElement('select');
+                select.id = attr.id;
+                select.className = 'dropdown-input';
+                select.required = true;
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select an option';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                
+                attr.options.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.label;
+                    select.appendChild(optionElement);
+                });
+                
+                wrapper.appendChild(select);
+            } 
+            // --- Standard Number Input ---
+            else {
                 const input = document.createElement('input');
                 input.type = attr.type;
                 input.id = attr.id;
@@ -776,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inputsContainer.appendChild(wrapper);
         });
 
-        // Initialize tooltips after DOM update
+        // Initialize tooltips
         document.querySelectorAll('.labels-container label').forEach((label, index) => {
             const attr = config.attributes[index];
             if (attr && attr.info) {
@@ -784,23 +812,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Initialize tippy
         tippy('[data-tippy-content]', {
             placement: 'top',
             theme: 'light',
+            allowHTML: true
         });
 
-        // Re-attach event listener for info icon after form update
+        // Re-attach info icon logic
         const infoIcon = document.getElementById('infoIcon');
         if (infoIcon) {
-            // Remove any existing listeners by cloning and replacing
             const newInfoIcon = infoIcon.cloneNode(true);
             infoIcon.parentNode.replaceChild(newInfoIcon, infoIcon);
-            
-            // Add new event listener
-            newInfoIcon.addEventListener('click', function() {
-                showDiseaseInfoModal(currentDisease);
-            });
+            newInfoIcon.addEventListener('click', () => showDiseaseInfoModal(currentDisease));
         }
     }
 
