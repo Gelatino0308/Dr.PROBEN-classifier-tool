@@ -40,18 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const min = toFiniteNumber(attr.min);
     const max = toFiniteNumber(attr.max);
 
-    const hasMin = min !== null;
-    const hasMax = max !== null;
+    const parts = [];
+    if (min !== null) parts.push(`Min: ${min}`);
+    if (max !== null) parts.push(`Max: ${max}`);
 
-    if (hasMin && hasMax) return `${min} to ${max}`;
-    if (hasMin) return `≥ ${min}`;
-    if (hasMax) return `≤ ${max}`;
-
-        // Fallback: try to infer from placeholder text
-        if (typeof attr.placeholder === 'string' && attr.placeholder.trim()) {
-            return attr.placeholder;
-        }
-        return 'Enter a valid number.';
+    // Only show explicit min/max values (no placeholder inference)
+    if (parts.length > 0) return parts.join(' | ');
+    return 'Min/Max not specified.';
     }
 
     function ensureInlineRangeHelper() {
@@ -83,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         helper.innerHTML = `
             <div style="font-weight:600; margin-bottom:4px;">Accepted values</div>
-            <div><span style="font-weight:600;">${attr.label || attr.id}:</span> ${rangeText}</div>
+            <div>${rangeText}</div>
         `;
 
         // Position to the right of the input, fallback above if near the edge
