@@ -512,10 +512,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         formData[attr.id] = selectInput.value;
                     }
                 } else if (attr.type === 'slider') {
-                    // For sliders, get the value
-                    const sliderInput = document.getElementById(attr.id);
-                    if (sliderInput) {
-                        formData[attr.id] = sliderInput.value;
+                    // For cancer, sliders are rendered as radio buttons
+                    if (currentDisease === 'cancer') {
+                        const radioInput = document.querySelector(`input[name="${attr.id}"]:checked`);
+                        if (radioInput) {
+                            formData[attr.id] = radioInput.value;
+                        }
+                    } else {
+                        // For other diseases, get the slider value
+                        const sliderInput = document.getElementById(attr.id);
+                        if (sliderInput) {
+                            formData[attr.id] = sliderInput.value;
+                        }
                     }
                 } else {
                     // For regular inputs (text, number)
