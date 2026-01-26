@@ -173,6 +173,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function isRadioScaleField(attr) {
+    // Cancer sliders are rendered as a 1–10 radio scale
+    if (currentDisease === 'cancer' && attr.type === 'slider') return true;
+
+    // Heart: render "Number of Major Vessels" as a 0–3 radio scale
+    if (currentDisease === 'heart' && attr.type === 'slider' && attr.id === 'Number of Major Vessels') return true;
+
+    return false;
+    }
+
+    function shouldDefaultSelectZero(attr) {
+        return currentDisease === 'heart' && attr.type === 'slider' && attr.id === 'Number of Major Vessels';
+    }
+
     // Disease configurations
     const diseaseConfigs = {
         diabetes: {
@@ -618,14 +632,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const config = diseaseConfigs[currentDisease];
 
-            // Special validation for cancer sliders
+            // Special validation for radio-scale slider fields
             if (currentDisease === 'cancer') {
                 const unmodifiedFields = [];
                 config.attributes.forEach(attr => {
                     if (attr.type === 'slider') {
-                        const slider = document.getElementById(attr.id);
-                        if (slider && slider.value === '0') {
-                            unmodifiedFields.push(attr.id);
+                        if (isRadioScaleField(attr)) {
+                            const radioInput = document.querySelector(`input[name="${attr.id}"]:checked`);
+                            if (!radioInput) {
+                                unmodifiedFields.push(attr.id);
+                            }
+                        } else {
+                            const slider = document.getElementById(attr.id);
+                            if (slider && slider.value === '0') {
+                                unmodifiedFields.push(attr.id);
+                            }
                         }
                     }
                 });
@@ -636,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Get form data dynamically - FIXED VERSION
+            // Get form data dynamically
             const formData = {};
             config.attributes.forEach(attr => {
                 if (attr.type === 'radio') {
@@ -652,14 +673,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         formData[attr.id] = selectInput.value;
                     }
                 } else if (attr.type === 'slider') {
-                    // For cancer, sliders are rendered as radio buttons
-                    if (currentDisease === 'cancer') {
+                    // Some slider fields are rendered as radio scales (cancer 1–10, heart vessels 0–3)
+                    if (isRadioScaleField(attr)) {
                         const radioInput = document.querySelector(`input[name="${attr.id}"]:checked`);
                         if (radioInput) {
                             formData[attr.id] = radioInput.value;
                         }
                     } else {
-                        // For other diseases, get the slider value
+                        // Standard sliders
                         const sliderInput = document.getElementById(attr.id);
                         if (sliderInput) {
                             formData[attr.id] = sliderInput.value;
@@ -761,14 +782,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const config = diseaseConfigs[currentDisease];
                 config.attributes.forEach(attr => {
                     if (attr.type === 'slider') {
-                        // Reset sliders to default (0)
-                        const input = document.getElementById(attr.id);
-                        const valueDisplay = input?.nextElementSibling;
-                        if (input && valueDisplay) {
-                            input.value = attr.default || '0';
-                            valueDisplay.textContent = input.value;
-                            if (input.value === '0' && currentDisease === 'cancer') {
-                                valueDisplay.classList.add('slider-unmodified');
+                        if (isRadioScaleField(attr)) {
+                            // Uncheck all radio buttons for the scale
+                            const radioInputs = document.querySelectorAll(`input[name="${attr.id}"]`);
+                            radioInputs.forEach(radio => {
+                                radio.checked = false;
+                            });
+                        } else {
+                            // Reset sliders to default (0)
+                            const input = document.getElementById(attr.id);
+                            const valueDisplay = input?.nextElementSibling;
+                            if (input && valueDisplay) {
+                                input.value = attr.default || '0';
+                                valueDisplay.textContent = input.value;
+                                if (input.value === '0' && currentDisease === 'cancer') {
+                                    valueDisplay.classList.add('slider-unmodified');
+                                }
                             }
                         }
                     } else if (attr.type === 'dropdown') {
@@ -836,13 +865,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const wrapper = document.createElement('div');
             wrapper.className = 'input-wrapper';
 
-            // --- NEW: FORCE Cancer Sliders to become 1-10 Radio Circles ---
-            if (currentDisease === 'cancer' && attr.type === 'slider') {
+            // --- Radio-scale for cancer (1-10) and heart "Number of Major Vessels" (0-3) ---
+            if (isRadioScaleField(attr)) {
                 const radioContainer = document.createElement('div');
                 radioContainer.className = 'radio-scale-container';
                 radioContainer.id = attr.id;
 
-                for (let i = 1; i <= 10; i++) {
+                const start = (currentDisease === 'heart' && attr.id === 'Number of Major Vessels') ? 0 : 1;
+                const end = (currentDisease === 'heart' && attr.id === 'Number of Major Vessels') ? 3 : 10;
+
+                for (let i = start; i <= end; i++) {
                     const radioLabel = document.createElement('label');
                     radioLabel.className = 'radio-scale-item';
 
@@ -853,9 +885,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     radioInput.value = i;
                     radioInput.required = true;
 
+                    // Heart vessels: default to 0 selected
+                    if (shouldDefaultSelectZero(attr) && i === 0) {
+                        radioInput.checked = true;
+                    }
+
                     const circleSpan = document.createElement('span');
                     circleSpan.className = 'radio-scale-circle';
                     circleSpan.textContent = i;
+
+                    // Prevent focus from causing the page/scroll container to jump.
+                    // We focus the actual input without scrolling it into view.
+                    circleSpan.addEventListener('click', (e) => {
+                        // The span isn't a real form control, so we select the hidden radio ourselves.
+                        // Also prevent the browser from doing a scroll-to-focus.
+                        e.preventDefault();
+
+                        if (!radioInput) return;
+
+                        radioInput.checked = true;
+                        // Trigger native listeners/validation updates
+                        radioInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+                        if (typeof radioInput.focus === 'function') {
+                            try {
+                                radioInput.focus({ preventScroll: true });
+                            } catch {
+                                radioInput.focus();
+                            }
+                        }
+                    });
 
                     radioLabel.appendChild(radioInput);
                     radioLabel.appendChild(circleSpan);

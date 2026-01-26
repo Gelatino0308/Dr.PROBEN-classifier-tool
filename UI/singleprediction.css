@@ -63,14 +63,15 @@
     font-style: normal !important;
 }
 
-/* 1. Absolute Viewport Lock */
+/* 1. Layout: avoid locking the entire document with `position: fixed`.
+   That can make the page appear stuck at the bottom and can interfere with the header.
+   We still prevent global scrolling so only the form container scrolls. */
 html, body {
     height: 100vh;
     width: 100vw;
     margin: 0;
     padding: 0;
     overflow: hidden !important; /* Prevents global document scrolling */
-    position: fixed; /* Extra layer of protection against jumping */
 }
 
 /* 2. Pin Header */
@@ -78,6 +79,8 @@ header {
     height: 120px; /* Adjust to match your actual header height */
     flex-shrink: 0;
     z-index: 1000;
+    position: sticky;
+    top: 0;
 }
 
 /* 3. Layout Structure */
@@ -127,6 +130,8 @@ main {
     overflow-x: hidden;
     padding-right: 15px;
     max-height: 55vh;     /* Limits the scroll area so buttons stay visible */
+    overflow-anchor: none;
+    -ms-overflow-style: auto;
 }
 
 /* 4. Keep Action Buttons Fixed at the Bottom */
@@ -140,9 +145,11 @@ main {
 }
 
 
-   /* Clicked state for Heart Disease - Dark Red */
+/* Clicked state for Heart Disease - Dark Red + WHITE number */
 .theme-heart .radio-scale-item input:checked + .radio-scale-circle {
     background-color: #811111; /* Matches heart theme */
+    color: #ffffff;
+    border: 2px solid #811111;
     font-weight: bold;
 }
 
@@ -196,13 +203,25 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border: 1px solid #ccc;
     border-radius: 50%;
     cursor: pointer;
     background: white;
     transition: 0.2s;
+    font-size: 12px;
+}
+
+/* Extra compact: Heart vessels (0–3) scale only */
+.theme-heart .radio-scale-container {
+    gap: 6px;
+}
+
+.theme-heart .radio-scale-circle {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
 }
 
    
