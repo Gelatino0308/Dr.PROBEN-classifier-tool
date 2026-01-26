@@ -3,6 +3,120 @@
    Common elements used by both Single and Batch prediction modes
    =================================== */
 
+
+   
+/* Lock the root window to the screen size */
+html, body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden !important; /* Forces the main screen to stay still */
+}
+
+/* Make the main layout fill the screen exactly */
+main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Only the attribute container gets a scrollbar */
+.form-container {
+    flex: 1;              /* Uses the available space between header and buttons */
+    overflow-x: hidden;
+    padding-right: 15px;  /* Buffer so buttons don't touch the scrollbar */
+    max-height: 60vh;     /* Adjust so Predict/Clear buttons stay visible */
+}
+
+/* Ensure the action buttons are always at the bottom, not scrolling away */
+.form-actions-container {
+    flex-shrink: 0;
+    padding: 20px 0;
+    z-index: 10;
+}
+
+/* Base style for the circles */
+.theme-heart .radio-scale-circle {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 1. Ensure both sides use the exact same vertical gap */
+.theme-cancer .labels-container, 
+.theme-cancer .inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Vertical space between rows */
+}
+
+/* 2. Force every label to be a fixed-height row */
+.theme-cancer .labels-container label {
+    white-space: nowrap;  /* Keep text on one line */
+    font-size: 20px;
+    height: 24px;         /* Fixed row height */
+    display: flex;
+    align-items: center;  /* Center text vertically */
+    justify-content: flex-end;
+    margin: 0;
+    width: 100%;
+}
+
+/* 3. Force every input row to match that height exactly */
+.theme-cancer .inputs-container .input-wrapper {
+    display: flex;
+    align-items: center;  /* Center circles vertically in the row */
+    height: 50px;         /* MUST match the label height */
+    margin: 0;
+    width: 100%;
+}
+
+/* --- Horizontal Layout & Spacing --- */
+
+.theme-cancer .form-section {
+    width: 60%;           /* Wide enough for text + 10 circles */
+}
+
+.theme-cancer .labels-container {
+    width: 45%;           
+    padding-right: 1px;  /* Fixed space between text and first button */
+}
+
+.theme-cancer .inputs-container {
+    width: 50%;
+}
+
+/* --- Radio Scale Straight Line Logic --- */
+
+.theme-cancer .radio-scale-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;    /* Force buttons to stay in a straight line */
+    gap: 4px;             /* Horizontal space between each button */
+    width: max-content;   /* Allow scale to grow to the right */
+    align-items: center;
+}
+
+.theme-cancer .radio-scale-circle {
+    width: 30px;          /* Size of circles */
+    height: 30px;
+    flex-shrink: 0;       /* Prevent buttons from squishing into ovals */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: white;
+}
+
+
 /* Global Resets */
 * {
     box-sizing: border-box;

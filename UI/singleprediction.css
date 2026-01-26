@@ -3,6 +3,228 @@
    Styles unique to single prediction mode
    =================================== */
 
+/* Instruction banner */
+.instruction {
+    display: block;
+    margin: 14px 2rem 18px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 16px;
+    line-height: 1.35;
+    font-style: normal !important; /* don't use italic */
+    /* Default to diabetes theme so existing pages keep current look */
+    background: #dff1e6;
+    border: 1px solid #bfe4cd;
+    color: #0a4d22;
+    white-space: normal;
+    overflow: visible;
+}
+
+/* Theme-specific instruction colors (used by `prediction.html` via body theme classes) */
+.theme-diabetes .instruction {
+    background: #dff1e6;
+    border-color: #bfe4cd;
+    color: #0a4d22;
+}
+
+.theme-heart .instruction {
+    background: #fde4e4;
+    border-color: #f6bcbc;
+    color: #5a0b0b;
+}
+
+.theme-cancer .instruction {
+    background: #e4eefc;
+    border-color: #bfd5f5;
+    color: #0e2449;
+}
+
+@media (max-width: 900px) {
+    .instruction {
+        margin: 14px 1rem 18px;
+        font-size: 14px;
+    }
+}
+
+.instruction .instruction-icon {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    margin-right: 10px;
+    vertical-align: -6px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 26px 26px;
+    background-image: url("backgroun");
+}
+
+.instruction span {
+    font-weight: 700;
+    font-style: normal !important;
+}
+
+/* 1. Layout: avoid locking the entire document with `position: fixed`.
+   That can make the page appear stuck at the bottom and can interfere with the header.
+   We still prevent global scrolling so only the form container scrolls. */
+html, body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden !important; /* Prevents global document scrolling */
+}
+
+/* 2. Pin Header */
+header {
+    height: 120px; /* Adjust to match your actual header height */
+    flex-shrink: 0;
+    z-index: 1000;
+    position: sticky;
+    top: 0;
+}
+
+/* 3. Layout Structure */
+main {
+    height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 4. Fix the scroll zone specifically */
+.form-container {
+    display: flex;
+    gap: 12px;
+    flex: 1; /* Occupies available space */
+    overflow-y: auto !important; /* ONLY this area scrolls */
+    overflow-x: hidden;
+    padding-right: 15px;
+    /* Prevent the browser from trying to scroll-to-focus */
+    scroll-behavior: auto !important; 
+    overscroll-behavior: contain;
+}
+
+/* 5. Pin Action Buttons at the bottom */
+.form-actions-container {
+    position: sticky;
+    bottom: 0;
+}
+
+main {
+    height: calc(100vh - 120px); /* Adjust based on your header height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 3. Create the Isolated Scroll Zone */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form-container {
+    flex: 1;              /* Uses all space between header and buttons */
+    overflow-y: auto;     /* ONLY this part scrolls */
+    overflow-x: hidden;
+    padding-right: 15px;
+    max-height: 55vh;     /* Limits the scroll area so buttons stay visible */
+    overflow-anchor: none;
+    -ms-overflow-style: auto;
+}
+
+/* 4. Keep Action Buttons Fixed at the Bottom */
+.form-actions-container {
+    flex-shrink: 0;
+    padding: 20px 0;
+    z-index: 10;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+
+/* Clicked state for Heart Disease - Dark Red + WHITE number */
+.theme-heart .radio-scale-item input:checked + .radio-scale-circle {
+    background-color: #811111; /* Matches heart theme */
+    color: #ffffff;
+    border: 2px solid #811111;
+    font-weight: bold;
+}
+
+/* --- Circular Buttons Default State --- */
+.theme-cancer .radio-scale-circle {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: white; /* Default background */
+    color: #333;             /* Default text color */
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* --- CLICKED STATE: Dark Blue Background & White Text --- */
+.theme-cancer .radio-scale-item input:checked + .radio-scale-circle {
+    background-color: #1E2F4E; /* Your requested color */
+    color: #ffffff;            /* White text for visibility */
+    border: 2px solid #1E2F4E; /* Solid border to match the fill */
+    font-weight: bold;         /* Make the number pop */
+    box-shadow: 0 0 5px rgba(30, 47, 78, 0.4); /* Optional: subtle glow */
+}
+
+/* Hide the browser's default radio dot */
+.theme-cancer .radio-scale-item input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio-scale-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 5px 0;
+}
+
+.radio-scale-item input {
+    position: absolute;
+    opacity: 0; /* Hides the default radio dot */
+}
+
+.radio-scale-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    background: white;
+    transition: 0.2s;
+    font-size: 12px;
+}
+
+/* Extra compact: Heart vessels (0–3) scale only */
+.theme-heart .radio-scale-container {
+    gap: 6px;
+}
+
+.theme-heart .radio-scale-circle {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+}
+
+   
 /* Problem Details Layout */
 .problem-details-container {
     display: flex;

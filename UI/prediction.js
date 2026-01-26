@@ -24,6 +24,164 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Inline accepted-range helper (shown near the focused input)
+    function toFiniteNumber(value) {
+    if (value === undefined || value === null) return null;
+    if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+    if (typeof value !== 'string') return null;
+
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    const n = Number(trimmed);
+    return Number.isFinite(n) ? n : null;
+    }
+
+    function formatAcceptedRange(attr) {
+    const min = toFiniteNumber(attr.min);
+    const max = toFiniteNumber(attr.max);
+
+    const parts = [];
+    if (min !== null) parts.push(`Min: ${min}`);
+    if (max !== null) parts.push(`Max: ${max}`);
+
+    // Only show explicit min/max values (no placeholder inference)
+    if (parts.length > 0) return parts.join(' | ');
+    return 'Min/Max not specified.';
+    }
+
+    function ensureInlineRangeHelper() {
+        let helper = document.getElementById('inlineRangeHelper');
+        if (helper) return helper;
+
+        helper = document.createElement('div');
+        helper.id = 'inlineRangeHelper';
+        helper.style.display = 'none';
+        helper.style.position = 'fixed';
+        helper.style.zIndex = '9999';
+        helper.style.maxWidth = '260px';
+        helper.style.padding = '10px 12px';
+        helper.style.borderRadius = '10px';
+        helper.style.background = '#ffffff';
+        helper.style.border = '1px solid rgba(0,0,0,0.12)';
+        helper.style.boxShadow = '0 6px 18px rgba(0,0,0,0.12)';
+        helper.style.fontFamily = "'Poppins', sans-serif";
+        helper.style.fontSize = '13px';
+        helper.style.color = '#333';
+
+        document.body.appendChild(helper);
+        return helper;
+    }
+
+    function showInlineRangeHelperForInput(input, attr) {
+        const helper = ensureInlineRangeHelper();
+        const rangeText = formatAcceptedRange(attr);
+
+        helper.innerHTML = `
+            <div style="font-weight:600; margin-bottom:4px;">Accepted values</div>
+            <div>${rangeText}</div>
+        `;
+
+        // Position to the right of the input, fallback above if near the edge
+        const rect = input.getBoundingClientRect();
+        const margin = 10;
+        const desiredLeft = rect.right + margin;
+        const desiredTop = rect.top;
+
+        helper.style.display = 'block';
+        const helperRect = helper.getBoundingClientRect();
+        const fitsRight = (desiredLeft + helperRect.width) <= (window.innerWidth - margin);
+
+        const left = fitsRight ? desiredLeft : Math.max(margin, rect.left);
+        const top = fitsRight
+            ? Math.min(window.innerHeight - helperRect.height - margin, desiredTop)
+            : Math.max(margin, rect.top - helperRect.height - margin);
+
+        helper.style.left = `${left}px`;
+        helper.style.top = `${top}px`;
+        helper.style.outline = `2px solid ${getThemeColor()}22`;
+    }
+
+    function hideInlineRangeHelper() {
+        const helper = document.getElementById('inlineRangeHelper');
+        if (helper) helper.style.display = 'none';
+    }
+
+    function attachInlineRangeHelper(config) {
+        // Only for single prediction, and only for diabetes + heart
+        if (currentMode !== 'single' || !config || !['diabetes', 'heart'].includes(currentDisease)) {
+            hideInlineRangeHelper();
+            return;
+        }
+
+        // Shared timer so blur from one input doesn't hide the helper after another input is focused
+        if (window.__inlineRangeHideTimerId) {
+            clearTimeout(window.__inlineRangeHideTimerId);
+            window.__inlineRangeHideTimerId = null;
+        }
+
+        config.attributes.forEach(attr => {
+            if (attr.type !== 'number') return;
+            const input = document.getElementById(attr.id);
+            if (!input) return;
+
+            // Avoid attaching duplicate listeners when re-rendering
+            if (input.dataset.inlineRangeAttached === 'true') return;
+            input.dataset.inlineRangeAttached = 'true';
+
+            input.addEventListener('focus', () => {
+                if (window.__inlineRangeHideTimerId) {
+                    clearTimeout(window.__inlineRangeHideTimerId);
+                    window.__inlineRangeHideTimerId = null;
+                }
+                showInlineRangeHelperForInput(input, attr);
+            });
+
+            input.addEventListener('input', () => showInlineRangeHelperForInput(input, attr));
+
+            input.addEventListener('blur', () => {
+                // Delay hide so tabbing/clicking to another input doesn't flicker
+                window.__inlineRangeHideTimerId = setTimeout(() => {
+                    // Only hide if focus didn't move to another input
+                    const active = document.activeElement;
+                    if (!active || active.tagName !== 'INPUT') {
+                        hideInlineRangeHelper();
+                    }
+                    window.__inlineRangeHideTimerId = null;
+                }, 50);
+            });
+        });
+
+        // Global listeners (attach once)
+        if (!document.body.dataset.inlineRangeGlobalAttached) {
+            document.body.dataset.inlineRangeGlobalAttached = 'true';
+
+            document.addEventListener('click', (e) => {
+                const helper = document.getElementById('inlineRangeHelper');
+                if (!helper) return;
+                if (helper.contains(e.target)) return;
+                if (e.target && e.target.tagName === 'INPUT') return;
+                hideInlineRangeHelper();
+            });
+
+            window.addEventListener('resize', () => hideInlineRangeHelper());
+            window.addEventListener('scroll', () => hideInlineRangeHelper(), true);
+        }
+    }
+
+    function isRadioScaleField(attr) {
+    // Cancer sliders are rendered as a 1–10 radio scale
+    if (currentDisease === 'cancer' && attr.type === 'slider') return true;
+
+    // Heart: render "Number of Major Vessels" as a 0–3 radio scale
+    if (currentDisease === 'heart' && attr.type === 'slider' && attr.id === 'Number of Major Vessels') return true;
+
+    return false;
+    }
+
+    function shouldDefaultSelectZero(attr) {
+        return currentDisease === 'heart' && attr.type === 'slider' && attr.id === 'Number of Major Vessels';
+    }
+
     // Disease configurations
     const diseaseConfigs = {
         diabetes: {
@@ -632,8 +790,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             console.log('Validation passed, proceeding with prediction...');
+            // Special validation for radio-scale slider fields
+            if (currentDisease === 'cancer') {
+                const unmodifiedFields = [];
+                config.attributes.forEach(attr => {
+                    if (attr.type === 'slider') {
+                        if (isRadioScaleField(attr)) {
+                            const radioInput = document.querySelector(`input[name="${attr.id}"]:checked`);
+                            if (!radioInput) {
+                                unmodifiedFields.push(attr.id);
+                            }
+                        } else {
+                            const slider = document.getElementById(attr.id);
+                            if (slider && slider.value === '0') {
+                                unmodifiedFields.push(attr.id);
+                            }
+                        }
+                    }
+                });
 
-            // Get form data dynamically - FIXED VERSION
+                if (unmodifiedFields.length > 0) {
+                    showValidationModal(unmodifiedFields);
+                    return;
+                }
+            }
+
+            // Get form data dynamically
             const formData = {};
             config.attributes.forEach(attr => {
                 if (attr.type === 'radio') {
@@ -649,10 +831,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         formData[attr.id] = selectInput.value;
                     }
                 } else if (attr.type === 'slider') {
-                    // For sliders, get the value
-                    const sliderInput = document.getElementById(attr.id);
-                    if (sliderInput) {
-                        formData[attr.id] = sliderInput.value;
+                    // Some slider fields are rendered as radio scales (cancer 1–10, heart vessels 0–3)
+                    if (isRadioScaleField(attr)) {
+                        const radioInput = document.querySelector(`input[name="${attr.id}"]:checked`);
+                        if (radioInput) {
+                            formData[attr.id] = radioInput.value;
+                        }
+                    } else {
+                        // Standard sliders
+                        const sliderInput = document.getElementById(attr.id);
+                        if (sliderInput) {
+                            formData[attr.id] = sliderInput.value;
+                        }
                     }
                 } else {
                     // For regular inputs (text, number)
@@ -754,6 +944,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Reset all form fields and remove error borders
                 config.attributes.forEach(attr => {
                     if (attr.type === 'radio') {
+                    if (attr.type === 'slider') {
+                        if (isRadioScaleField(attr)) {
+                            // Uncheck all radio buttons for the scale
+                            const radioInputs = document.querySelectorAll(`input[name="${attr.id}"]`);
+                            radioInputs.forEach(radio => {
+                                radio.checked = false;
+                            });
+                        } else {
+                            // Reset sliders to default (0)
+                            const input = document.getElementById(attr.id);
+                            const valueDisplay = input?.nextElementSibling;
+                            if (input && valueDisplay) {
+                                input.value = attr.default || '0';
+                                valueDisplay.textContent = input.value;
+                                if (input.value === '0' && currentDisease === 'cancer') {
+                                    valueDisplay.classList.add('slider-unmodified');
+                                }
+                            }
+                        }
+                    } else if (attr.type === 'dropdown') {
+                        // Reset dropdowns to default (first disabled option)
+                        const select = document.getElementById(attr.id);
+                        if (select) {
+                            select.selectedIndex = 0; // Select the "Select an option" default
+                        }
+                    } else if (attr.type === 'radio') {
+                        // Uncheck all radio buttons
                         const radioInputs = document.querySelectorAll(`input[name="${attr.id}"]`);
                         radioInputs.forEach(radio => {
                             radio.checked = false;
@@ -785,6 +1002,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             removeErrorBorder(input, attr);
                         }
                     }
+                }
+                
                 });
             }, 0);
 
@@ -823,9 +1042,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create label
             const label = document.createElement('label');
             
-            // Only set htmlFor for input types that have a single matching id
-            // Don't set it for radio buttons since they have multiple inputs with different ids
-            if (attr.type !== 'radio') {
+            if (attr.type !== 'radio' && !(currentDisease === 'cancer' && attr.type === 'slider')) {
                 label.htmlFor = attr.id;
             }
             
@@ -836,8 +1053,65 @@ document.addEventListener('DOMContentLoaded', () => {
             const wrapper = document.createElement('div');
             wrapper.className = 'input-wrapper';
 
-            // Create input based on type
-            if (attr.type === 'radio') {
+            // --- Radio-scale for cancer (1-10) and heart "Number of Major Vessels" (0-3) ---
+            if (isRadioScaleField(attr)) {
+                const radioContainer = document.createElement('div');
+                radioContainer.className = 'radio-scale-container';
+                radioContainer.id = attr.id;
+
+                const start = (currentDisease === 'heart' && attr.id === 'Number of Major Vessels') ? 0 : 1;
+                const end = (currentDisease === 'heart' && attr.id === 'Number of Major Vessels') ? 3 : 10;
+
+                for (let i = start; i <= end; i++) {
+                    const radioLabel = document.createElement('label');
+                    radioLabel.className = 'radio-scale-item';
+
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = attr.id;
+                    radioInput.id = `${attr.id}_${i}`;
+                    radioInput.value = i;
+                    radioInput.required = true;
+
+                    // Heart vessels: default to 0 selected
+                    if (shouldDefaultSelectZero(attr) && i === 0) {
+                        radioInput.checked = true;
+                    }
+
+                    const circleSpan = document.createElement('span');
+                    circleSpan.className = 'radio-scale-circle';
+                    circleSpan.textContent = i;
+
+                    // Prevent focus from causing the page/scroll container to jump.
+                    // We focus the actual input without scrolling it into view.
+                    circleSpan.addEventListener('click', (e) => {
+                        // The span isn't a real form control, so we select the hidden radio ourselves.
+                        // Also prevent the browser from doing a scroll-to-focus.
+                        e.preventDefault();
+
+                        if (!radioInput) return;
+
+                        radioInput.checked = true;
+                        // Trigger native listeners/validation updates
+                        radioInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+                        if (typeof radioInput.focus === 'function') {
+                            try {
+                                radioInput.focus({ preventScroll: true });
+                            } catch {
+                                radioInput.focus();
+                            }
+                        }
+                    });
+
+                    radioLabel.appendChild(radioInput);
+                    radioLabel.appendChild(circleSpan);
+                    radioContainer.appendChild(radioLabel);
+                }
+                wrapper.appendChild(radioContainer);
+            } 
+            // --- Standard Radio Group (e.g. Sex) ---
+            else if (attr.type === 'radio') {
                 const radioGroup = document.createElement('div');
                 radioGroup.className = 'radio-group';
                 
@@ -848,12 +1122,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const input = document.createElement('input');
                     input.type = 'radio';
                     input.name = attr.id;
-                    input.id = `${attr.id}_${index}`;  // Unique id for each radio button
+                    input.id = `${attr.id}_${index}`;
                     input.value = option.value;
                     // input.required = true;
                     
                     const radioLabel = document.createElement('label');
-                    radioLabel.htmlFor = `${attr.id}_${index}`;  // Match the radio button's unique id
+                    radioLabel.htmlFor = `${attr.id}_${index}`;
                     radioLabel.textContent = option.label;
                     
                     radioOption.appendChild(input);
@@ -862,30 +1136,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 wrapper.appendChild(radioGroup);
-            } else if (attr.type === 'dropdown') {
-                const select = document.createElement('select');
-                select.id = attr.id;
-                select.className = 'dropdown-input';
-                // select.required = true;
-                
-                // Add default disabled option
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = 'Select an option';
-                defaultOption.disabled = true;
-                defaultOption.selected = true;
-                select.appendChild(defaultOption);
-                
-                // Add attribute options
-                attr.options.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = option.value;
-                    optionElement.textContent = option.label;
-                    select.appendChild(optionElement);
-                });
-                
-                wrapper.appendChild(select);
-            } else if (attr.type === 'slider') {
+            } 
+            // --- Standard Slider (e.g. Heart Disease Major Vessels) ---
+            else if (attr.type === 'slider') {
                 const slider = document.createElement('input');
                 slider.type = 'range';
                 slider.id = attr.id;
@@ -899,23 +1152,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 valueDisplay.className = 'slider-value';
                 valueDisplay.textContent = slider.value;
                 
-                // Add unmodified class if value is 0
-                if (slider.value === '0' && currentDisease === 'cancer') {
-                    valueDisplay.classList.add('slider-unmodified');
-                }
-                
                 slider.addEventListener('input', function() {
                     valueDisplay.textContent = this.value;
-                    // Remove unmodified class when user changes the value
-                    if (this.value !== '0' && currentDisease === 'cancer') {
-                        valueDisplay.classList.remove('slider-unmodified');
-                    } 
                 });
                 
                 wrapper.appendChild(slider);
                 wrapper.appendChild(valueDisplay);
-            } else {
-                // Regular number input
+            } 
+            // --- Dropdown ---
+            else if (attr.type === 'dropdown') {
+                const select = document.createElement('select');
+                select.id = attr.id;
+                select.className = 'dropdown-input';
+                // select.required = true;
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select an option';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                
+                attr.options.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.label;
+                    select.appendChild(optionElement);
+                });
+                
+                wrapper.appendChild(select);
+            } 
+            // --- Standard Number Input ---
+            else {
                 const input = document.createElement('input');
                 input.type = attr.type;
                 input.id = attr.id;
@@ -931,7 +1199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inputsContainer.appendChild(wrapper);
         });
 
-        // Initialize tooltips after DOM update
+        // Initialize tooltips
         document.querySelectorAll('.labels-container label').forEach((label, index) => {
             const attr = config.attributes[index];
             if (attr && attr.info) {
@@ -939,23 +1207,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Initialize tippy
         tippy('[data-tippy-content]', {
             placement: 'top',
             theme: 'light',
+            allowHTML: true
         });
 
-        // Re-attach event listener for info icon after form update
+        // Re-attach info icon logic
         const infoIcon = document.getElementById('infoIcon');
         if (infoIcon) {
-            // Remove any existing listeners by cloning and replacing
             const newInfoIcon = infoIcon.cloneNode(true);
             infoIcon.parentNode.replaceChild(newInfoIcon, infoIcon);
-            
-            // Add new event listener
-            newInfoIcon.addEventListener('click', function() {
-                showDiseaseInfoModal(currentDisease);
-            });
+            newInfoIcon.addEventListener('click', () => showDiseaseInfoModal(currentDisease));
         }
 
         // Setup real-time validation listeners - ADD DEBUG LOG
@@ -966,6 +1229,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             console.error('setupRealTimeValidation function NOT found!');
         }
+
+    // Inline accepted-range helper for diabetes + heart number inputs
+    attachInlineRangeHelper(config);
     }
 
     function showDiseaseInfoModal(disease) {
@@ -1032,6 +1298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateBatchPredictionTable(config) {
         const tableHeader = document.getElementById('tableHeader');
         const tableBody = document.getElementById('tableBody');
+    const tableContainer = document.querySelector('.table-container');
         
         tableHeader.innerHTML = '';
         
@@ -1059,9 +1326,34 @@ document.addEventListener('DOMContentLoaded', () => {
             th.textContent = attr.id;
             tableHeader.appendChild(th);
         });
+
+    // Empty state: hide scrollbar chrome (still allows scrolling if needed)
+    tableContainer?.classList.add('hide-scrollbar');
         
-        // Clear table body
-        tableBody.innerHTML = `<tr><td colspan="${config.attributes.length + 1}" class="empty-table-message">No data uploaded yet. Upload a CSV file to see data here.</td></tr>`;
+    // Clear table body and show empty placeholder rows with message
+    const numColumns = config.attributes.length;
+    // Make the placeholder height depend on the number of attributes per disease.
+    // More columns => fewer rows, so the table doesn't overflow vertically.
+    const numEmptyRows = Math.max(6, Math.min(10, Math.round(110 / Math.max(1, numColumns)) + 2));
+    // Keep the message on a white stripe (even index)
+    const messageRowIndex = Math.min(numEmptyRows - 1, 4 - (4 % 2));
+        
+        let emptyRowsHTML = '';
+        for (let i = 0; i < numEmptyRows; i++) {
+            const rowClass = i % 2 === 1 ? 'empty-row even-row' : 'empty-row';
+            if (i === messageRowIndex) {
+                // This row shows the message (on a white row)
+                emptyRowsHTML += `<tr class="${rowClass}"><td colspan="${numColumns}" class="empty-table-message">No data uploaded yet. Upload a CSV file to see data here.</td></tr>`;
+            } else {
+                // Empty rows with just empty cells to show the striping
+                emptyRowsHTML += `<tr class="${rowClass}">`;
+                for (let j = 0; j < numColumns; j++) {
+                    emptyRowsHTML += '<td>&nbsp;</td>';
+                }
+                emptyRowsHTML += '</tr>';
+            }
+        }
+        tableBody.innerHTML = emptyRowsHTML;
     }
 
     async function handleFileUpload(event) {
@@ -1449,8 +1741,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayData(data, showPrediction = false) {
         const tableBody = document.getElementById('tableBody');
         const config = diseaseConfigs[currentDisease];
+    const tableContainer = document.querySelector('.table-container');
         
         tableBody.innerHTML = '';
+
+    // Data state: show scrollbar normally (table can scroll if needed)
+    tableContainer?.classList.remove('hide-scrollbar');
         
         // Show/hide prediction columns
         document.querySelectorAll('.prediction-column').forEach(col => {
