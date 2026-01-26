@@ -932,6 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateBatchPredictionTable(config) {
         const tableHeader = document.getElementById('tableHeader');
         const tableBody = document.getElementById('tableBody');
+    const tableContainer = document.querySelector('.table-container');
         
         tableHeader.innerHTML = '';
         
@@ -959,9 +960,34 @@ document.addEventListener('DOMContentLoaded', () => {
             th.textContent = attr.id;
             tableHeader.appendChild(th);
         });
+
+    // Empty state: hide scrollbar chrome (still allows scrolling if needed)
+    tableContainer?.classList.add('hide-scrollbar');
         
-        // Clear table body
-        tableBody.innerHTML = `<tr><td colspan="${config.attributes.length + 1}" class="empty-table-message">No data uploaded yet. Upload a CSV file to see data here.</td></tr>`;
+    // Clear table body and show empty placeholder rows with message
+    const numColumns = config.attributes.length;
+    // Make the placeholder height depend on the number of attributes per disease.
+    // More columns => fewer rows, so the table doesn't overflow vertically.
+    const numEmptyRows = Math.max(6, Math.min(10, Math.round(110 / Math.max(1, numColumns)) + 2));
+    // Keep the message on a white stripe (even index)
+    const messageRowIndex = Math.min(numEmptyRows - 1, 4 - (4 % 2));
+        
+        let emptyRowsHTML = '';
+        for (let i = 0; i < numEmptyRows; i++) {
+            const rowClass = i % 2 === 1 ? 'empty-row even-row' : 'empty-row';
+            if (i === messageRowIndex) {
+                // This row shows the message (on a white row)
+                emptyRowsHTML += `<tr class="${rowClass}"><td colspan="${numColumns}" class="empty-table-message">No data uploaded yet. Upload a CSV file to see data here.</td></tr>`;
+            } else {
+                // Empty rows with just empty cells to show the striping
+                emptyRowsHTML += `<tr class="${rowClass}">`;
+                for (let j = 0; j < numColumns; j++) {
+                    emptyRowsHTML += '<td>&nbsp;</td>';
+                }
+                emptyRowsHTML += '</tr>';
+            }
+        }
+        tableBody.innerHTML = emptyRowsHTML;
     }
 
     function handleFileUpload(event) {
@@ -1345,8 +1371,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayData(data, showPrediction = false) {
         const tableBody = document.getElementById('tableBody');
         const config = diseaseConfigs[currentDisease];
+    const tableContainer = document.querySelector('.table-container');
         
         tableBody.innerHTML = '';
+
+    // Data state: show scrollbar normally (table can scroll if needed)
+    tableContainer?.classList.remove('hide-scrollbar');
         
         // Show/hide prediction columns
         document.querySelectorAll('.prediction-column').forEach(col => {
