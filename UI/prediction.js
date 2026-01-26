@@ -24,6 +24,155 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Inline accepted-range helper (shown near the focused input)
+    function toFiniteNumber(value) {
+    if (value === undefined || value === null) return null;
+    if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+    if (typeof value !== 'string') return null;
+
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    const n = Number(trimmed);
+    return Number.isFinite(n) ? n : null;
+    }
+
+    function formatAcceptedRange(attr) {
+    const min = toFiniteNumber(attr.min);
+    const max = toFiniteNumber(attr.max);
+
+    const hasMin = min !== null;
+    const hasMax = max !== null;
+
+    if (hasMin && hasMax) return `${min} to ${max}`;
+    if (hasMin) return `≥ ${min}`;
+    if (hasMax) return `≤ ${max}`;
+
+        // Fallback: try to infer from placeholder text
+        if (typeof attr.placeholder === 'string' && attr.placeholder.trim()) {
+            return attr.placeholder;
+        }
+        return 'Enter a valid number.';
+    }
+
+    function ensureInlineRangeHelper() {
+        let helper = document.getElementById('inlineRangeHelper');
+        if (helper) return helper;
+
+        helper = document.createElement('div');
+        helper.id = 'inlineRangeHelper';
+        helper.style.display = 'none';
+        helper.style.position = 'fixed';
+        helper.style.zIndex = '9999';
+        helper.style.maxWidth = '260px';
+        helper.style.padding = '10px 12px';
+        helper.style.borderRadius = '10px';
+        helper.style.background = '#ffffff';
+        helper.style.border = '1px solid rgba(0,0,0,0.12)';
+        helper.style.boxShadow = '0 6px 18px rgba(0,0,0,0.12)';
+        helper.style.fontFamily = "'Poppins', sans-serif";
+        helper.style.fontSize = '13px';
+        helper.style.color = '#333';
+
+        document.body.appendChild(helper);
+        return helper;
+    }
+
+    function showInlineRangeHelperForInput(input, attr) {
+        const helper = ensureInlineRangeHelper();
+        const rangeText = formatAcceptedRange(attr);
+
+        helper.innerHTML = `
+            <div style="font-weight:600; margin-bottom:4px;">Accepted values</div>
+            <div><span style="font-weight:600;">${attr.label || attr.id}:</span> ${rangeText}</div>
+        `;
+
+        // Position to the right of the input, fallback above if near the edge
+        const rect = input.getBoundingClientRect();
+        const margin = 10;
+        const desiredLeft = rect.right + margin;
+        const desiredTop = rect.top;
+
+        helper.style.display = 'block';
+        const helperRect = helper.getBoundingClientRect();
+        const fitsRight = (desiredLeft + helperRect.width) <= (window.innerWidth - margin);
+
+        const left = fitsRight ? desiredLeft : Math.max(margin, rect.left);
+        const top = fitsRight
+            ? Math.min(window.innerHeight - helperRect.height - margin, desiredTop)
+            : Math.max(margin, rect.top - helperRect.height - margin);
+
+        helper.style.left = `${left}px`;
+        helper.style.top = `${top}px`;
+        helper.style.outline = `2px solid ${getThemeColor()}22`;
+    }
+
+    function hideInlineRangeHelper() {
+        const helper = document.getElementById('inlineRangeHelper');
+        if (helper) helper.style.display = 'none';
+    }
+
+    function attachInlineRangeHelper(config) {
+        // Only for single prediction, and only for diabetes + heart
+        if (currentMode !== 'single' || !config || !['diabetes', 'heart'].includes(currentDisease)) {
+            hideInlineRangeHelper();
+            return;
+        }
+
+        // Shared timer so blur from one input doesn't hide the helper after another input is focused
+        if (window.__inlineRangeHideTimerId) {
+            clearTimeout(window.__inlineRangeHideTimerId);
+            window.__inlineRangeHideTimerId = null;
+        }
+
+        config.attributes.forEach(attr => {
+            if (attr.type !== 'number') return;
+            const input = document.getElementById(attr.id);
+            if (!input) return;
+
+            // Avoid attaching duplicate listeners when re-rendering
+            if (input.dataset.inlineRangeAttached === 'true') return;
+            input.dataset.inlineRangeAttached = 'true';
+
+            input.addEventListener('focus', () => {
+                if (window.__inlineRangeHideTimerId) {
+                    clearTimeout(window.__inlineRangeHideTimerId);
+                    window.__inlineRangeHideTimerId = null;
+                }
+                showInlineRangeHelperForInput(input, attr);
+            });
+
+            input.addEventListener('input', () => showInlineRangeHelperForInput(input, attr));
+
+            input.addEventListener('blur', () => {
+                // Delay hide so tabbing/clicking to another input doesn't flicker
+                window.__inlineRangeHideTimerId = setTimeout(() => {
+                    // Only hide if focus didn't move to another input
+                    const active = document.activeElement;
+                    if (!active || active.tagName !== 'INPUT') {
+                        hideInlineRangeHelper();
+                    }
+                    window.__inlineRangeHideTimerId = null;
+                }, 50);
+            });
+        });
+
+        // Global listeners (attach once)
+        if (!document.body.dataset.inlineRangeGlobalAttached) {
+            document.body.dataset.inlineRangeGlobalAttached = 'true';
+
+            document.addEventListener('click', (e) => {
+                const helper = document.getElementById('inlineRangeHelper');
+                if (!helper) return;
+                if (helper.contains(e.target)) return;
+                if (e.target && e.target.tagName === 'INPUT') return;
+                hideInlineRangeHelper();
+            });
+
+            window.addEventListener('resize', () => hideInlineRangeHelper());
+            window.addEventListener('scroll', () => hideInlineRangeHelper(), true);
+        }
+    }
+
     // Disease configurations
     const diseaseConfigs = {
         diabetes: {
@@ -35,28 +184,28 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Diabetic means the person has diabetes, a chronic disease that affects how your body turns food into energy. It occurs when your pancreas doesn't make enough insulin or your cells don't respond to insulin properly.",
             negativeDesc: 'Non-diabetic means the absence of diabetes. Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose.',
             attributes: [
-                { id: 'Number of Pregnancies', label: 'Number of Pregnancies', placeholder: '0', min: '0', type: 'number', 
+                { id: 'Number of Pregnancies', label: 'Number of Pregnancies', placeholder: '0', min: '0', max: 20, type: 'number', 
                     info: 'If you have been pregnant twice, you would enter "2." If you have never been pregnant, you would enter "0."' 
                 },
-                { id: 'Plasma Glucose Concentration', label: 'Plasma Glucose Concentration', placeholder: '0 (mg/dL)', min: '0', type: 'number', 
+                { id: 'Plasma Glucose Concentration', label: 'Plasma Glucose Concentration', placeholder: '0 (mg/dL)', min: '0', max: 300, type: 'number', 
                     info: 'This measures the amount of sugar in your blood. You will need to get this value from a recent blood test, often called a blood sugar test or glucose test. Look for a result listed as "Fasting Plasma Glucose" or similar, which is measured in milligrams per deciliter (mg/dL).'
                 },
-                { id: 'Diastolic Blood Pressure', label: 'Diastolic Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
+                { id: 'Diastolic Blood Pressure', label: 'Diastolic Blood Pressure', placeholder: '0 (mm Hg)', min: '0', max: 200, type: 'number',
                     info: 'This is the second, or lower, number in a blood pressure reading. A reading is typically written as two numbers, like "120/80." In this example, "80" is the diastolic pressure. You can get this from a recent doctor\'s visit or a home blood pressure monitor.'
                 },
-                { id: 'Triceps Skin Fold Thickness', label: 'Triceps Skin Fold Thickness', placeholder: '0 (mm)', min: '0', type: 'number',
+                { id: 'Triceps Skin Fold Thickness', label: 'Triceps Skin Fold Thickness', placeholder: '0 (mm)', min: '0', max: 100, type: 'number',
                     info: 'This value is a way to estimate the amount of body fat by measuring the thickness of a fold of skin and fat on the back of your upper arm. This measurement is usually taken with a special tool called a caliper. You will need to get this value from your doctor.'    
                 },
-                { id: '2-Hour Serum Insulin', label: '2-Hour Serum Insulin', placeholder: '0 (µU/mL)', min: '0', type: 'number',
+                { id: '2-Hour Serum Insulin', label: '2-Hour Serum Insulin', placeholder: '0 (µU/mL)', min: '0', max: 1000, type: 'number',
                     info: 'This measures the amount of insulin in your blood specifically two hours after you\'ve taken a glucose tolerance test. It shows how well your body processes sugar over time. This value should be obtained from a specific blood test.'
                 },
-                { id: 'Body Mass Index', label: 'Body Mass Index', placeholder: '0.0 (kg/m²)', min: '0', type: 'number', step: 'any',
+                { id: 'Body Mass Index', label: 'Body Mass Index', placeholder: '0.0 (kg/m²)', min: '0', max: 70, type: 'number', step: 'any',
                     info: 'Your BMI is a value calculated from your weight and height that helps determine if you are at a healthy weight. To find your BMI, you can use an online calculator. Simply enter your height and weight, and the calculator will provide your BMI value. For example, if you weigh 150 lbs and are 5\'5" tall, your BMI is approximately 25.'
                 },
-                { id: 'Diabetes Pedigree Function', label: 'Diabetes Pedigree Function', placeholder: '0.000', min: '0', type: 'number', step: 'any',
+                { id: 'Diabetes Pedigree Function', label: 'Diabetes Pedigree Function', placeholder: '0.000', min: '0', max: 5, type: 'number', step: 'any',
                     info: 'This is a complex score that quantifies the genetic risk of diabetes based on your family history. You won\'t have a number for this yourself. This value is typically calculated by the diagnostic tool based on the family history information you provide, such as whether your parents or siblings have diabetes.'
                 },
-                { id: 'Age', label: 'Age', placeholder: '0', min: '0', type: 'number',
+                { id: 'Age', label: 'Age', placeholder: '0', min: '0', max: 120, type: 'number',
                     info:'This is your current age.'
                 }
             ]
@@ -70,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Positive means the presence of heart disease. Heart disease refers to several types of heart conditions that affect the heart's ability to function normally. It includes coronary artery disease, heart rhythm problems, and heart defects.",
             negativeDesc: 'Negative means the absence of cardiovascular conditions. A healthy heart efficiently pumps blood throughout the body, delivering oxygen and nutrients to organs and tissues.',
             attributes: [
-                { id: 'Age', label: 'Age', placeholder: '0', min: '0', type: 'number',
+                { id: 'Age', label: 'Age', placeholder: '0', min: '0', max: 120, type: 'number',
                     info: 'This is your current age.'
                 },
                 { id: 'Sex', label: 'Sex', type: 'radio', 
@@ -89,10 +238,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info: 'Common types are:\n• Typical Angina: Chest pain caused by reduced blood flow to the heart\n• Atypical Angina: Chest discomfort that doesn\'t follow typical angina patterns\n• Non-anginal Pain: Chest pain not related to heart conditions\n• Asymptomatic: No chest pain symptoms'
                 },
-                { id: 'Resting Blood Pressure', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', type: 'number',
+                { id: 'Resting Blood Pressure', label: 'Resting Blood Pressure', placeholder: '0 (mm Hg)', min: '0', max: 300, type: 'number',
                     info: 'This is the top number of your blood pressure reading, measured while you are at rest. It is measured in millimeters of mercury (mm Hg).'
                 },
-                { id: 'Serum Cholesterol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', type: 'number',
+                { id: 'Serum Cholesterol', label: 'Serum Cholesterol', placeholder: '0 (mg/dL)', min: '0', max: 1000, type: 'number',
                     info: 'This is the amount of total cholesterol in your blood. It is measured in milligrams per deciliter (mg/dL).'
                 },
                 { id: 'FBS > 120mg/dL', label: 'FBS > 120mg/dL', type: 'radio', 
@@ -110,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info: 'This is a record of your heart\'s electrical activity while you are at rest. You will need a recent ECG report.\n• Normal: No significant abnormalities.\n• ST-T Wave Abnormality: Minor changes that could indicate a heart issue.\n• Left Ventricular Hypertrophy (LVH): Thickening of the heart\'s main pumping chamber.'
                 },
-                { id: 'Maximum Heart Rate', label: 'Maximum Heart Rate', placeholder: '0', min: '0', type: 'number',
+                { id: 'Maximum Heart Rate', label: 'Maximum Heart Rate', placeholder: '0', min: '0', max: 250, type: 'number',
                     info:'This is the highest heart rate you reached during a stress or exercise test. This measurement is often taken on a treadmill or stationary bike while your heart rate is monitored.'
                 },
                 { id: 'Exercise Induced Angina', label: 'Exercise Induced Angina', type: 'radio', 
@@ -120,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info: 'This indicates whether you experienced chest pain during physical exercise.\n• Yes: You experienced chest pain during exercise.\n• No: You did not experience chest pain during exercise.'
                 },
-                { id: 'ST Depression (Oldpeak)', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', type: 'number', step: 'any',
+                { id: 'ST Depression (Oldpeak)', label: 'ST Depression (Oldpeak)', placeholder: '0.0', min: '0', max: 10, type: 'number', step: 'any',
                     info: 'This measures the amount of depression in the ST segment of your ECG during exercise, which can be a sign of reduced blood flow to the heart. The value is measured in millimeters.'
                 },
                 { id: 'Slope of Peak Exercise ST', label: 'Slope of Peak Exercise ST', type: 'dropdown', 
@@ -131,17 +280,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     ],
                     info:'Describes the slope of ST segment on your ECG during an exercise stress test.\n• Upsloping: The ST segment goes up.\n• Flat: The ST segment is horizontal.\n• Downsloping: The ST segment goes down. A downsloping or flat slope can be a sign of heart disease.'
                 },
-                { 
-                    id: 'Number of Major Vessels', 
-                    label: 'Number of Major Vessels', 
-                    type: 'radio', 
-                    options: [
-                        { value: '0', label: '0' },
-                        { value: '1', label: '1' },
-                        { value: '2', label: '2' },
-                        { value: '3', label: '3' }
-                    ],
-                    info: 'This refers to the number of major blood vessels (0 to 3) that are significantly narrowed as seen in a coronary angiography.'
+                { id: 'Number of Major Vessels', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'slider', default: '0',
+                    info: 'This refers to the number of major blood vessels (0 to 3) that are significantly narrowed as seen in a coronary angiography. This value is provided by a cardiologist.'
                 },
                 { id: 'Thalassemia', label: 'Thalassemia', type: 'dropdown', 
                     options: [
@@ -162,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
             positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
             negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
             attributes: [
-                { id: 'Clump Thickness', label: ' Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+                { id: 'Clump Thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
                     info:'Refers to the degree to which cells are clustered together. Higher thickness values may indicate abnormal cell growth or potential malignancy.' 
                 },
                 { id: 'Uniformity of Cell Size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
@@ -833,6 +973,9 @@ document.addEventListener('DOMContentLoaded', () => {
             infoIcon.parentNode.replaceChild(newInfoIcon, infoIcon);
             newInfoIcon.addEventListener('click', () => showDiseaseInfoModal(currentDisease));
         }
+
+    // Inline accepted-range helper for diabetes + heart number inputs
+    attachInlineRangeHelper(config);
     }
 
     function showDiseaseInfoModal(disease) {
