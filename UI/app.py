@@ -239,27 +239,21 @@ def predict_diabetes_endpoint():
             prediction = model.predict(X)[0]
             prob_class_1 = float(prediction)
         
-        # INVERSION FIX: The preprocessed data has inverted labels
-        # In diabetes1.dat: [1,0] = class 0 = NON-DIABETIC, [0,1] = class 1 = DIABETIC
-        # But standard: class 0 = NON-DIABETIC, class 1 = DIABETIC
-        # So we need to invert the probability
-        prob_diabetic = 1 - prob_class_1  # True probability of DIABETIC class
-        
-        # Determine prediction based on inverted probability
-        # If prob_diabetic > 0.5, predict DIABETIC (1), else NON-DIABETIC (0)
-        final_prediction = 1 if prob_diabetic > 0.5 else 0
+        # Determine prediction based on probability
+        # If prob_class_1 > 0.5, predict DIABETIC (1), else NON-DIABETIC (0)
+        final_prediction = 1 if prob_class_1 > 0.5 else 0
         
         # Calculate percentage for the predicted class (always >= 50%)
         if final_prediction == 1:
             # Predicted DIABETIC
-            final_percentage = round(prob_diabetic * 100)
+            final_percentage = round(prob_class_1 * 100)
         else:
             # Predicted NON-DIABETIC
-            final_percentage = round((1 - prob_diabetic) * 100)
+            final_percentage = round((1 - prob_class_1) * 100)
         
         result = {
             'prediction': final_prediction,  # 0 = NON-DIABETIC, 1 = DIABETIC (corrected)
-            'probability': float(prob_diabetic),  # Corrected probability of DIABETIC
+            'probability': float(prob_class_1),  # Corrected probability of DIABETIC
             'percentage': final_percentage  # Percentage of predicted class (>= 50)
         }
         
@@ -422,24 +416,20 @@ def predict_diabetes_batch_endpoint():
         else:
             raw_predictions = model.predict(X)
             prob_class_1_array = raw_predictions.astype(float)
-        
-        # INVERSION FIX: Apply same inversion as single prediction
-        # Invert probabilities: get probability of DIABETIC class
-        prob_diabetic_array = 1 - prob_class_1_array  # True probability of DIABETIC
-        
-        # Determine predictions based on inverted probability
-        corrected_predictions = [1 if prob > 0.5 else 0 for prob in prob_diabetic_array]
+    
+        # Determine predictions based on probability
+        corrected_predictions = [1 if prob > 0.5 else 0 for prob in prob_class_1_array]
         
         # Calculate percentages for predicted class (always >= 50%)
         corrected_percentages = []
         for i, prediction in enumerate(corrected_predictions):
-            prob_diabetic = prob_diabetic_array[i]
+            prob_class_1 = prob_class_1_array[i]
             if prediction == 1:
                 # Predicted DIABETIC
-                percentage = round(prob_diabetic * 100)
+                percentage = round(prob_class_1 * 100)
             else:
                 # Predicted NON-DIABETIC
-                percentage = round((1 - prob_diabetic) * 100)
+                percentage = round((1 - prob_class_1) * 100)
             corrected_percentages.append(percentage)
         
         result = {
