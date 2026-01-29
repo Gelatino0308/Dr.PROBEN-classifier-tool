@@ -50,7 +50,11 @@ def load_diabetes_data():
     
     X = data.iloc[:, :-2].values  # First 8 columns are features
     y_onehot = data.iloc[:, -2:].values  # Last 2 columns are one-hot encoded target
-    y = np.argmax(y_onehot, axis=1)  # Convert to single label
+    # The preprocessed diabetes.dat has inverted class labels contrary to standard convention
+    # Instead of [1, 0] for class 0 (non-diabetic), it treats it as class 1 (diabetic)
+    # Instead of [0, 1] for class 1 (diabetic), it treats it as class 0 (non-diabetic)
+    # We therefore need to invert the considered classification
+    y = 1 - np.argmax(y_onehot, axis=1)  # Convert to single label
     
     return X, y
 

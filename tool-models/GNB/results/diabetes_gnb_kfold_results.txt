@@ -10,48 +10,48 @@ PER-FOLD RESULTS
 
 Fold 1:
   Accuracy:   0.7448
-  Precision:  0.7639
-  Recall:     0.8800
-  F1-Score:   0.8178
+  Precision:  0.6875
+  Recall:     0.4925
+  F1-Score:   0.5739
   Confusion Matrix:
-    Non-Diabetic: [33 34]
-    Diabetic: [ 15 110]
+    Non-Diabetic: [110  15]
+    Diabetic: [34 33]
 
 Fold 2:
   Accuracy:   0.7552
-  Precision:  0.7955
-  Recall:     0.8400
-  F1-Score:   0.8171
+  Precision:  0.6667
+  Recall:     0.5970
+  F1-Score:   0.6299
   Confusion Matrix:
-    Non-Diabetic: [40 27]
-    Diabetic: [ 20 105]
+    Non-Diabetic: [105  20]
+    Diabetic: [27 40]
 
 Fold 3:
   Accuracy:   0.8333
-  Precision:  0.8720
-  Recall:     0.8720
-  F1-Score:   0.8720
+  Precision:  0.7612
+  Recall:     0.7612
+  F1-Score:   0.7612
   Confusion Matrix:
-    Non-Diabetic: [51 16]
-    Diabetic: [ 16 109]
+    Non-Diabetic: [109  16]
+    Diabetic: [16 51]
 
 Fold 4:
   Accuracy:   0.6927
-  Precision:  0.7661
-  Recall:     0.7600
-  F1-Score:   0.7631
+  Precision:  0.5588
+  Recall:     0.5672
+  F1-Score:   0.5630
   Confusion Matrix:
-    Non-Diabetic: [38 29]
-    Diabetic: [30 95]
+    Non-Diabetic: [95 30]
+    Diabetic: [29 38]
 
 
-OVERALL RESULTS (Mean ± Std across all folds)
+OVERALL RESULTS (Mean ï¿½ Std across all folds)
 ======================================================================
-  Accuracy: 0.7565 ± 0.0503
-  Precision: 0.7994 ± 0.0437
-  Recall: 0.8380 ± 0.0475
-  F1_score: 0.8175 ± 0.0385
+  Accuracy: 0.7565 ï¿½ 0.0503
+  Precision: 0.6685 ï¿½ 0.0724
+  Recall: 0.6045 ï¿½ 0.0982
+  F1_score: 0.6320 ï¿½ 0.0788
 
 Average Confusion Matrix:
-  Non-Diabetic: [40.5 26.5]
-  Diabetic: [ 20.25 104.75]
+  Non-Diabetic: [104.75  20.25]
+  Diabetic: [26.5 40.5]

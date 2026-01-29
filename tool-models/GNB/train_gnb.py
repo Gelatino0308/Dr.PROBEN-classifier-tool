@@ -24,7 +24,18 @@ def load_proben1_dat(path_to_dat_file, n_inputs, n_outputs):
                 yi_val = int(np.argmax(yi))
             X.append(xi)
             y.append(yi_val)
-    return np.array(X), np.array(y)
+    
+    X = np.array(X)
+    y = np.array(y)
+    
+    # Check if this is the diabetes dataset by examining the file path
+    # The diabetes dataset has inverted labels in preprocessing:
+    # [1, 0] = diabetic, [0, 1] = non-diabetic
+    # We need to invert to match standard convention
+    if 'diabetes' in path_to_dat_file.lower():
+        y = 1 - y  # Invert labels: 0 -> 1 (diabetic), 1 -> 0 (non-diabetic)
+    
+    return X, y
 
 class MyGaussianNB:
     def __init__(self):
