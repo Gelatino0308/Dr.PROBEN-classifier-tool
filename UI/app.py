@@ -1,3 +1,27 @@
+"""
+Flask backend API for Dr. PROBEN disease classification web application.
+
+Provides REST endpoints for single and batch predictions across three disease classifiers:
+diabetes, heart disease, and breast cancer. Uses ACOR neural network models with
+custom preprocessing pipelines.
+
+Endpoints:
+- POST /api/predict/{disease}: Single prediction (8-13 features)
+- POST /api/predict/{disease}/batch: Batch prediction from CSV data
+- GET /api/health: Model availability health check
+
+Model Architecture:
+- ACOR (Ant Colony Optimization-Random Forest) neural networks
+- Custom weight reconstruction with ReLU hidden layer and sigmoid output
+- Disease-specific feature preprocessing and normalization
+
+Dependencies:
+- Flask with CORS support
+- NumPy for numerical operations
+- Pickle for model serialization
+- Custom preprocessors module for data transformation
+"""
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
@@ -7,13 +31,17 @@ import numpy as np
 import pickle
 import traceback
 
-# Import preprocessing modules
-from preprocess import get_preprocessor, DiabetesPreprocessor, HeartPreprocessor, CancerPreprocessor
+from preprocessors import (
+    DiabetesPreprocessor, 
+    HeartPreprocessor, 
+    CancerPreprocessor,
+    get_preprocessor,
+)
 
 app = Flask(__name__)
 CORS(app)
 
-# Define paths to new models
+# Define paths to models
 MODELS_BASE_PATH = os.path.join(os.path.dirname(__file__), '..', 'tool-models', 'ACOR_Final-Def')
 
 class ACORNeuralNetwork:
@@ -193,7 +221,7 @@ def prepare_diabetes_input(raw_values):
 # Helper function for heart: expand 13 to 35
 def prepare_heart_input(raw_values):
     """Expand 13 raw heart features to 35 features"""
-    from preprocess import expand_heart_features
+    from preprocessors import expand_heart_features
     expanded = expand_heart_features(raw_values)
     return expanded.reshape(1, -1)
 
@@ -449,7 +477,7 @@ def predict_diabetes_batch_endpoint():
 def predict_heart_batch_endpoint():
     try:
         model = models['heart']
-        from preprocess import expand_heart_features
+        from preprocessors import expand_heart_features
         
         if model is None:
             return jsonify({"error": "Heart model not loaded properly"}), 500

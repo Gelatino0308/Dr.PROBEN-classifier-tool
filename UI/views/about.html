@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. PROBEN | About Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../styles/about.css">
+</head>
+<body>
+    <header>
+        <a href="../index.html"><button>&lt; Back</button></a>
+        <h1>About Dr. PROBEN</h1>
+    </header>
+    <main>
+        <div class="top-section">
+            <div class="card tool-card">
+                <div class="card-header">
+                    <h2>The Tool</h2>
+                </div>
+                <div class="card-content">
+                    <p>Dr. PROBEN is a medical problem classifier web app based on a Feed-forward Neural Network model integrated with the Multiple Hybrid Ant Colony Optimization for Continuous Domain (ACO<sub>R</sub>) and Levenberg-Marquardt (LM) algorithm. The application was designed to guide healthcare professionals in diagnosing medical conditions such as Diabetes, Heart Disease, and Breast Cancer.</p>
+                </div>
+            </div>
+            <div class="card dataset-card">
+                <div class="card-header">
+                    <h2>The Dataset</h2>
+                </div>
+                <div class="card-content">
+                    <p>The app's model was trained on the PROBEN1 benchmark set, which is a collection of problems for neural network learning in the realm of pattern classification and function approximation, plus a set of rules and conventions for carrying out benchmark tests. PROBEN1 contains 15 data sets from 12 different domains. Three datasets involve diagnosis tasks whose data were donated by hospitals and established institutions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="card info-card hybrid-card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <h3>Hybrid ACO<sub>R</sub>-LM Model</h3>
+                <p>Runs on a feed-forward neural network trained with the hybrid algorithm of ACO<sub>R</sub> for global search and LM for local fine-tuning. The result is a model with faster convergence and higher accuracy.</p>
+            </div>
+
+            <div class="card info-card prediction-card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-file-csv"></i>
+                </div>
+                <h3>Single & Batch Prediction</h3>
+                <p>Designed for clinical flexibility, supporting two distinct input modes: Single-Patient interface for real-time manual entry, and Batch CSV Processing for analyzing large datasets of patient records simultaneously.</p>
+            </div>
+
+            <div class="card info-card benchmark-card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3>Benchmarked Performance</h3>
+                <p>System reliability was validated against the PROBEN1 Benchmark Collection. The model has been rigorously tested on standard medical datasets to ensure high classification accuracy and reproducibility.</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

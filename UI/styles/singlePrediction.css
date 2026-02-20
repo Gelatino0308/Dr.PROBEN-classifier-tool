@@ -1,0 +1,820 @@
+/* ===================================
+   SINGLE PREDICTION SPECIFIC STYLES
+   Styles unique to single prediction mode
+   =================================== */
+
+.instruction {
+    display: block;
+    margin: 14px 2rem 18px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 16px;
+    line-height: 1.35;
+    font-style: normal !important; 
+    /* Default to diabetes theme so existing pages keep current look */
+    background: #dff1e6;
+    border: 1px solid #bfe4cd;
+    color: #0a4d22;
+    white-space: normal;
+    overflow: visible;
+}
+
+/* Theme-specific instruction colors */
+.theme-diabetes .instruction {
+    background: #dff1e6;
+    border-color: #bfe4cd;
+    color: #0a4d22;
+}
+
+.theme-heart .instruction {
+    background: #fde4e4;
+    border-color: #f6bcbc;
+    color: #5a0b0b;
+}
+
+.theme-cancer .instruction {
+    background: #e4eefc;
+    border-color: #bfd5f5;
+    color: #0e2449;
+}
+
+@media (max-width: 900px) {
+    .instruction {
+        margin: 14px 1rem 18px;
+        font-size: 14px;
+    }
+}
+
+.instruction .instruction-icon {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    margin-right: 10px;
+    vertical-align: -6px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 26px 26px;
+    background-image: url("backgroun");
+}
+
+.instruction span {
+    font-weight: 700;
+    font-style: normal !important;
+}
+
+/* Problem Details Layout */
+.problem-details-container {
+    display: flex;
+    justify-content: center;
+    padding: 0 4rem;
+    gap: 8%;
+}
+
+.problem-details-container h3 {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* Form Section */
+.form-section {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.form-container {
+    display: flex;
+    gap: 12px;
+    height: 340px;
+    padding: 5px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #3333334d transparent;
+}
+
+.form-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.form-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.form-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.form-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.labels-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    font-size: 20px;
+    gap: 12.3px;
+    width: 60%;
+}
+
+.inputs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 19px;
+    width: 40%;
+}
+
+.inputs-container input {
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    padding: 1px 10px;
+    text-align: center;
+    height: 24px;
+    line-height: 24px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.inputs-container .input-wrapper {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Form Actions */
+.form-actions-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.form-actions-container input[type="reset"] {
+    border: 3px solid;
+    border-radius: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 5px 10px;
+    width: 40%;
+    background-color: unset;
+    cursor: pointer;
+}
+
+.form-actions-container input[type="submit"] {
+    border: none;
+    border-radius: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 5px 10px;
+    width: 40%;
+    color: white;
+    cursor: pointer;
+}
+
+.form-actions-container input[type="submit"]:hover {
+    opacity: 0.8;
+}
+
+.form-actions-container input[type="reset"]:hover {
+    opacity: 0.7;
+    box-shadow: 0 0 8px #929292;
+}
+
+/* Theme-specific submit button colors */
+.theme-diabetes .form-actions-container input[type="submit"] {
+    background-color: #096F29;
+}
+
+.theme-heart .form-actions-container input[type="submit"] {
+    background-color: #811111;
+}
+
+.theme-cancer .form-actions-container input[type="submit"] {
+    background-color: #1E2F4E;
+}
+
+/* Result Section */
+.result-section {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.result {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.result-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    opacity: 0.5;
+}
+
+.class-text-skeleton {
+    background-color: #ccc;
+    height: 3rem;
+    width: 200px;
+    border-radius: 10px;
+}
+
+.desc-text-skeleton {
+    background-color: #ccc;
+    height: 3rem;
+    width: 500px;
+    border-radius: 10px;
+}
+
+.result-placeholder span {
+    color: #ccc; 
+    font-size: 200px;
+}
+
+.result-placeholder p {
+    font-size: 18px;
+    font-style: italic;
+    text-align: center;
+}
+
+.result-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.result h1 {
+    font-weight: bold;
+    font-size: 40px;
+    text-decoration: underline;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.theme-diabetes .result h1 {
+    color: #096F29;
+}
+
+.theme-heart .result h1 {
+    color: #811111;
+}
+
+.theme-cancer .result h1 {
+    color: #1E2F4E;
+}
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    align-self: center;
+    z-index: 1;
+}
+
+.chart-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+#percentText {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+/* Chart Legend */
+#chartDetails {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-left: 20px;
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 25%;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px black;
+}
+
+.legend-label {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Input Types - Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 12px;
+    width: 90%;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 24px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    accent-color: black;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.radio-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.radio-option label {
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    margin: 0;
+    color: black;
+}
+
+/* Input Types - Dropdown */
+.dropdown-input {
+    border: 2px solid #929292;
+    border-radius: 20px;
+    font-size: 16px;
+    padding: 0 10px;
+    text-align: center;
+    width: 90%;
+    height: 24px;
+    line-height: 24px;
+    box-sizing: border-box;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+.dropdown-input:focus {
+    outline: none;
+    border-color: #333;
+    box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.2);
+}
+
+/* Input Types - Slider */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 90%;
+    justify-content: flex-start;
+    min-height: 24px;
+}
+
+.slider-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 69%;
+    height: 6px;
+    border-radius: 3px;
+    background: white;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+.slider-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-input::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    border: 2px solid #073056;
+}
+
+.slider-value {
+    background: white;
+    color: #333;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    width: 2rem;
+    text-align: center;
+    border: 1px solid #333;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Theme-specific slider colors */
+.theme-diabetes .slider-input::-webkit-slider-thumb {
+    background: #096F29;
+    border: 2px solid #096F29;
+}
+
+.theme-diabetes .slider-input::-moz-range-thumb {
+    border-color: #096F29;
+}
+
+.theme-diabetes .slider-value {
+    color: #096F29;
+    border-color: #096F29;
+}
+
+.theme-heart .slider-input::-webkit-slider-thumb {
+    background: #811111;
+    border: 2px solid #811111;
+}
+
+.theme-heart .slider-input::-moz-range-thumb {
+    border-color: #811111;
+}
+
+.theme-heart .slider-value {
+    color: #811111;
+    border-color: #811111;
+}
+
+.theme-cancer .slider-input::-webkit-slider-thumb {
+    background: #1E2F4E;
+    border: 2px solid #1E2F4E;
+}
+
+.theme-cancer .slider-input::-moz-range-thumb {
+    border-color: #1E2F4E;
+}
+
+.theme-cancer .slider-value {
+    color: #1E2F4E;
+    border-color: #1E2F4E;
+}
+
+
+.slider-unmodified {
+    color: #e74c3c !important;
+    font-weight: bold;
+}
+
+/* Regular inputs styling */
+.inputs-container input:not(.slider-input):not([type="radio"]) {
+    border: 2px solid #929292;
+    border-radius: 20px;
+    font-size: 18px;
+    padding: 1px 10px;
+    text-align: center;
+    width: 90%;
+    height: 24px;
+    line-height: 24px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    color: black;
+}
+
+/* Focus state for number inputs */
+.inputs-container input:not(.slider-input):not([type="radio"]):focus {
+    outline: none;
+    border-color: #333;
+    box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.2);
+}
+
+/* Input wrapper adjustments */
+.input-wrapper select,
+.input-wrapper input[type="range"],
+.input-wrapper .radio-group {
+    align-self: center;
+}
+
+
+/* ===================================
+   RESPONSIVE DESIGN - SINGLE PREDICTION
+   =================================== */
+
+@media (max-width: 1024px) {
+    .problem-details-container {
+        padding: 0 2rem;
+        gap: 4%;
+    }
+    
+    .form-section {
+        width: 45%;
+    }
+    
+    .result-section {
+        width: 50%;
+    }
+    
+    .chart-container {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .problem-details-container {
+        flex-direction: column;
+        padding: 0 1rem;
+        gap: 30px;
+    }
+    
+    .form-section {
+        width: 100%;
+        order: 2;
+    }
+    
+    .result-section {
+        width: 100%;
+        order: 1;
+    }
+    
+    .form-container {
+        height: auto;
+        max-height: 400px;
+    }
+    
+    .labels-container {
+        font-size: 18px;
+        align-items: flex-start;
+        width: 65%;
+    }
+    
+    .inputs-container {
+        width: 35%;
+        align-items: flex-start;
+    }
+    
+    .chart-container {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .result h1 {
+        font-size: 32px;
+    }
+    
+    #chartDetails {
+        gap: 1rem;
+        margin-left: 0;
+    }
+    
+    .chart-legend {
+        min-width: auto;
+        flex-direction: row;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 8px;
+        height: auto;
+        align-items: flex-start;
+    }
+    
+    .slider-input {
+        width: 50%;
+    }
+    
+    .slider-value {
+        font-size: 12px;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .problem-details-container {
+        padding: 0 0.5rem;
+        gap: 25px;
+    }
+    
+    .problem-details-container h3 {
+        font-size: 20px;
+        text-align: center;
+    }
+    
+    .form-container {
+        gap: 8px;
+        max-height: 350px;
+    }
+    
+    .labels-container {
+        font-size: 16px;
+        gap: 10px;
+        width: 70%;
+    }
+    
+    .inputs-container {
+        gap: 15px;
+        width: 30%;
+    }
+    
+    .inputs-container input {
+        font-size: 16px;
+        height: 22px;
+        line-height: 22px;
+        padding: 1px 8px;
+        width: 100%;
+    }
+    
+    .form-actions-container {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .form-actions-container input[type="reset"],
+    .form-actions-container input[type="submit"] {
+        width: 100%;
+        font-size: 20px;
+        padding: 8px;
+    }
+    
+    .chart-container {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .result h1 {
+        font-size: 28px;
+    }
+    
+    #chartDetails {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-left: 0;
+        align-items: center;
+    }
+    
+    .chart-legend {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        font-size: 12px;
+    }
+    
+    .radio-option {
+        gap: 4px;
+    }
+    
+    .radio-option label {
+        font-size: 14px;
+    }
+    
+    .dropdown-input {
+        font-size: 14px;
+        height: 22px;
+        line-height: 22px;
+    }
+    
+    .slider-input {
+        width: 45%;
+    }
+    
+    .slider-value {
+        font-size: 11px;
+        padding: 2px 4px;
+        width: 1.5rem;
+        height: 14px;
+    }
+}
+
+@media (max-width: 320px) {
+    .problem-details-container h3 {
+        font-size: 18px;
+    }
+    
+    .labels-container {
+        font-size: 14px;
+        width: 75%;
+    }
+    
+    .inputs-container {
+        width: 25%;
+    }
+    
+    .inputs-container input {
+        font-size: 14px;
+        height: 20px;
+        line-height: 20px;
+        padding: 1px 6px;
+    }
+    
+    .form-actions-container input[type="reset"],
+    .form-actions-container input[type="submit"] {
+        font-size: 18px;
+        padding: 6px;
+    }
+    
+    .chart-container {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .result h1 {
+        font-size: 24px;
+    }
+    
+    .chart-legend {
+        font-size: 11px;
+    }
+    
+    .radio-option label {
+        font-size: 12px;
+    }
+    
+    .dropdown-input {
+        font-size: 12px;
+        height: 20px;
+        line-height: 20px;
+    }
+    
+    .slider-value {
+        font-size: 10px;
+        padding: 1px 3px;
+        width: 1.3rem;
+        height: 12px;
+    }
+}
+
+
+
+
+/* Automatic red border for invalid fields */
+input:invalid:not(:placeholder-shown),
+select:invalid:not(:placeholder-shown) {
+    border: 2px solid #ff0000 !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3) !important;
+}
+
+/* Red border for required fields that are empty after interaction */
+input:required:invalid,
+select:required:invalid {
+    border: 2px solid #ff0000 !important;
+}
+
+/* Valid state - return to normal (no green) */
+input:valid,
+select:valid {
+    border: 2px solid #929292;
+}
+
+
+/* Error state for all input types */
+.input-error {
+    border: 2px solid #ff0000 !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3) !important;
+}
+
+/* Error state for radio groups */
+.radio-group.input-error {
+    outline-offset: 2px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Error state for dropdowns */
+.dropdown-input.input-error {
+    border: 2px solid #ff0000 !important;
+}
+

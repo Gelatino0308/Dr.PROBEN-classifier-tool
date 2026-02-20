@@ -1,0 +1,498 @@
+/* ===================================
+   SHARED STYLES FOR PREDICTION PAGE
+   Common elements used by both Single and Batch prediction modes
+   =================================== */
+
+/* Global Resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    font-family: Poppins, 'Times New Roman', Times, serif;
+    background-color: #F5F5F5; 
+    color: #333;
+}
+
+p {
+    text-align: justify;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.theme-diabetes nav {
+    background-color: #096F29;
+}
+
+.theme-heart nav {
+    background-color: #811111;
+}
+
+.theme-cancer nav {
+    background-color: #1E2F4E;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    gap: 4px;
+    z-index: 1001;
+}
+
+.hamburger-bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.hamburger-menu.active .hamburger-bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active .hamburger-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-bar:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Back Button */
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px 20px;
+    background-color: white;
+    border: none;
+    border-radius: 25px;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.back-button:hover {
+    opacity: 0.8;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.back-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.theme-diabetes .back-button {
+    color: #096F29;
+}
+
+.theme-heart .back-button {
+    color: #811111;
+}
+
+.theme-cancer .back-button {
+    color: #1E2F4E;
+}
+
+/* Segment Control */
+.segment-control {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    padding: 6px;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin-left: 87px;
+}
+
+.segment-button {
+    padding: 4px 20px;
+    background-color: transparent;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.segment-button.active {
+    background-color: white;
+    color: #333;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.segment-button:hover:not(.active) {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-diabetes .segment-button.active {
+    color: #096F29;
+}
+
+.theme-heart .segment-button.active {
+    color: #811111;
+}
+
+.theme-cancer .segment-button.active {
+    color: #1E2F4E;
+}
+
+/* Brand Link */
+.brand-link {
+    text-decoration: none;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-link:hover {
+    opacity: 0.8;
+}
+
+/* Disease Title */
+.disease-title {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+}
+
+.theme-diabetes .disease-title {
+    color: #096F29;
+}
+
+.theme-heart .disease-title {
+    color: #811111;
+}
+
+.theme-cancer .disease-title {
+    color: #1E2F4E;
+}
+
+/* Prediction Mode Sections */
+.prediction-mode {
+    display: none;
+}
+
+.prediction-mode.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Instruction Text */
+.instruction {
+    font-size: 20px;
+    text-align: center;
+    padding: 20px 30px;
+    font-style: italic;
+}
+
+.instruction span {
+    font-weight: bold;
+}
+
+/* Info Icon */
+.problem-info-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-inline: 10px;
+}
+
+.info-icon {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    transition: opacity 0.2s ease;
+}
+
+.theme-diabetes .info-icon {
+    color: #096F29;
+}
+
+.theme-heart .info-icon {
+    color: #811111;
+}
+
+.theme-cancer .info-icon {
+    color: #1E2F4E;
+}
+
+.info-icon:hover {
+    opacity: 0.7;
+}
+
+.info-icon:active {
+    opacity: 0.5;
+}
+
+/* SweetAlert2 Modal Styles */
+.swal2-popup.info-modal {
+    border-radius: 12px;
+    width: 450px;
+}
+
+.swal2-popup.info-modal .swal2-html-container {
+    padding: 0;
+    margin: 0;
+}
+
+.info-modal-content {
+    text-align: center;
+    padding-top: 30px;
+    padding-inline: 30px;
+}
+
+.info-modal-content h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.info-modal-content div {
+    max-height: 70vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-inline: 10px;
+}
+
+.info-modal-content p {
+    font-size: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.info-modal-content .citation {
+    font-size: 20px;
+    font-style: italic;
+    color: #6C6C6C;
+}
+
+.info-modal-button {
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0px 2px 6px black;
+}
+
+/* Tippy Tooltip */
+.tippy-tooltip.light-theme {
+    font-size: 1rem;
+    box-shadow: 2px 2px 10px;
+    opacity: 0.9;
+    border-radius: 6px;
+}
+
+
+/* ===================================
+   RESPONSIVE DESIGN - COMMON
+   =================================== */
+
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 10px;
+    }
+
+    .back-button {
+        align-self: flex-start;
+        font-size: 14px;
+        padding: 6px 16px;
+        border-radius: 20px;
+    }
+
+    .segment-control {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .segment-button {
+        flex: 1;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .brand-link {
+        font-size: 28px;
+    }
+
+    .disease-title {
+        font-size: 24px;
+        margin: 15px 0;
+    }
+
+    .hamburger-menu {
+        display: flex;
+        order: 3;
+    }
+    
+    .links-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: inherit;
+        flex-direction: column;
+        gap: 0;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        order: 2;
+        width: 100%;
+    }
+    
+    .links-container.show {
+        display: flex;
+    }
+    
+    .links-container li {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .links-container li:last-child {
+        border-bottom: none;
+    }
+    
+    .links-container a {
+        font-size: 20px;
+        display: block;
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    .instruction {
+        font-size: 18px;
+        padding: 15px 20px;
+    }
+
+    .info-modal-content h2 {
+        font-size: 20px;
+    }
+    
+    .info-modal-content p {
+        font-size: 16px;
+    }
+    
+    .info-modal-content .citation {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-button {
+        font-size: 13px;
+        padding: 5px 12px;
+    }
+
+    .segment-button {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .brand-link {
+        font-size: 24px;
+    }
+
+    .disease-title {
+        font-size: 20px;
+    }
+
+    .instruction {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+
+    .links-container {
+        padding: 15px;
+    }
+    
+    .links-container a {
+        font-size: 18px;
+        padding: 8px 0;
+    }
+
+    .swal2-popup.info-modal {
+        width: 90%;
+    }
+}
+
+@media (max-width: 320px) {
+    .back-button {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+
+    .segment-button {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .brand-link {
+        font-size: 20px;
+    }
+
+    .disease-title {
+        font-size: 18px;
+    }
+
+    .instruction {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .links-container a {
+        font-size: 16px;
+    }
+}
