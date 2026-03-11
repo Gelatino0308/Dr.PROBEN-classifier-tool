@@ -139,7 +139,7 @@ export const diseaseConfigs = {
                 ],
                 info:'Describes the slope of ST segment on your ECG during an exercise stress test.\n• Upsloping: The ST segment goes up.\n• Flat: The ST segment is horizontal.\n• Downsloping: The ST segment goes down. A downsloping or flat slope can be a sign of heart disease.'
             },
-            { id: 'Number of Major Vessels', label: 'Number of Major Vessels', placeholder: '0-3', min: '0', max: '3', type: 'slider', default: '0',
+            { id: 'Number of Major Vessels', label: 'Number of Major Vessels', min: '0', max: '3', type: 'radio',
                 info: 'This refers to the number of major blood vessels (0 to 3) that are significantly narrowed as seen in a coronary angiography. This value is provided by a cardiologist.'
             },
             { id: 'Thalassemia', label: 'Thalassemia', type: 'dropdown', 
@@ -161,31 +161,31 @@ export const diseaseConfigs = {
         positiveDesc: "Malignant means the tumor is cancerous and can spread to other parts of the body. It requires immediate medical attention and treatment to prevent metastasis.",
         negativeDesc: 'Benign means the tumor is non-cancerous and does not spread to other parts of the body. While it may still require monitoring, it is generally not life-threatening.',
         attributes: [
-            { id: 'Clump Thickness', label: 'Clump Thickness', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Clump Thickness', label: 'Clump Thickness', min: '1', max: '10', type: 'radio', 
                 info:'Refers to the degree to which cells are clustered together. Higher thickness values may indicate abnormal cell growth or potential malignancy.' 
             },
-            { id: 'Uniformity of Cell Size', label: 'Uniformity of Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Uniformity of Cell Size', label: 'Uniformity of Cell Size', min: '1', max: '10', type: 'radio', 
                 info:'Measures the consistency in cell sizes within the sample. Significant variation in size may suggest the presence of abnormal or cancerous cells.' 
             },
-            { id: 'Uniformity of Cell Shape', label: 'Uniformity of Cell Shape', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Uniformity of Cell Shape', label: 'Uniformity of Cell Shape', min: '1', max: '10', type: 'radio', 
                 info:'Evaluates the uniformity of cell shapes. Normal cells generally maintain consistent shapes, while irregular shapes may be indicative of malignancy.' 
             },
-            { id: 'Marginal Adhesion', label: 'Marginal Adhesion', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Marginal Adhesion', label: 'Marginal Adhesion', min: '1', max: '10', type: 'radio', 
                 info:'Describes the extent to which cells adhere to one another. Poor adhesion may signify abnormal or invasive cellular behavior.' 
             },
-            { id: 'Single Epithelial Cell Size', label: 'Single Epithelial Cell Size', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Single Epithelial Cell Size', label: 'Single Epithelial Cell Size', min: '1', max: '10', type: 'radio', 
                 info:'Represents the average size of individual epithelial cells. Enlarged epithelial cells are often associated with abnormal cellular activity.' 
             },
-            { id: 'Bare Nuclei', label: 'Bare Nuclei', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Bare Nuclei', label: 'Bare Nuclei', min: '1', max: '10', type: 'radio', 
                 info:'Indicates the presence of nuclei without surrounding cytoplasm. A higher count of bare nuclei is commonly observed in malignant samples.' 
             },
-            { id: 'Bland Chromatin', label: 'Bland Chromatin', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Bland Chromatin', label: 'Bland Chromatin', min: '1', max: '10', type: 'radio', 
                 info:'Refers to the texture and appearance of the chromatin within the nucleus. Coarse or uneven chromatin patterns may suggest abnormal or cancerous growth.' 
             },
-            { id: 'Normal Nucleoli', label: 'Normal Nucleoli', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Normal Nucleoli', label: 'Normal Nucleoli', min: '1', max: '10', type: 'radio', 
                 info:'Pertains to the visibility and prominence of nucleoli within the nucleus. Prominent or multiple nucleoli are often linked to increased cellular activity, typical of cancerous cells.' 
             },
-            { id: 'Mitoses', label: 'Mitoses', placeholder: '1-10', min: '1', max: '10', type: 'slider', default: '0', 
+            { id: 'Mitoses', label: 'Mitoses', min: '1', max: '10', type: 'radio', 
                 info:'Measures the frequency of cell division. An elevated mitotic rate reflects rapid cellular proliferation, which may indicate malignant behavior.' 
             }
         ]

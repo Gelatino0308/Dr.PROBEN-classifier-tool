@@ -434,17 +434,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     radioGroup.classList.add('input-error');
                     console.log('Added error to radio group');
                 }
-            } else if (attr.type === 'slider') {
-                const input = document.getElementById(attr.id);
-                const valueDisplay = input?.nextElementSibling;
-                if (input) {
-                    input.classList.add('input-error');
-                    console.log('Added error to slider input');
-                }
-                if (valueDisplay) {
-                    valueDisplay.classList.add('input-error');
-                    console.log('Added error to slider value display');
-                }
             } else {
                 element.classList.add('input-error');
                 console.log('Added error to element');
@@ -458,11 +447,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (radioGroup) {
                     radioGroup.classList.remove('input-error');
                 }
-            } else if (attr.type === 'slider') {
-                const input = document.getElementById(attr.id);
-                const valueDisplay = input?.nextElementSibling;
-                if (input) input.classList.remove('input-error');
-                if (valueDisplay) valueDisplay.classList.remove('input-error');
             } else {
                 element.classList.remove('input-error');
             }
@@ -476,12 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Validating form for disease:', currentDisease);
 
             config.attributes.forEach(attr => {
-
-                // Skip validation for sliders completely
-                if (attr.type === 'slider') {
-                    return; // Skip to next iteration
-                }
-
                 let element;
                 let hasValue = false;
 
@@ -518,10 +496,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Number of attributes:', config.attributes.length);
 
             config.attributes.forEach(attr => {
-                // Skip sliders completely
-                if (attr.type === 'slider') {
-                    return; // Skip to next iteration
-                }
 
                 console.log('Setting up listener for:', attr.id, 'type:', attr.type);
                 
@@ -609,12 +583,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const selectInput = document.getElementById(attr.id);
                     if (selectInput) {
                         formData[attr.id] = selectInput.value;
-                    }
-                } else if (attr.type === 'slider') {
-                    // For sliders, get the value
-                    const sliderInput = document.getElementById(attr.id);
-                    if (sliderInput) {
-                        formData[attr.id] = sliderInput.value;
                     }
                 } else {
                     // For regular inputs (text, number)
@@ -727,19 +695,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             selectInput.selectedIndex = 0;
                             removeErrorBorder(selectInput, attr);
                         }
-                    } else if (attr.type === 'slider') {
-                        const slider = document.getElementById(attr.id);
-                        if (slider) {
-                            slider.value = attr.default || '0';
-                            const valueDisplay = slider.nextElementSibling;
-                            if (valueDisplay) {
-                                valueDisplay.textContent = slider.value;
-                                if (slider.value === '0' && currentDisease === 'cancer') {
-                                    valueDisplay.classList.add('slider-unmodified');
-                                }
-                            }
-                            removeErrorBorder(slider, attr);
-                        }
                     } else {
                         const input = document.getElementById(attr.id);
                         if (input) {
@@ -799,7 +754,54 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.className = 'input-wrapper';
 
             // Create input based on type
-            if (attr.type === 'radio') {
+            if (attr.type === 'radio' && (currentDisease === 'cancer' || attr.id === 'Number of Major Vessels') ) {
+                const radioGroup = document.createElement('div');
+                radioGroup.className = 'radio-group';
+                radioGroup.id = attr.id;
+
+                for (let i = attr.min; i <= attr.max; i++) {
+                    const radioLabel = document.createElement('label');
+                    radioLabel.className = 'radio-scale-item';
+
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = attr.id;
+                    radioInput.id = `${attr.id}_${i}`;
+                    radioInput.value = i;
+
+                    const circleSpan = document.createElement('span');
+                    circleSpan.className = 'radio-scale-circle';
+                    circleSpan.textContent = i;
+
+                    // Prevent focus from causing the page/scroll container to jump.
+                    // We focus the actual input without scrolling it into view.
+                    circleSpan.addEventListener('click', (e) => {
+                        // The span isn't a real form control, so we select the hidden radio ourselves.
+                        // Also prevent the browser from doing a scroll-to-focus.
+                        e.preventDefault();
+
+                        if (!radioInput) return;
+
+                        radioInput.checked = true;
+                        // Trigger native listeners/validation updates
+                        radioInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+                        if (typeof radioInput.focus === 'function') {
+                            try {
+                                radioInput.focus({ preventScroll: true });
+                            } catch {
+                                radioInput.focus();
+                            }
+                        }
+                    });
+
+                    radioLabel.appendChild(radioInput);
+                    radioLabel.appendChild(circleSpan);
+                    radioGroup.appendChild(radioLabel);
+                }
+                wrapper.appendChild(radioGroup);
+
+            } else if (attr.type === 'radio') {
                 const radioGroup = document.createElement('div');
                 radioGroup.className = 'radio-group';
                 
@@ -810,11 +812,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const input = document.createElement('input');
                     input.type = 'radio';
                     input.name = attr.id;
-                    input.id = `${attr.id}_${index}`;  // Unique id for each radio button
+                    input.id = `${attr.id}_${index}`;
                     input.value = option.value;
                     
                     const radioLabel = document.createElement('label');
-                    radioLabel.htmlFor = `${attr.id}_${index}`;  // Match the radio button's unique id
+                    radioLabel.htmlFor = `${attr.id}_${index}`;
                     radioLabel.textContent = option.label;
                     
                     radioOption.appendChild(input);
@@ -823,6 +825,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 wrapper.appendChild(radioGroup);
+
             } else if (attr.type === 'dropdown') {
                 const select = document.createElement('select');
                 select.id = attr.id;
@@ -845,35 +848,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 wrapper.appendChild(select);
-            } else if (attr.type === 'slider') {
-                const slider = document.createElement('input');
-                slider.type = 'range';
-                slider.id = attr.id;
-                slider.className = 'slider-input';
-                slider.min = attr.min;
-                slider.max = attr.max;
-                slider.value = attr.default || '0';
-                slider.step = '1';
-                
-                const valueDisplay = document.createElement('span');
-                valueDisplay.className = 'slider-value';
-                valueDisplay.textContent = slider.value;
-                
-                // Add unmodified class if value is 0
-                if (slider.value === '0' && currentDisease === 'cancer') {
-                    valueDisplay.classList.add('slider-unmodified');
-                }
-                
-                slider.addEventListener('input', function() {
-                    valueDisplay.textContent = this.value;
-                    // Remove unmodified class when user changes the value
-                    if (this.value !== '0' && currentDisease === 'cancer') {
-                        valueDisplay.classList.remove('slider-unmodified');
-                    } 
-                });
-                
-                wrapper.appendChild(slider);
-                wrapper.appendChild(valueDisplay);
+
             } else {
                 // Regular number input
                 const input = document.createElement('input');
@@ -1402,10 +1377,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (validValues.length > 0 && !validValues.includes(numValue.toString()) && !validValues.includes(numValue)) {
                 return false;
             }
-        } else if (attr.type === 'slider') {
-            if (isNaN(numValue)) return false;
-            if (attr.min !== undefined && numValue < parseFloat(attr.min)) return false;
-            if (attr.max !== undefined && numValue > parseFloat(attr.max)) return false;
         }
 
         return true;
@@ -1425,9 +1396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (attr.type === 'categorical' || attr.type === 'radio' || attr.type === 'dropdown') {
             const validValues = attr.values || (attr.options ? attr.options.map(opt => opt.value) : []);
             return `One of: ${validValues.join(', ')}`;
-        } else if (attr.type === 'slider') {
-            return `${attr.min}-${attr.max}`;
-        }
+        } 
         return 'Valid value';
     }
 
@@ -1508,8 +1477,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (attr.type === 'categorical' || attr.type === 'radio' || attr.type === 'dropdown') {
                 const validValues = attr.values || (attr.options ? attr.options.map(opt => `${opt.value} (${opt.label})`).join(', ') : []);
                 content += Array.isArray(validValues) ? validValues.join(', ') : validValues;
-            } else if (attr.type === 'slider') {
-                content += `${attr.min} to ${attr.max}`;
             }
             
             content += `</div>`;

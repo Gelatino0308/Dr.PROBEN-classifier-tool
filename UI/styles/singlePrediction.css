@@ -86,7 +86,7 @@
 
 .form-container {
     display: flex;
-    gap: 12px;
+    gap: 20px;
     height: 340px;
     padding: 5px 0;
     overflow-y: auto;
@@ -147,6 +147,120 @@
     justify-content: center;
     align-items: center;
 }
+
+
+/* Ensure both sides use the exact same vertical gap */
+.theme-cancer .labels-container, 
+.theme-cancer .inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+}
+
+/* Force every label to be a fixed-height row */
+.theme-cancer .labels-container label {
+    white-space: nowrap;  
+    font-size: 20px;
+    height: 24px;         
+    display: flex;
+    align-items: center;  
+    justify-content: flex-end;
+    margin: 0;
+    width: 100%;
+}
+
+/* Force every input row to match that height exactly */
+.theme-cancer .inputs-container .input-wrapper {
+    display: flex;
+    align-items: center;  
+    height: 50px; /* MUST match the label height */
+    margin: 0;
+    width: 100%;
+}
+
+/* --- Horizontal Layout & Spacing --- */
+
+.theme-cancer .form-section {
+    width: 60%;
+}
+
+.theme-cancer .labels-container {
+    width: 45%;           
+}
+
+.theme-cancer .inputs-container {
+    width: 50%;
+}
+
+/* --- Radio Scale Straight Line Logic --- */
+
+.theme-cancer .radio-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;    
+    gap: 6px;             
+    width: max-content;  
+    align-items: center;
+    height: 35px;
+}
+
+/* --- Base style for cancer circles --- */
+.theme-cancer .radio-scale-circle {
+    width: 30px;       
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #929292;
+    border-radius: 50%;
+    background-color: white; 
+    color: #333;            
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* --- Clicked State For Cancer --- */
+.theme-cancer .radio-scale-item input:checked + .radio-scale-circle {
+    background-color: #1E2F4E; 
+    color: #ffffff;            
+    border: 2px solid #1E2F4E; 
+    font-weight: bold;        
+    box-shadow: 0 0 5px rgba(30, 47, 78, 0.4); 
+}
+
+/* --- Clicked State For Heart --- */
+.theme-heart .radio-scale-item input:checked + .radio-scale-circle {
+    background-color: #811111; 
+    color: #ffffff;            
+    border: 2px solid #811111; 
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(30, 47, 78, 0.4);
+}
+
+/* Base style for heart circles */
+.theme-heart .radio-scale-circle {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #929292;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.radio-scale-item input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
 
 /* Form Actions */
 .form-actions-container {
@@ -347,6 +461,10 @@
     height: 24px;
 }
 
+[id="Number of Major Vessels"] {
+    height: 35px;
+}
+
 .radio-option {
     display: flex;
     align-items: center;
@@ -392,7 +510,7 @@
     box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.2);
 }
 
-/* Input Types - Slider */
+/* Input Types*/
 .input-wrapper {
     display: flex;
     align-items: center;
@@ -402,103 +520,8 @@
     min-height: 24px;
 }
 
-.slider-input {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 69%;
-    height: 6px;
-    border-radius: 3px;
-    background: white;
-    outline: none;
-    padding: 0;
-    margin: 0;
-}
-
-.slider-input::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.slider-input::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: white;
-    cursor: pointer;
-    border: 2px solid #073056;
-}
-
-.slider-value {
-    background: white;
-    color: #333;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 1rem;
-    width: 2rem;
-    text-align: center;
-    border: 1px solid #333;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Theme-specific slider colors */
-.theme-diabetes .slider-input::-webkit-slider-thumb {
-    background: #096F29;
-    border: 2px solid #096F29;
-}
-
-.theme-diabetes .slider-input::-moz-range-thumb {
-    border-color: #096F29;
-}
-
-.theme-diabetes .slider-value {
-    color: #096F29;
-    border-color: #096F29;
-}
-
-.theme-heart .slider-input::-webkit-slider-thumb {
-    background: #811111;
-    border: 2px solid #811111;
-}
-
-.theme-heart .slider-input::-moz-range-thumb {
-    border-color: #811111;
-}
-
-.theme-heart .slider-value {
-    color: #811111;
-    border-color: #811111;
-}
-
-.theme-cancer .slider-input::-webkit-slider-thumb {
-    background: #1E2F4E;
-    border: 2px solid #1E2F4E;
-}
-
-.theme-cancer .slider-input::-moz-range-thumb {
-    border-color: #1E2F4E;
-}
-
-.theme-cancer .slider-value {
-    color: #1E2F4E;
-    border-color: #1E2F4E;
-}
-
-
-.slider-unmodified {
-    color: #e74c3c !important;
-    font-weight: bold;
-}
-
 /* Regular inputs styling */
-.inputs-container input:not(.slider-input):not([type="radio"]) {
+.inputs-container input:not([type="radio"]) {
     border: 2px solid #929292;
     border-radius: 20px;
     font-size: 18px;
@@ -513,7 +536,7 @@
 }
 
 /* Focus state for number inputs */
-.inputs-container input:not(.slider-input):not([type="radio"]):focus {
+.inputs-container input:not([type="radio"]):focus {
     outline: none;
     border-color: #333;
     box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.2);
@@ -611,15 +634,6 @@
         height: auto;
         align-items: flex-start;
     }
-    
-    .slider-input {
-        width: 50%;
-    }
-    
-    .slider-value {
-        font-size: 12px;
-        padding: 3px 6px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -706,17 +720,6 @@
         height: 22px;
         line-height: 22px;
     }
-    
-    .slider-input {
-        width: 45%;
-    }
-    
-    .slider-value {
-        font-size: 11px;
-        padding: 2px 4px;
-        width: 1.5rem;
-        height: 14px;
-    }
 }
 
 @media (max-width: 320px) {
@@ -767,13 +770,6 @@
         font-size: 12px;
         height: 20px;
         line-height: 20px;
-    }
-    
-    .slider-value {
-        font-size: 10px;
-        padding: 1px 3px;
-        width: 1.3rem;
-        height: 12px;
     }
 }
 
